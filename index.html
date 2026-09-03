@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interactive CARDAMOM–RAPID progress briefing: differentiable JAX river routing, MATLAB parity, Muskingum inversion, and next experiments.">
+  <meta name="theme-color" content="#071c24">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="CARDAMOM–RAPID · Differentiable River Inversion">
+  <meta property="og:description" content="Explore the verified JAX routing model, MATLAB parity evidence, live Muskingum sensitivity, and proposed next experiments.">
+  <meta property="og:url" content="https://sudshu.github.io/cardamom-rapid-briefing/">
+  <link rel="canonical" href="https://sudshu.github.io/cardamom-rapid-briefing/">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>CARDAMOM–RAPID · Differentiable River Inversion</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="top">
+    <a class="brand" href="#top" aria-label="CARDAMOM RAPID briefing home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 42 42" role="img">
+          <path d="M7 7c10 2 11 9 14 14s6 12 14 14"/>
+          <path d="M35 7c-9 3-11 9-14 14S15 33 7 35"/>
+          <circle cx="21" cy="21" r="3.2"/>
+        </svg>
+      </span>
+      <span><b>CARDAMOM–RAPID</b><small>Progress briefing</small></span>
+    </a>
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <a href="#question">Question</a>
+      <a href="#delivered">Delivered</a>
+      <a href="#lab">Live model</a>
+      <a href="#evidence">Evidence</a>
+      <a href="#decision">Decision</a>
+    </nav>
+    <a class="header-link" href="https://github.com/CARDAMOM-framework/CARDAMOM-RAPID/pull/1" target="_blank" rel="noreferrer">
+      PR #1 <span aria-hidden="true">↗</span>
+    </a>
+  </header>
+
+  <main id="main">
+    <section class="hero section-shell" aria-labelledby="hero-title">
+      <div class="hero-copy reveal">
+        <div class="eyebrow"><span class="status-dot"></span> Team review · September 2026</div>
+        <h1 id="hero-title">From a linear river operator to a <em>differentiable inverse model.</em></h1>
+        <p class="hero-lede">We rebuilt the CARDAMOM–RAPID routing core in JAX, verified it against MATLAB, and showed that downstream discharge can recover both upstream runoff pulses and river travel time in a controlled experiment.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#lab">Explore the model <span aria-hidden="true">↓</span></a>
+          <a class="button secondary" href="https://github.com/CARDAMOM-framework/CARDAMOM-RAPID/tree/rapid-jax-b1/PYTHON/rapid_jax" target="_blank" rel="noreferrer">View implementation <span aria-hidden="true">↗</span></a>
+        </div>
+        <dl class="hero-metrics" aria-label="Project highlights">
+          <div><dt>51<span>/51</span></dt><dd>tests passing</dd></div>
+          <div><dt>7<span>/7</span></dt><dd>B1 gates passed</dd></div>
+          <div><dt>1.78<span>×10⁻¹⁵</span></dt><dd>max MATLAB error</dd></div>
+        </dl>
+      </div>
+
+      <div class="hero-visual reveal" aria-label="Animated five-reach river network">
+        <div class="visual-header">
+          <span>Five-reach control network</span>
+          <span class="live-chip"><i></i> live flow</span>
+        </div>
+        <svg class="network-svg hero-network" viewBox="0 0 560 340" role="img" aria-labelledby="network-title network-desc">
+          <title id="network-title">Five-reach branching river network</title>
+          <desc id="network-desc">Reaches one and two join at reach three. Reaches three and four join at outlet reach five.</desc>
+          <defs>
+            <linearGradient id="river-gradient" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#63e6be"/>
+              <stop offset="1" stop-color="#3ea6ff"/>
+            </linearGradient>
+            <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="5" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <path id="hero-p1" d="M88 63 C160 63 158 137 230 137"/>
+            <path id="hero-p2" d="M88 199 C160 199 162 147 230 141"/>
+            <path id="hero-p3" d="M270 140 C345 140 332 207 406 207"/>
+            <path id="hero-p4" d="M270 282 C340 282 337 218 406 210"/>
+            <path id="hero-p5" d="M446 209 C484 209 506 194 536 180"/>
+          </defs>
+          <g class="river-paths">
+            <use href="#hero-p1"/><use href="#hero-p2"/><use href="#hero-p3"/><use href="#hero-p4"/><use href="#hero-p5"/>
+          </g>
+          <g class="flow-particles" aria-hidden="true">
+            <circle r="4"><animateMotion dur="2.4s" repeatCount="indefinite"><mpath href="#hero-p1"/></animateMotion></circle>
+            <circle r="3"><animateMotion dur="2.4s" begin="-1.1s" repeatCount="indefinite"><mpath href="#hero-p2"/></animateMotion></circle>
+            <circle r="4"><animateMotion dur="2.0s" begin="-.5s" repeatCount="indefinite"><mpath href="#hero-p3"/></animateMotion></circle>
+            <circle r="3"><animateMotion dur="2.2s" begin="-1.4s" repeatCount="indefinite"><mpath href="#hero-p4"/></animateMotion></circle>
+            <circle r="5"><animateMotion dur="1.8s" begin="-.4s" repeatCount="indefinite"><mpath href="#hero-p5"/></animateMotion></circle>
+          </g>
+          <g class="network-node" transform="translate(68 63)"><circle r="21"/><text>1</text></g>
+          <g class="network-node" transform="translate(68 199)"><circle r="21"/><text>2</text></g>
+          <g class="network-node gauge" transform="translate(250 140)"><circle r="24"/><text>3</text><path d="M13-18l10-8"/><rect x="20" y="-31" width="9" height="8" rx="2"/></g>
+          <g class="network-node" transform="translate(250 282)"><circle r="21"/><text>4</text></g>
+          <g class="network-node gauge outlet" transform="translate(426 209)"><circle r="27"/><text>5</text><path d="M15-21l11-8"/><rect x="23" y="-34" width="9" height="8" rx="2"/></g>
+          <text class="network-label" x="34" y="31">upstream forcing</text>
+          <text class="network-label" x="407" y="164">observed outlet</text>
+          <text class="network-label outlet-label" x="488" y="159">ocean</text>
+        </svg>
+        <div class="visual-caption">
+          <span><i class="legend-line"></i> routing path</span>
+          <span><i class="legend-gauge"></i> observed reach</span>
+          <span>O(time × reaches)</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="statement-band" aria-label="Core result">
+      <div class="section-shell statement-inner reveal">
+        <span class="statement-index">01</span>
+        <p><strong>The short version:</strong> the nonlinear idea works in a clean control. The next scientific question is whether it remains identifiable under realistic noise, sparse gauges, richer runoff states, and uncertain routing.</p>
+      </div>
+    </section>
+
+    <section class="content-section section-shell" id="question" aria-labelledby="question-title">
+      <div class="section-heading reveal">
+        <div><span class="kicker">The project question</span><h2 id="question-title">What becomes possible when the river model can differentiate?</h2></div>
+        <p>The original formulation is linear when routing and decay parameters are prescribed. Estimating those parameters changes the operator itself—and makes the inverse nonlinear.</p>
+      </div>
+      <div class="journey-grid reveal">
+        <article class="journey-card">
+          <span class="card-number">A</span>
+          <div class="formula">q = Ar</div>
+          <h3>Linear inversion</h3>
+          <p>Infer reach runoff <i>r</i> from downstream discharge <i>q</i> with a fixed aggregation operator.</p>
+          <span class="card-tag">Inherited foundation</span>
+        </article>
+        <div class="journey-arrow" aria-hidden="true">→</div>
+        <article class="journey-card active">
+          <span class="card-number">B</span>
+          <div class="formula">y = F(r, K, X, k)</div>
+          <h3>Differentiable physics</h3>
+          <p>Route water or tracers while gradients propagate through runoff, travel time, weighting, and decay.</p>
+          <span class="card-tag">Implemented now</span>
+        </article>
+        <div class="journey-arrow" aria-hidden="true">→</div>
+        <article class="journey-card future">
+          <span class="card-number">C</span>
+          <div class="formula">kᵢ = NN(xᵢ; φ)</div>
+          <h3>Learned parameters</h3>
+          <p>Let constrained neural functions learn routing or reaction parameters from reach attributes and data.</p>
+          <span class="card-tag">Future, after controls</span>
+        </article>
+      </div>
+      <div class="equation-note reveal">
+        <span>Why JAX?</span>
+        <p>One executable model supplies the forward simulation, exact gradients for 4D-Var/MAP, and the log-density ingredients needed for HMC or related uncertainty methods.</p>
+      </div>
+    </section>
+
+    <section class="content-section tinted" id="delivered" aria-labelledby="delivered-title">
+      <div class="section-shell">
+        <div class="section-heading reveal">
+          <div><span class="kicker">What we delivered</span><h2 id="delivered-title">Two milestones, one verified foundation.</h2></div>
+          <p>Use the tabs to separate the parity milestone from the first nonlinear inversion experiment.</p>
+        </div>
+        <div class="tab-shell reveal">
+          <div class="tab-list" role="tablist" aria-label="Milestone details">
+            <button class="tab-button active" id="tab-a" role="tab" aria-selected="true" aria-controls="panel-a" data-panel="panel-a">Option A · Foundation</button>
+            <button class="tab-button" id="tab-b1" role="tab" aria-selected="false" aria-controls="panel-b1" data-panel="panel-b1">B1 · Muskingum OSSE</button>
+            <button class="tab-button" id="tab-scope" role="tab" aria-selected="false" aria-controls="panel-scope" data-panel="panel-scope">Scope boundary</button>
+          </div>
+          <div class="tab-panel active" id="panel-a" role="tabpanel" aria-labelledby="tab-a">
+            <div class="milestone-copy">
+              <span class="milestone-status">Verified baseline</span>
+              <h3>Freeze semantics before adding nonlinear complexity.</h3>
+              <p>A five-reach MATLAB oracle fixed network orientation, units, observation selection, and the crucial difference between retention and loss fraction.</p>
+              <ul class="check-list">
+                <li>O(n) static water and prescribed-decay tracer routing</li>
+                <li>Relabeling-invariant topology and explicit gauge gathers</li>
+                <li>Float64 parity, conservation, limiting cases, JIT, and gradients</li>
+                <li>Known decay rate recovered from synthetic gauge flux</li>
+              </ul>
+            </div>
+            <div class="mini-result">
+              <div class="mini-network" aria-label="Static five reach result">
+                <div class="mini-node n1"><b>1</b><small>1.0</small></div>
+                <div class="mini-node n2"><b>2</b><small>2.0</small></div>
+                <div class="mini-node n3"><b>3</b><small>3.5</small></div>
+                <div class="mini-node n4"><b>4</b><small>4.0</small></div>
+                <div class="mini-node n5"><b>5</b><small>10.5</small></div>
+                <svg viewBox="0 0 420 240" aria-hidden="true"><path d="M52 45C125 45 120 110 196 110M52 160C122 160 128 118 196 112M224 112C288 112 284 150 356 150M224 207C286 207 290 158 356 152"/></svg>
+              </div>
+              <div class="mini-caption"><span>Runoff → accumulated discharge</span><strong>0.0 mass-balance error</strong></div>
+            </div>
+          </div>
+          <div class="tab-panel" id="panel-b1" role="tabpanel" aria-labelledby="tab-b1" hidden>
+            <div class="milestone-copy">
+              <span class="milestone-status">First nonlinear control</span>
+              <h3>Recover runoff pulses and travel time together.</h3>
+              <p>The model routes 72 hourly steps through a branching network. Observations are taken at reaches 3 and 5, with part of the outlet hydrograph hidden from optimization.</p>
+              <ul class="check-list">
+                <li>Shared truth: K = 3,600 s, X = 0.2</li>
+                <li>Pulse truth: +8 at reach 1, +5 at reach 4</li>
+                <li>Three joint starting points converge to the same truth</li>
+                <li>Held-out outlet RMSE improves from 2.54 to 6.56×10⁻¹⁴</li>
+              </ul>
+            </div>
+            <div class="recovery-card">
+              <span class="recovery-label">Joint recovery</span>
+              <div class="recovery-row"><span>Pulse 1</span><div><i style="--value:100%"></i></div><b>8.000</b></div>
+              <div class="recovery-row"><span>Pulse 2</span><div><i style="--value:100%"></i></div><b>5.000</b></div>
+              <div class="recovery-row"><span>K</span><div><i style="--value:100%"></i></div><b>3600 s</b></div>
+              <p>Recovered values shown against synthetic truth. Near-perfect recovery is expected only in this deterministic, noise-free control.</p>
+            </div>
+          </div>
+          <div class="tab-panel" id="panel-scope" role="tabpanel" aria-labelledby="tab-scope" hidden>
+            <div class="milestone-copy">
+              <span class="milestone-status warning">Important distinction</span>
+              <h3>A complete routing kernel—not a complete MATLAB replacement.</h3>
+              <p>The JAX package covers the computational core needed for differentiable inversion. The broader MATLAB research environment still owns real-data and basin-scale workflows.</p>
+              <ul class="plain-list">
+                <li><b>In JAX:</b> network validation, water/tracer routing, Muskingum dynamics, observations, objectives, parameter transforms, gradients.</li>
+                <li><b>Still in MATLAB:</b> Amazon/Mackenzie/Mississippi studies, GLDAS/HYBAM/SWOT/nitrogen readers, complete Optimal Estimation scripts, plotting and preprocessing utilities.</li>
+              </ul>
+            </div>
+            <div class="scope-graphic">
+              <div class="scope-ring"><span><b>Core</b><small>ported + extended</small></span></div>
+              <div class="scope-orbit"><span>Data</span><span>Basins</span><span>OE</span><span>Utilities</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section section-shell" id="lab" aria-labelledby="lab-title">
+      <div class="section-heading reveal">
+        <div><span class="kicker">Interactive model</span><h2 id="lab-title">Change the river. Watch the signal move.</h2></div>
+        <p>This browser model implements the same five-reach Muskingum recurrence used by the JAX B1 control. It is for explanation; the tested JAX package remains the scientific implementation.</p>
+      </div>
+
+      <div class="lab-grid reveal">
+        <aside class="control-panel" aria-label="Model controls">
+          <div class="panel-heading"><div><span>Scenario controls</span><small id="scenario-label">Synthetic truth</small></div><button class="icon-button" id="reset-model" type="button" title="Reset to truth" aria-label="Reset model controls">↺</button></div>
+
+          <label class="range-control" for="pulse-one">
+            <span><b>Reach 1 pulse</b><output id="pulse-one-value">+8.0</output></span>
+            <input id="pulse-one" type="range" min="0" max="14" step="0.1" value="8">
+            <small>Hours 9–18</small>
+          </label>
+          <label class="range-control" for="pulse-four">
+            <span><b>Reach 4 pulse</b><output id="pulse-four-value">+5.0</output></span>
+            <input id="pulse-four" type="range" min="0" max="10" step="0.1" value="5">
+            <small>Hours 25–38</small>
+          </label>
+          <label class="range-control" for="travel-time">
+            <span><b>Travel time K</b><output id="travel-time-value">3600 s</output></span>
+            <input id="travel-time" type="range" min="2275" max="8975" step="25" value="3600">
+            <small>Stable range at X = 0.2</small>
+          </label>
+
+          <div class="preset-group" aria-label="Model presets">
+            <span>Presets</span>
+            <div>
+              <button type="button" class="preset active" data-a1="8" data-a4="5" data-k="3600">Truth</button>
+              <button type="button" class="preset" data-a1="4" data-a4="2.5" data-k="6000">Initial</button>
+              <button type="button" class="preset" data-a1="12" data-a4="1" data-k="2500">Fast</button>
+              <button type="button" class="preset" data-a1="2" data-a4="9" data-k="8000">Slow</button>
+            </div>
+          </div>
+
+          <div class="coefficient-box">
+            <span>Muskingum coefficients</span>
+            <dl><div><dt>C current</dt><dd id="coef-current">0.286</dd></div><div><dt>C previous</dt><dd id="coef-previous">0.524</dd></div><div><dt>C outflow</dt><dd id="coef-outflow">0.190</dd></div></dl>
+            <p id="stability-message"><i></i> Non-negative and stable</p>
+          </div>
+        </aside>
+
+        <div class="model-stage">
+          <div class="stage-toolbar">
+            <div class="playback">
+              <button type="button" class="play-button" id="play-model" aria-label="Play model animation"><span class="play-icon">▶</span></button>
+              <label for="time-step">Hour <output id="time-value">0</output></label>
+              <input id="time-step" type="range" min="0" max="71" step="1" value="0">
+            </div>
+            <div class="stage-status"><span class="truth-key"></span> MATLAB/JAX truth <span class="scenario-key"></span> selected scenario</div>
+          </div>
+
+          <div class="animated-network-wrap">
+            <svg id="lab-network" class="network-svg lab-network" viewBox="0 0 820 250" role="img" aria-label="Animated discharge through the five-reach network">
+              <defs>
+                <linearGradient id="lab-river-gradient" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#63e6be"/><stop offset="1" stop-color="#3ea6ff"/></linearGradient>
+                <path id="lab-p1" d="M86 51 C185 51 188 105 301 105"/><path id="lab-p2" d="M86 166 C183 166 193 111 301 108"/><path id="lab-p3" d="M351 107 C457 107 461 143 573 143"/><path id="lab-p4" d="M351 205 C458 205 472 151 573 145"/><path id="lab-p5" d="M629 144 C695 144 741 128 798 105"/>
+              </defs>
+              <g class="river-paths"><use href="#lab-p1"/><use href="#lab-p2"/><use href="#lab-p3"/><use href="#lab-p4"/><use href="#lab-p5"/></g>
+              <g class="lab-particles" aria-hidden="true">
+                <circle r="4" data-flow="0"><animateMotion dur="2s" repeatCount="indefinite"><mpath href="#lab-p1"/></animateMotion></circle>
+                <circle r="4" data-flow="1"><animateMotion dur="2s" begin="-.8s" repeatCount="indefinite"><mpath href="#lab-p2"/></animateMotion></circle>
+                <circle r="5" data-flow="2"><animateMotion dur="2s" begin="-.3s" repeatCount="indefinite"><mpath href="#lab-p3"/></animateMotion></circle>
+                <circle r="5" data-flow="3"><animateMotion dur="2s" begin="-1.1s" repeatCount="indefinite"><mpath href="#lab-p4"/></animateMotion></circle>
+                <circle r="6" data-flow="4"><animateMotion dur="2s" begin="-.5s" repeatCount="indefinite"><mpath href="#lab-p5"/></animateMotion></circle>
+              </g>
+              <g class="lab-node" data-reach="0" transform="translate(62 51)"><circle r="23"/><text>1</text><text class="node-value" y="40">1.00</text></g>
+              <g class="lab-node" data-reach="1" transform="translate(62 166)"><circle r="23"/><text>2</text><text class="node-value" y="40">2.00</text></g>
+              <g class="lab-node gauge" data-reach="2" transform="translate(326 107)"><circle r="27"/><text>3</text><text class="node-value" y="44">3.50</text></g>
+              <g class="lab-node" data-reach="3" transform="translate(326 205)"><circle r="23"/><text>4</text><text class="node-value" y="40">4.00</text></g>
+              <g class="lab-node gauge" data-reach="4" transform="translate(602 144)"><circle r="30"/><text>5</text><text class="node-value" y="48">10.50</text></g>
+              <text class="network-label" x="22" y="226">lateral runoff</text><text class="network-label" x="716" y="74">outlet discharge</text>
+            </svg>
+            <div class="pulse-callout" id="pulse-callout" aria-live="polite">Steady background flow</div>
+          </div>
+
+          <div class="chart-wrap">
+            <div class="chart-heading"><div><span>Observed discharge</span><small>Reaches 3 and 5 · hourly</small></div><div class="chart-readout"><span id="rmse-label">Scenario RMSE</span><b id="scenario-rmse">0.000</b></div></div>
+            <svg id="hydrograph" viewBox="0 0 920 340" role="img" aria-label="Interactive hydrograph comparing selected scenario and synthetic truth"></svg>
+            <div class="chart-note"><i></i> Shaded interval: outlet hours 31–36 withheld from fitting in B1</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section evidence-section" id="evidence" aria-labelledby="evidence-title">
+      <div class="section-shell">
+        <div class="section-heading light reveal">
+          <div><span class="kicker">Evidence, not aspiration</span><h2 id="evidence-title">Every current claim has a gate.</h2></div>
+          <p>The strongest result is not the optimizer—it is agreement across an independent MATLAB oracle, physical continuity, automatic differentiation, multiple starts, and held-out prediction.</p>
+        </div>
+        <div class="evidence-layout reveal">
+          <div class="gate-card">
+            <div class="gate-score"><span>7</span><small>/ 7 gates</small></div>
+            <ol class="gate-list">
+              <li><i>✓</i><span>MATLAB parity</span></li>
+              <li><i>✓</i><span>Autodiff vs finite difference</span></li>
+              <li><i>✓</i><span>K-only recovery &lt; 1%</span></li>
+              <li><i>✓</i><span>Runoff-only recovery &lt; 1%</span></li>
+              <li><i>✓</i><span>Joint runoff recovery from all starts</span></li>
+              <li><i>✓</i><span>Joint K recovery from all starts</span></li>
+              <li><i>✓</i><span>Held-out prediction improves</span></li>
+            </ol>
+          </div>
+          <div class="metric-grid">
+            <article><span>MATLAB ↔ JAX</span><strong>1.776×10⁻¹⁵</strong><p>maximum discharge difference</p></article>
+            <article><span>Joint estimate</span><strong>[8, 5], 3600 s</strong><p>pulse amplitudes and shared K</p></article>
+            <article><span>Held-out RMSE</span><strong>2.540 → 6.56×10⁻¹⁴</strong><p>before and after recovery</p></article>
+            <article><span>Gradient check</span><strong>1.217×10⁻⁹</strong><p>relative directional error</p></article>
+            <article><span>Execution</span><strong>CPU + 2× A100</strong><p>51 tests passing on both paths</p></article>
+            <article><span>Complexity</span><strong>O(T × N)</strong><p>no dense routing matrix</p></article>
+          </div>
+        </div>
+        <div class="evidence-warning reveal"><span>Control, not field claim</span><p>B1 is deterministic and noise-free, with two runoff amplitudes, one shared K, and fixed X. Machine-precision recovery is a software and identifiability control—not an expectation for real rivers.</p></div>
+      </div>
+    </section>
+
+    <section class="content-section section-shell" id="code" aria-labelledby="code-title">
+      <div class="section-heading reveal">
+        <div><span class="kicker">Converted scope</span><h2 id="code-title">Small core, stronger contract.</h2></div>
+        <p>This is a comparison of corresponding routing capabilities, not the entire 22,246-line MATLAB research repository.</p>
+      </div>
+      <div class="code-comparison reveal">
+        <div class="code-bars">
+          <div class="code-row matlab"><div><span>MATLAB subset</span><b>241 lines</b></div><div class="bar-track"><i style="--width:35.2%"></i></div><small>Forward/decay helpers, parameter reader, and pulse script</small></div>
+          <div class="code-row jax"><div><span>JAX reusable kernel</span><b>685 lines</b></div><div class="bar-track"><i style="--width:100%"></i></div><small>Network, routing, Muskingum, observations, objective, API</small></div>
+          <div class="code-foot"><span><b>+818</b> test lines</span><span><b>+790</b> example/OSSE lines</span><span><b>51</b> automated tests</span></div>
+        </div>
+        <div class="why-larger">
+          <h3>Why is JAX 2.8× larger?</h3>
+          <ul>
+            <li>Validated, relabeling-invariant topology</li>
+            <li>Reusable rather than script-local Muskingum model</li>
+            <li>Safe parameter transforms and invalid-input checks</li>
+            <li>Missing-data masks and observation operators</li>
+            <li>JIT-compatible scans and explicit public API</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section decision-section" id="decision" aria-labelledby="decision-title">
+      <div class="section-shell">
+        <div class="section-heading reveal">
+          <div><span class="kicker">Decision for the team</span><h2 id="decision-title">What should we learn next?</h2></div>
+          <p>Select a path to frame the discussion. My recommendation is B2 because it tests whether today’s clean success survives realistic ambiguity before tracer or neural complexity is added.</p>
+        </div>
+        <div class="decision-grid reveal" role="radiogroup" aria-label="Candidate next experiments">
+          <button class="decision-card recommended selected" type="button" role="radio" aria-checked="true" data-choice="B2" data-summary="B2 — Noisy H₂O identifiability: add priors, observation covariance, sparse gauges, unknown X, richer runoff states, and uncertainty diagnostics.">
+            <span class="recommend-chip">Recommended</span><span class="decision-code">B2</span><h3>Noisy H₂O identifiability</h3><p>Add priors, observation covariance, sparse gauges, unknown X, and a richer runoff state.</p><ul><li>Lowest scientific confounding</li><li>Direct bridge to 4D-Var / MAP</li><li>Defines honest uncertainty</li></ul><i class="select-indicator">✓</i>
+          </button>
+          <button class="decision-card" type="button" role="radio" aria-checked="false" data-choice="B3" data-summary="B3 — Tracer geometry: begin with a conservative tracer, then one shared decay rate; compare DOC-like sparse and nitrogen-like denser observations.">
+            <span class="decision-code">B3</span><h3>Tracer + shared decay</h3><p>Begin conservatively, then estimate one positive decay rate under two sampling regimes.</p><ul><li>Directly tests source–decay confounding</li><li>Compare sparse DOC vs richer N</li><li>Builds toward RAPID-Chem</li></ul><i class="select-indicator">✓</i>
+          </button>
+          <button class="decision-card" type="button" role="radio" aria-checked="false" data-choice="B4" data-summary="B4 — Neural parameterization: predict constrained routing or decay parameters from reach attributes and validate by held-out basin against simpler baselines.">
+            <span class="decision-code">B4</span><h3>Neural parameterization</h3><p>Predict constrained K/X or decay from reach attributes while keeping routing explicit.</p><ul><li>Highest capability upside</li><li>Requires basin-held-out validation</li><li>Must beat simple baselines</li></ul><i class="select-indicator">✓</i>
+          </button>
+        </div>
+        <div class="decision-output reveal" aria-live="polite">
+          <div><span>Selected discussion path</span><p id="decision-summary"><b>B2</b> — Noisy H₂O identifiability: add priors, observation covariance, sparse gauges, unknown X, richer runoff states, and uncertainty diagnostics.</p></div>
+          <button type="button" class="button secondary copy-button" id="copy-decision">Copy summary</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section section-shell discussion-section" aria-labelledby="discussion-title">
+      <div class="section-heading reveal">
+        <div><span class="kicker">Questions worth resolving today</span><h2 id="discussion-title">Use the meeting to tighten the experiment.</h2></div>
+      </div>
+      <div class="question-grid reveal">
+        <article><span>01</span><h3>State design</h3><p>Two amplitudes → temporal basis → reach classes → full field: how quickly should dimensionality grow?</p></article>
+        <article><span>02</span><h3>Observation realism</h3><p>Which gauge/SWOT masks, error model, and bias scenarios best reflect the first intended application?</p></article>
+        <article><span>03</span><h3>Prior structure</h3><p>Should runoff covariance begin diagonal, spatially correlated, or inherited from CARDAMOM ensembles?</p></article>
+        <article><span>04</span><h3>Success criteria</h3><p>Which matters most: state recovery, held-out discharge, uncertainty coverage, information gain, or all four?</p></article>
+      </div>
+    </section>
+
+    <section class="closing-section">
+      <div class="section-shell closing-inner reveal">
+        <div><span class="kicker">Current handoff</span><h2>The foundation is reviewable.<br>The next claim must be harder.</h2></div>
+        <div class="closing-actions">
+          <a class="button primary" href="https://github.com/CARDAMOM-framework/CARDAMOM-RAPID/pull/1" target="_blank" rel="noreferrer">Review pull request <span aria-hidden="true">↗</span></a>
+          <a class="button secondary light-button" href="https://app.notion.com/p/3d0788b60530818e9a40f3b1df0f3e83?pvs=204" target="_blank" rel="noreferrer">Open detailed record <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="section-shell footer-inner">
+      <div><b>CARDAMOM–RAPID</b><span>Differentiable inverse routing · Option A + B1</span></div>
+      <div class="footer-links"><a href="https://github.com/CARDAMOM-framework/CARDAMOM-RAPID" target="_blank" rel="noreferrer">Repository</a><a href="https://github.com/CARDAMOM-framework/CARDAMOM-RAPID/commit/d33f9303078fc9d5b0d3f5acb2caf3582363ec24" target="_blank" rel="noreferrer">Commit d33f930</a><a href="#top">Back to top ↑</a></div>
+    </div>
+  </footer>
+
+  <script src="assets/app.js" defer></script>
+</body>
+</html>
