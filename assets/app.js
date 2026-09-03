@@ -207,10 +207,10 @@
     [0, 12, 24, 36, 48, 60, 71].forEach((tick) => {
       const x = xScale(tick);
       svg.append(createSvg("line", { x1: x, x2: x, y1: margin.top, y2: height - margin.bottom, class: "grid-line" }));
-      svg.append(createSvg("text", { x, y: height - 15, "text-anchor": "middle", class: "axis-label" }, tick));
+      svg.append(createSvg("text", { x, y: height - 15, "text-anchor": "middle", class: "axis-label" }, tick + 1));
     });
     svg.append(createSvg("text", { x: margin.left, y: 11, class: "axis-label" }, "discharge"));
-    svg.append(createSvg("text", { x: width - margin.right, y: height - 15, "text-anchor": "end", class: "axis-label" }, "hour"));
+    svg.append(createSvg("text", { x: width - margin.right, y: height - 15, "text-anchor": "end", class: "axis-label" }, "model hour (1-based)"));
 
     const series = [
       { values: truthThree, className: "truth-line" },
@@ -250,9 +250,9 @@
       motion.setAttribute("dur", `${Math.max(1.15, 1.1 + parameters.k / 3200).toFixed(2)}s`);
     });
 
-    let message = "Steady background flow";
-    if (currentTime >= 8 && currentTime <= 17) message = `Reach 1 pulse active · +${parameters.a1.toFixed(1)}`;
-    if (currentTime >= 24 && currentTime <= 37) message = `Reach 4 pulse active · +${parameters.a4.toFixed(1)}`;
+    let message = "Background flow · pulse sources: reaches 1 + 4";
+    if (currentTime >= 8 && currentTime <= 17) message = `Pulse A injected at reach 1 · → gauges 3 + 5 · +${parameters.a1.toFixed(1)}`;
+    if (currentTime >= 24 && currentTime <= 37) message = `Pulse B injected at reach 4 · → gauge 5 · +${parameters.a4.toFixed(1)}`;
     if (currentTime >= 30 && currentTime <= 35) message += " · held-out outlet window";
     $("#pulse-callout").textContent = message;
   };
@@ -260,7 +260,7 @@
   const updateTime = (time) => {
     currentTime = Number(time);
     controls.time.value = String(currentTime);
-    values.time.textContent = String(currentTime);
+    values.time.textContent = String(currentTime + 1);
     updateNetwork();
     renderHydrograph();
   };
