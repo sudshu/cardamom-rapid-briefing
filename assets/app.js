@@ -30,6 +30,84 @@
     $$(".reveal").forEach((element) => element.classList.add("visible"));
   }
 
+  // Deck-style section navigation for live presentations.
+  const presentationSteps = $$(".presentation-step");
+  const presenterPrevious = $("#presenter-previous");
+  const presenterNext = $("#presenter-next");
+  const presenterCount = $("#presenter-count");
+  const presenterTitle = $("#presenter-title");
+  const presenterProgress = $("#presenter-progress");
+  const presenterFullscreen = $("#presenter-fullscreen");
+  let currentPresentationIndex = 0;
+
+  const updatePresenter = (index) => {
+    currentPresentationIndex = Math.min(presentationSteps.length - 1, Math.max(0, index));
+    const step = presentationSteps[currentPresentationIndex];
+    presenterCount.textContent = `${String(currentPresentationIndex + 1).padStart(2, "0")} / ${String(presentationSteps.length).padStart(2, "0")}`;
+    presenterTitle.textContent = step.dataset.presentTitle;
+    presenterProgress.style.width = `${((currentPresentationIndex + 1) / presentationSteps.length) * 100}%`;
+    presenterPrevious.disabled = currentPresentationIndex === 0;
+    presenterNext.disabled = currentPresentationIndex === presentationSteps.length - 1;
+  };
+
+  const goToPresentationStep = (index) => {
+    if (index < 0 || index >= presentationSteps.length) return;
+    updatePresenter(index);
+    const step = presentationSteps[index];
+    step.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
+    const url = new URL(window.location.href);
+    url.hash = step.id;
+    window.history.replaceState(null, "", url);
+  };
+
+  presenterPrevious.addEventListener("click", () => goToPresentationStep(currentPresentationIndex - 1));
+  presenterNext.addEventListener("click", () => goToPresentationStep(currentPresentationIndex + 1));
+
+  let presentationScrollFrame = 0;
+  const locatePresentationStep = () => {
+    presentationScrollFrame = 0;
+    const marker = window.scrollY + window.innerHeight * 0.32;
+    let activeIndex = 0;
+    presentationSteps.forEach((step, index) => {
+      if (step.offsetTop <= marker) activeIndex = index;
+    });
+    updatePresenter(activeIndex);
+  };
+  window.addEventListener("scroll", () => {
+    if (!presentationScrollFrame) presentationScrollFrame = window.requestAnimationFrame(locatePresentationStep);
+  }, { passive: true });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) return;
+    const target = event.target;
+    const editing = target.matches("input, textarea, select, [contenteditable='true']") ||
+      target.closest(".tab-list, .decision-grid, .preset-group");
+    if (editing) return;
+    if (["ArrowRight", "PageDown"].includes(event.key) || (event.key === " " && !event.shiftKey)) {
+      event.preventDefault();
+      goToPresentationStep(currentPresentationIndex + 1);
+    } else if (["ArrowLeft", "PageUp"].includes(event.key) || (event.key === " " && event.shiftKey)) {
+      event.preventDefault();
+      goToPresentationStep(currentPresentationIndex - 1);
+    }
+  });
+
+  presenterFullscreen.addEventListener("click", async () => {
+    try {
+      if (document.fullscreenElement) await document.exitFullscreen();
+      else if (document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();
+    } catch {
+      // Fullscreen may be blocked by an embedding browser; navigation still works.
+    }
+  });
+  document.addEventListener("fullscreenchange", () => {
+    const active = Boolean(document.fullscreenElement);
+    presenterFullscreen.classList.toggle("active", active);
+    presenterFullscreen.setAttribute("aria-label", active ? "Exit fullscreen presentation" : "Enter fullscreen presentation");
+  });
+  const initialPresentationIndex = presentationSteps.findIndex((step) => `#${step.id}` === window.location.hash);
+  updatePresenter(initialPresentationIndex >= 0 ? initialPresentationIndex : 0);
+
   // Accessible milestone tabs.
   const tabButtons = $$(".tab-button");
   const activateTab = (button) => {

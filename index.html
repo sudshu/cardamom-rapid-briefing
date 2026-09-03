@@ -41,8 +41,19 @@
     </a>
   </header>
 
+  <nav class="presenter-controls" aria-label="Presentation navigation">
+    <button type="button" class="presenter-arrow" id="presenter-previous" aria-label="Previous presentation section" disabled>←</button>
+    <div class="presenter-status" aria-live="polite">
+      <span id="presenter-count">01 / 09</span>
+      <b id="presenter-title">Overview</b>
+      <i><span id="presenter-progress"></span></i>
+    </div>
+    <button type="button" class="presenter-arrow next" id="presenter-next" aria-label="Next presentation section">→</button>
+    <button type="button" class="presenter-fullscreen" id="presenter-fullscreen" aria-label="Enter fullscreen presentation" title="Toggle fullscreen">⛶</button>
+  </nav>
+
   <main id="main">
-    <section class="hero section-shell" aria-labelledby="hero-title">
+    <section class="hero section-shell presentation-step" id="overview" data-present-title="Overview" aria-labelledby="hero-title">
       <div class="hero-copy reveal">
         <div class="eyebrow"><span class="status-dot"></span> Team review · September 2026</div>
         <h1 id="hero-title">From a linear river operator to a <em>differentiable inverse model.</em></h1>
@@ -115,7 +126,7 @@
       </div>
     </section>
 
-    <section class="content-section section-shell" id="question" aria-labelledby="question-title">
+    <section class="content-section section-shell presentation-step" id="question" data-present-title="Project question" aria-labelledby="question-title">
       <div class="section-heading reveal">
         <div><span class="kicker">The project question</span><h2 id="question-title">What becomes possible when the river model can differentiate?</h2></div>
         <p>The original formulation is linear when routing and decay parameters are prescribed. Estimating those parameters changes the operator itself—and makes the inverse nonlinear.</p>
@@ -151,7 +162,7 @@
       </div>
     </section>
 
-    <section class="content-section tinted" id="delivered" aria-labelledby="delivered-title">
+    <section class="content-section tinted presentation-step" id="delivered" data-present-title="What we delivered" aria-labelledby="delivered-title">
       <div class="section-shell">
         <div class="section-heading reveal">
           <div><span class="kicker">What we delivered</span><h2 id="delivered-title">Two milestones, one verified foundation.</h2></div>
@@ -226,7 +237,7 @@
       </div>
     </section>
 
-    <section class="content-section section-shell" id="lab" aria-labelledby="lab-title">
+    <section class="content-section section-shell presentation-step" id="lab" data-present-title="Interactive model" aria-labelledby="lab-title">
       <div class="section-heading reveal">
         <div><span class="kicker">Interactive model</span><h2 id="lab-title">Change the river. Watch the signal move.</h2></div>
         <p>This browser model implements the same five-reach Muskingum recurrence used by the JAX B1 control. It is for explanation; the tested JAX package remains the scientific implementation.</p>
@@ -312,7 +323,7 @@
       </div>
     </section>
 
-    <section class="content-section evidence-section" id="evidence" aria-labelledby="evidence-title">
+    <section class="content-section evidence-section presentation-step" id="evidence" data-present-title="Validation evidence" aria-labelledby="evidence-title">
       <div class="section-shell">
         <div class="section-heading light reveal">
           <div><span class="kicker">Evidence, not aspiration</span><h2 id="evidence-title">Every current claim has a gate.</h2></div>
@@ -344,7 +355,7 @@
       </div>
     </section>
 
-    <section class="content-section section-shell" id="code" aria-labelledby="code-title">
+    <section class="content-section section-shell presentation-step" id="code" data-present-title="Converted scope" aria-labelledby="code-title">
       <div class="section-heading reveal">
         <div><span class="kicker">Converted scope</span><h2 id="code-title">Small core, stronger contract.</h2></div>
         <p>This is a comparison of corresponding routing capabilities, not the entire 22,246-line MATLAB research repository.</p>
@@ -368,7 +379,7 @@
       </div>
     </section>
 
-    <section class="content-section decision-section" id="decision" aria-labelledby="decision-title">
+    <section class="content-section decision-section presentation-step" id="decision" data-present-title="Next decision" aria-labelledby="decision-title">
       <div class="section-shell">
         <div class="section-heading reveal">
           <div><span class="kicker">Decision for the team</span><h2 id="decision-title">What should we learn next?</h2></div>
@@ -392,7 +403,7 @@
       </div>
     </section>
 
-    <section class="content-section section-shell discussion-section" aria-labelledby="discussion-title">
+    <section class="content-section section-shell discussion-section presentation-step" id="discussion" data-present-title="Discussion questions" aria-labelledby="discussion-title">
       <div class="section-heading reveal">
         <div><span class="kicker">Questions worth resolving today</span><h2 id="discussion-title">Use the meeting to tighten the experiment.</h2></div>
       </div>
@@ -404,7 +415,7 @@
       </div>
     </section>
 
-    <section class="closing-section">
+    <section class="closing-section presentation-step" id="handoff" data-present-title="Handoff">
       <div class="section-shell closing-inner reveal">
         <div><span class="kicker">Current handoff</span><h2>The foundation is reviewable.<br>The next claim must be harder.</h2></div>
         <div class="closing-actions">
