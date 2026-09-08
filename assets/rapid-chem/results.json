@@ -1,0 +1,195 @@
+{
+  "design": {
+    "synthetic": true,
+    "domain": "PROVISIONAL outlet component; not a confirmed Mississippi boundary",
+    "outlet_comid": 74072654,
+    "n_reaches": 64579,
+    "n_outlets": 1,
+    "seed": 20260907,
+    "rng": "NumPy PCG64; SeedSequence children 0=gauges, 1=noise",
+    "groups": "5 longitude-quantile classes west to east; ties assigned east; not catchments",
+    "longitude_thresholds_degrees": [
+      -104.26166666666667,
+      -99.06483333333334,
+      -93.70166666666668,
+      -88.99300000000001
+    ],
+    "group_counts": [
+      12914,
+      12918,
+      12914,
+      12917,
+      12916
+    ],
+    "gauges": "8/class from upper drainage-area quartile; two area-rank halves; 3 train + 1 holdout/half",
+    "truth_rates_per_day": [
+      0.03,
+      0.06,
+      0.12,
+      0.2,
+      0.35
+    ],
+    "prior_median_per_day": 0.1,
+    "prior_log_sd": 0.8,
+    "start_rates_per_day": [
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1
+    ],
+    "water_input_mm_per_day": 1.0,
+    "local_source_concentration_mg_per_L": 1.0,
+    "storage_anomaly_kg": 0.0,
+    "known_fields": [
+      "chemical inputs",
+      "water forcing",
+      "K",
+      "X"
+    ],
+    "noise_cv": 0.2,
+    "sigma_log": 0.19804220043536505,
+    "noise_model": "y = truth * exp(sigma_log * Z), Z iid N(0,1); truth is median, no mean correction",
+    "objective": "0.5*sum_train(((log(pred)-log(y))/sigma_log)^2) + 0.5*sum(((log(rate)-log(0.1))/0.8)^2)",
+    "archive": "MERIT_Basins_v1.0_pfaf_74_GLDAS_v2.0_RAPID_v2.0.zip",
+    "checksums": {
+      "md5": "c157e1b5499da51c9dbb4c06cf9a892d",
+      "sha256": "a63ee11198dc8495f70ea7734790ebaf6b2a405e2d58b0bd4d5982e0252c7fde"
+    },
+    "train_comids": [
+      74011948,
+      74009781,
+      74000539,
+      74009448,
+      74007501,
+      74000492,
+      74046194,
+      74037252,
+      74037228,
+      74014176,
+      74026686,
+      74007287,
+      74011896,
+      74045746,
+      74020597,
+      74014021,
+      74055956,
+      74036958,
+      74053732,
+      74067130,
+      74070888,
+      74058879,
+      74011916,
+      74058373,
+      74029419,
+      74029547,
+      74037400,
+      74034632,
+      74058550,
+      74039719
+    ],
+    "holdout_comids": [
+      74001204,
+      74002165,
+      74034426,
+      74058586,
+      74061228,
+      74053487,
+      74050824,
+      74026917,
+      74046234,
+      74045210
+    ]
+  },
+  "fit": {
+    "rates_per_day": [
+      0.02625132701107004,
+      0.06104253266268398,
+      0.13738542875273232,
+      0.2249058169957561,
+      0.3472790000558955
+    ],
+    "start_rates_per_day": [
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1
+    ],
+    "success": true,
+    "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+    "iterations": 17,
+    "function_evaluations": 22,
+    "objective": 14.390527785388345,
+    "data_nll_without_constants": 10.999781521369489,
+    "prior_penalty": 3.390746264018857,
+    "gradient_inf_norm": 7.933692394337105e-06,
+    "rate_bounds_per_day": [
+      1e-05,
+      5.0
+    ],
+    "bound_active": false,
+    "elapsed_seconds": 1.2527239029295743
+  },
+  "heldout_errors": {
+    "fitted": {
+      "noiseless_truth": {
+        "rmse_mg_per_L": 0.019974602081432,
+        "mae_mg_per_L": 0.015123299178490961,
+        "log_rmse": 0.03459240496526513,
+        "noise_scaled_log_rmse": 0.17467188755335528
+      },
+      "noisy_observations": {
+        "rmse_mg_per_L": 0.0979006576509543,
+        "mae_mg_per_L": 0.0774281204532452,
+        "log_rmse": 0.1360243156083551,
+        "noise_scaled_log_rmse": 0.6868451032624701
+      }
+    },
+    "default_rate": {
+      "noiseless_truth": {
+        "rmse_mg_per_L": 0.1772836401991834,
+        "mae_mg_per_L": 0.15123948055079067,
+        "log_rmse": 0.5170595994291244,
+        "noise_scaled_log_rmse": 2.610855657493449
+      },
+      "noisy_observations": {
+        "rmse_mg_per_L": 0.21223902824704519,
+        "mae_mg_per_L": 0.171644640244089,
+        "log_rmse": 0.5385397768277499,
+        "noise_scaled_log_rmse": 2.7193182849102553
+      }
+    }
+  },
+  "numerical_checks": {
+    "finite_positive_predictions": true,
+    "optimizer_success": true,
+    "small_final_gradient": true,
+    "bounds_inactive": true
+  },
+  "rate_relative_errors": [
+    -0.12495576629766536,
+    0.01737554437806632,
+    0.14487857293943618,
+    0.12452908497878035,
+    -0.007774285554584148
+  ],
+  "software": {
+    "python": "3.13.13",
+    "rapid_jax": "0.2.0",
+    "jax": "0.11.1",
+    "numpy": "2.5.2",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.1",
+    "pyarrow": "25.0.1",
+    "backend": "cpu",
+    "x64": true
+  },
+  "limits": [
+    "Synthetic forcing and virtual observations; not a real chemistry fit",
+    "One noise realization and one start; no robustness or coverage conclusion",
+    "Known sources only; free source/rate confounding is not resolved",
+    "No covariance, information spectrum, temporal model, or storage-physics test"
+  ],
+  "elapsed_seconds_including_plots": 5.270941504277289
+}

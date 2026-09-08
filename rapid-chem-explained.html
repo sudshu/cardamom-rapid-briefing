@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="A short, interactive explanation of the RAPID-Chem synthetic decay-rate experiment: the question, the test, JAX, and the first result.">
+<title>RAPID-Chem, simply explained</title>
+<style>
+:root{--ink:#193333;--muted:#536866;--paper:#f6f4ee;--card:#fffefa;--line:#d6dfd7;--teal:#116b62;--blue:#2c63a6;--gold:#bc7731;--pale:#e6f0e9;--shadow:0 12px 40px #243f3210}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:17px;line-height:1.55}button,input{font:inherit}button,a,input{touch-action:manipulation}a{color:var(--teal)}button{cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px 16px}button:hover{background:var(--pale)}button:disabled{opacity:.4;cursor:default}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset:4px}.primary{background:var(--teal);color:white;border-color:var(--teal)}.primary:hover{background:#0b514a}.skip{position:absolute;left:20px;top:-90px;background:white;padding:12px;z-index:20}.skip:focus{top:8px}
+header{max-width:1250px;margin:auto;padding:24px 38px;display:flex;align-items:center;justify-content:space-between;gap:18px;border-bottom:1px solid var(--line)}.brand{font-size:16px;font-weight:750;letter-spacing:.025em}.brand span{font-weight:400;color:var(--muted);margin-left:12px}.tag{display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:750;background:var(--pale);color:var(--teal);padding:5px 10px;border-radius:30px}main{max-width:1250px;margin:auto;padding:24px 38px 116px}section{padding:10px 0 30px}.kicker{font-size:12px;font-weight:750;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}h1,h2{font-size:clamp(30px,3.6vw,48px);line-height:1.12;font-weight:650;letter-spacing:-.045em;margin:0 0 18px;max-width:1000px}h3{font-size:21px;line-height:1.3;letter-spacing:-.02em;margin:0 0 12px}p{margin:0 0 15px}.lead{font-size:21px;color:var(--muted);max-width:850px;margin-bottom:25px}.grid{display:grid;grid-template-columns:1.13fr 1fr;gap:22px}.card{border:1px solid var(--line);background:var(--card);border-radius:20px;padding:26px;box-shadow:var(--shadow)}.soft{background:var(--pale);box-shadow:none}.small{font-size:14px;color:var(--muted)}.tiny{font-size:12px;color:var(--muted)}.accent{color:var(--teal)}.callout{border-left:3px solid var(--teal);padding:4px 0 4px 16px;margin-top:20px}.callout p:last-child{margin:0}.stack{display:grid;gap:16px}.rule{border:0;border-top:1px solid var(--line);margin:20px 0}.pillrow{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.pill{padding:5px 11px;border:1px solid var(--line);border-radius:8px;font-size:14px}.big-number{font-size:45px;line-height:1.1;letter-spacing:-.05em;font-weight:700}.metric{display:grid;grid-template-columns:1fr 1fr;gap:14px}.metric>div{padding:16px;background:var(--pale);border-radius:14px}.metric small{display:block;color:var(--muted);margin-top:8px}.figure{width:100%;height:auto;display:block}.figure text{font-family:inherit}.controls{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:14px 0}.controls label{font-size:15px;font-weight:650}.controls input{flex:1;min-width:130px;accent-color:var(--teal)}output{font-variant-numeric:tabular-nums}.valuebox{display:flex;justify-content:space-between;align-items:center;border-radius:12px;background:var(--pale);padding:12px 16px;gap:16px}.valuebox output{font-size:26px;font-weight:700}.forwardline{display:flex;align-items:center;gap:12px;margin:14px 0}.forwardline b{font-size:25px;color:var(--teal)}.forwardline span{flex:1;font-size:15px}.sequence{display:grid;gap:13px}.seq{display:grid;grid-template-columns:32px 1fr;gap:13px;align-items:start}.seq i{font-style:normal;border-radius:50%;width:30px;height:30px;text-align:center;background:var(--teal);color:white;line-height:30px;font-size:14px}.seq p{margin:0}.gauges{display:grid;grid-template-columns:repeat(10,1fr);gap:8px;margin:20px 0 12px}.gauge{aspect-ratio:1;border-radius:50%;background:var(--teal);max-width:24px}.gauge.hold{background:transparent;border:3px solid var(--gold)}.legend{display:flex;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--muted)}.legend span:before{content:"";display:inline-block;width:10px;height:10px;background:var(--teal);margin-right:7px;border-radius:50%}.legend .hold:before{background:transparent;border:2px solid var(--gold)}.learnloop{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}.learnloop>div{border:1px solid var(--line);padding:15px 10px;border-radius:12px;text-align:center;font-size:14px}.learnloop b{display:block;margin-bottom:5px;font-size:19px}.feedback{text-align:center;color:var(--teal);border-bottom:2px solid var(--teal);border-left:2px solid var(--teal);border-right:2px solid var(--teal);border-radius:0 0 12px 12px;margin:0 12px 18px;padding:5px 10px 12px;font-size:14px}.mini-flow{display:flex;align-items:center;gap:9px;margin:22px 0;flex-wrap:wrap}.mini-flow span{background:var(--paper);border:1px solid var(--line);padding:10px;border-radius:9px;font-size:14px}.mini-flow b{color:var(--teal)}.rate-row{display:grid;grid-template-columns:65px 1fr 62px;align-items:center;gap:10px;margin:13px 0;font-size:13px}.bars{position:relative;height:27px;background:#f1f0e9;border-radius:5px}.truth-bar,.fit-bar{position:absolute;left:0;height:9px;border-radius:2px;min-width:1px}.truth-bar{top:3px;background:var(--teal)}.fit-bar{bottom:3px;background:var(--blue)}.default-line{position:absolute;top:0;bottom:0;width:2px;left:25%;background:var(--gold)}.rate-label{font-variant-numeric:tabular-nums;color:var(--blue);text-align:right}.rate-key{display:flex;gap:15px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:15px 0}.rate-key i{display:inline-block;width:15px;height:7px;margin-right:6px}.rate-key .truth{background:var(--teal)}.rate-key .fit{background:var(--blue)}.rate-key .prior{background:var(--gold)}.error-row{margin:20px 0}.error-bar{height:16px;background:var(--gold);border-radius:4px;margin-top:6px}.error-bar.fitted{background:var(--teal)}.error-row p{display:flex;justify-content:space-between;font-size:15px;margin:0;gap:14px}.checks{font-size:14px;padding:11px 0;border-top:1px solid var(--line);margin-top:16px}.compare{display:grid;grid-template-columns:1fr 1fr;gap:18px}.now{border-top:4px solid var(--teal)}.later{border-top:4px solid var(--gold)}.next-test{margin-top:20px;padding:20px 24px;background:var(--ink);color:white;border-radius:16px}.next-test p{margin:0}.next-test .small{color:#c8d7d2}.source{margin-top:20px;font-size:12px;color:var(--muted)}details{font-size:14px;margin-top:14px}summary{cursor:pointer;color:var(--teal);font-weight:650}details p{margin-top:12px}.formula{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--paper);padding:14px;border-radius:10px;overflow-wrap:anywhere}.nav{position:fixed;bottom:0;left:0;right:0;border-top:1px solid var(--line);background:#f6f4eef5;backdrop-filter:blur(12px);padding:14px 25px;display:flex;justify-content:center;align-items:center;gap:20px;z-index:10}.navstatus{width:210px;text-align:center;font-size:13px;color:var(--muted)}.navstatus b{display:block;font-size:14px;color:var(--ink)}.progress{height:3px;background:var(--line);margin-top:7px;border-radius:5px;overflow:hidden}.progress span{display:block;height:100%;background:var(--teal);width:20%}html:not(.enhanced) .nav{display:none}html:not(.enhanced) section{border-bottom:1px solid var(--line);margin-bottom:35px}.all-view section{display:block!important;border-bottom:1px solid var(--line);margin-bottom:38px}.all-view .navstatus{width:210px}section[hidden]{display:none}
+h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
+.nav button{white-space:nowrap;flex-shrink:0}.navstatus{min-width:0}.valuebox output{white-space:nowrap}
+@media(max-width:800px){header{padding:18px 20px}.brand span{display:none}main{padding:24px 20px 105px}.grid,.compare{grid-template-columns:1fr}.lead{font-size:19px}.card{padding:21px}h1,h2{font-size:34px}.nav{gap:10px;padding:12px 14px}.navstatus{width:180px}.nav button{padding:10px 14px}.big-number{font-size:37px}.learnloop{gap:6px}.learnloop>div{font-size:12px}.learnloop b{font-size:16px}}
+@media(max-width:500px){.valuebox{flex-direction:column;align-items:flex-start;gap:4px}.card,.stack{min-width:0}}
+@media print{header{padding:10px}.nav,button,.controls,.skip{display:none!important}main{padding:10px}section[hidden]{display:block!important}section{break-after:page}.card{box-shadow:none;break-inside:avoid}body{font-size:14px}.lead{font-size:17px}h1,h2{font-size:30px}.grid{grid-template-columns:1fr 1fr}.source{overflow-wrap:anywhere}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to explanation</a>
+<header><a class="brand" href="index.html" style="text-decoration:none" aria-label="Back to the RAPID project briefing">RAPID–Chem <span>A five-minute explanation</span></a><button id="view-mode" type="button" aria-pressed="false">Read all</button></header>
+<main id="main">
+<section id="question" data-title="The question" aria-labelledby="question-title">
+<p class="kicker">01 / The idea</p>
+<h1 id="question-title" tabindex="-1">Can a few river samples tell us<br>what happened upstream?</h1>
+<p class="lead">We’re building a river model that works in both directions: predict the chemistry, then use measurements to estimate the processes that produced it.</p>
+<div class="grid">
+<div class="card">
+<span class="tag">Try a tiny river</span>
+<svg class="figure" viewBox="0 0 550 245" role="img" aria-labelledby="toy-title toy-desc">
+<title id="toy-title">Five connected reaches with known chemical inputs and adjustable decay</title>
+<desc id="toy-desc">Reaches A and B join at C. C joins D at outlet E. Every reach receives the same fixed local water and chemical input. The slider changes the common decay rate, not water flow.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#80a79d"/></marker></defs>
+<g fill="none" stroke="#80a79d" stroke-width="9" marker-end="url(#arrow)"><path d="M105 53 Q180 53 230 122"/><path d="M105 188 Q180 188 230 133"/><path d="M278 127 L410 127"/><path d="M337 215 Q403 215 430 150"/><path d="M470 127 L530 127"/></g>
+<g stroke="#fffefa" stroke-width="4"><circle id="reach-0" cx="78" cy="50" r="27"/><circle id="reach-1" cx="78" cy="188" r="27"/><circle id="reach-2" cx="250" cy="127" r="27"/><circle id="reach-3" cx="310" cy="215" r="27"/><circle id="reach-4" cx="440" cy="127" r="27"/></g>
+<g fill="white" text-anchor="middle" font-size="17" font-weight="700"><text x="78" y="56">A</text><text x="78" y="194">B</text><text x="250" y="133">C</text><text x="310" y="221">D</text><text x="440" y="133">E</text></g>
+<g fill="#536866" font-size="13"><text x="7" y="105">Known local inputs</text><text x="365" y="73">Downstream sample</text></g>
+</svg>
+<div class="controls"><label for="decay">Decay rate</label><input id="decay" type="range" min="0" max="0.5" value="0.10" step="0.01"><output id="decay-value" for="decay">0.10 /day</output></div>
+<div class="valuebox"><span>Outlet concentration</span><output id="outlet-value" for="decay" aria-live="polite">— mg/L</output></div>
+<p class="tiny" style="margin-top:12px">Browser teaching model, not a JAX run. Steady inputs at every reach—not a moving pulse. Water flow stays fixed; darker circles mean higher concentration.</p>
+</div>
+<div class="stack">
+<div class="card"><h3>Forward: “What will we measure?”</h3><div class="forwardline"><span>Known inputs<br>+ decay rates</span><b>→</b><span>River model</span><b>→</b><span>Downstream<br>concentrations</span></div><p class="small">A chemical enters from the land, mixes with upstream water, and some is removed or transformed along the river. Here “decay” means loss from the modeled tracer pool.</p></div>
+<div class="card soft"><h3>Inverse: “What rates explain the samples?”</h3><p>Keep the inputs fixed. Adjust the decay rates until the model agrees with measured concentrations.</p><p class="small">That second direction is the capability we’re testing now. We are fitting five numbers, not yet a neural network.</p></div>
+</div>
+</div>
+<details><summary>One equation, if you want it</summary><p class="formula">chemical flux out = exp(−rate × residence time) × (local chemical input + upstream chemical flux)</p><p>Concentration = chemical flux ÷ water flow, with matching units. The toy gives every reach 10 m³/s of local water, 0.01 kg/s of local tracer, and one day of residence time. The real experiment uses the supplied routing times and the draft’s residence-time conversion. Changing the rate makes the mapping nonlinear.</p></details>
+</section>
+
+<section id="test" data-title="Our controlled test" aria-labelledby="test-title">
+<p class="kicker">02 / A practice exam with an answer key</p>
+<h2 id="test-title" tabindex="-1">First, test it in a world<br>where we know the answer.</h2>
+<p class="lead">An OSSE is a synthetic-observation experiment: invent the true rates, simulate measurements, then see whether the model can recover those rates.</p>
+<div class="grid">
+<div class="card"><div class="sequence">
+<div class="seq"><i>1</i><div><h3>Build a synthetic “truth”</h3><p class="small">Use a real 64,579-reach network. Split it into five west-to-east longitude classes, each with its own known decay rate. These classes are not catchment boundaries.</p></div></div>
+<div class="seq"><i>2</i><div><h3>Make imperfect samples</h3><p class="small">Generate concentrations at 40 virtual gauges and add 20% relative noise. This is scatter, not a strict ±20% error bound.</p></div></div>
+<div class="seq"><i>3</i><div><h3>Hide the answer from the fit</h3><p class="small">Start all five rates at 0.10/day. Let the optimizer see only 30 noisy training measurements, plus a prior expressing plausible rates.</p></div></div>
+<div class="seq"><i>4</i><div><h3>Check the ten unseen locations</h3><p class="small">Did it recover the rates? Does it predict concentrations at gauges that were never used to choose the fit?</p></div></div>
+</div></div>
+<div class="stack"><div class="card"><h3>40 samples, two jobs</h3><div id="gauges" class="gauges" role="img" aria-label="30 filled training-gauge symbols and 10 outlined held-out gauge symbols"></div><div class="legend"><span>30 to fit</span><span class="hold">10 to check</span></div><p class="small" style="margin-top:18px">The ten held-out samples are an exam, not homework. They do not influence the fitted rates.</p></div><div class="card soft"><h3>Only five knobs are free</h3><div class="pillrow"><span class="pill">Decay 1</span><span class="pill">Decay 2</span><span class="pill">Decay 3</span><span class="pill">Decay 4</span><span class="pill">Decay 5</span></div><p class="small">Water and chemical inputs and routing parameters are fixed and known. The storage anomaly is zero: equilibrium storage is the reference, not an empty river.</p></div></div>
+</div>
+<p class="source">Real static network: the supplied MERIT/RAPID region-74 archive. Provisional domain: the complete component ending at COMID 74072654. Inputs and gauges are synthetic—not measured DOC or nitrogen.</p>
+</section>
+
+<section id="jax" data-title="What JAX adds" aria-labelledby="jax-title">
+<p class="kicker">03 / A model that tells us how to improve its guess</p>
+<h2 id="jax-title" tabindex="-1">JAX supplies the sensitivity.<br>The optimizer adjusts the rates.</h2>
+<p class="lead">For each rate, JAX calculates: “If I change this number a little, how does the mismatch with the observations change?” That sensitivity is called a gradient.</p>
+<div class="grid">
+<div class="card"><h3>The fitting loop we have now</h3><div class="learnloop"><div><b>1. Guess</b>Five decay rates</div><div><b>2. Predict</b>Run the river model</div><div><b>3. Compare</b>Predictions vs samples</div></div><div class="feedback">↑ JAX gradient + optimizer → update the five rates</div><p class="small">The objective combines disagreement with the samples and a penalty for implausible rates. That penalty is our <strong>prior</strong>; it helps keep a sparse-data fit sensible.</p><p class="small">JAX differentiates the coded equations automatically. It does not decide which physics is correct. A conventional gradient-based optimizer makes the updates.</p></div>
+<div class="card"><span class="tag">Later, not in this test</span><h3 style="margin-top:16px">Replace five knobs with a learned rule</h3><div class="mini-flow"><span>Temperature / flow<br><small>example future inputs</small></span><b>→</b><span>Small neural<br>network</span><b>→</b><span>Decay rate</span></div><p class="small">Eventually, a neural network could predict decay rates from environmental conditions. Those rates would feed the same river model.</p><p class="small">Because the pieces are differentiable, the mismatch at river gauges could train that neural network through the river equations.</p><div class="callout"><p><strong>Physics still routes the river.</strong><br><span class="small">The neural network would learn a rate relationship—not replace the whole river model.</span></p></div></div>
+</div>
+<p class="source">The current experiment fits five positive rates with JAX gradients and SciPy L-BFGS-B. It is not HMC, a time-evolving 4D-Var experiment, or a neural-network fit.</p>
+</section>
+
+<section id="result" data-title="The first result" aria-labelledby="result-title">
+<p class="kicker">04 / Actual saved output · 7 September 2026, Pacific time</p>
+<h2 id="result-title" tabindex="-1">The quick test recovered<br>the hidden pattern.</h2>
+<p class="lead">In this one synthetic case, all five fitted rates were within about 15% of truth—even though the input samples were noisy.</p>
+<div class="grid">
+<div class="card"><h3>Did we recover the five rates?</h3><div class="rate-key"><span><i class="truth"></i>True rate</span><span><i class="fit"></i>Fitted rate</span><span><i class="prior"></i>Starting/default rate</span></div><div id="rate-chart" role="img" aria-label="Fitted rates approximately match the true west-to-east pattern; true rates are 0.03, 0.06, 0.12, 0.20, 0.35 per day; fitted rates are 0.0263, 0.0610, 0.1374, 0.2249, 0.3473 per day."></div><p class="tiny">Rate units: /day. Shared horizontal scale: 0–0.40/day. No uncertainty intervals were calculated in this quick run.</p><details><summary>See the exact rounded values</summary><div id="rate-table"></div></details></div>
+<div class="card"><h3>Did it predict unseen locations?</h3><p class="small">Concentration error at the ten held-out gauges, compared with the <strong>known noiseless truth</strong>. Lower is better.</p><div class="error-row"><p><span>Default: 0.10/day everywhere</span><strong>0.1773 mg/L</strong></p><div class="error-bar" style="width:88.64%"></div></div><div class="error-row"><p><span>Five fitted rates</span><strong>0.0200 mg/L</strong></p><div class="error-bar fitted" style="width:9.99%"></div></div><div class="callout"><p><strong>About 89% less error in this test.</strong><br><span class="small">This is RMSE: a summary of how far the predicted concentrations are from the answer key.</span></p></div><p class="small" style="margin-top:20px">Against the <em>noisy observations</em> instead, RMSE fell from 0.2122 to 0.0979 mg/L. These are different comparisons; we keep both.</p><div class="checks">46 focused tests passed · fit converged in 17 iterations</div></div>
+</div>
+<p class="source">Source: the saved <a href="assets/rapid-chem/results.json">results.json</a> and <a href="assets/rapid-chem/tests.txt">test summary</a>. Seed 20260907; one noise realization; one starting guess. Supporting files are snapshots from this run, not live model output.</p>
+<noscript><p>True rates: 0.0300, 0.0600, 0.1200, 0.2000, 0.3500/day. Fitted rates: 0.0263, 0.0610, 0.1374, 0.2249, 0.3473/day.</p></noscript>
+</section>
+
+<section id="meaning" data-title="What this means" aria-labelledby="meaning-title">
+<p class="kicker">05 / A useful first rung, not the whole ladder</p>
+<h2 id="meaning-title" tabindex="-1">We’re testing whether sparse data<br>can teach us river chemistry.</h2>
+<div class="compare">
+<div class="card now"><h3>What this result supports</h3><p>A differentiable river model can recover five spatially varying decay rates from a small set of noisy samples in this controlled setup.</p><p class="small">It’s an encouraging check that the model, gradients, optimizer, and observation comparison work together.</p></div>
+<div class="card later"><h3>What it does not establish</h3><p>It does not show that we can infer all unknown inputs and processes from real observations.</p><p class="small">The same model generated and fitted the data. Sources were known. We tested one seed. Model error, uncertain sources, storage dynamics, and neural networks remain outside this test.</p></div>
+</div>
+<div class="card" style="margin-top:20px"><h3>The main catch: different causes can look alike</h3><div class="mini-flow"><span>More chemical input<br>+ faster decay</span><b>≈</b><span>Less chemical input<br>+ slower decay</span><b>→</b><span>Similar downstream<br>concentration</span></div><p class="small">That’s why we held inputs fixed. A neural network cannot create missing information; later we will need useful observations and constraints on the sources.</p></div>
+<div class="next-test"><p><strong>My next quick follow-up:</strong> repeat with two new noise seeds.</p><p class="small">Does the result persist, or was this draw unusually easy? After that, try fewer gauges. Add complexity only when the simpler tests hold up.</p></div>
+<p class="source">Broader vision: connect uncertain land-to-river inputs, river physics, and Bayesian estimation; then explore learned rate relationships. <a href="index.html">Back to the project briefing</a>. This is a separate project explainer; the manuscript and private document inventory are not included.</p>
+</section>
+</main>
+<nav class="nav" aria-label="Explanation slides"><button id="previous" type="button" aria-label="Previous section">← Back</button><div class="navstatus" aria-live="polite"><span id="counter">1 / 5</span><b id="step-title">The question</b><div class="progress" aria-hidden="true"><span id="progress"></span></div></div><button id="next" type="button" class="primary" aria-label="Next section">Next →</button></nav>
+<script>
+'use strict';
+// Teaching-only steady recurrence. No calls to Python, JAX, a server, or an API.
+function toyConcentrations(rate){
+  const downstream=[2,2,4,4,-1], water=Array(5).fill(10), mass=Array(5).fill(.01), result=[];
+  const retention=Math.exp(-rate); // One prescribed day in each toy reach.
+  for(let i=0;i<5;i++){
+    mass[i]*=retention;
+    result[i]=1000*mass[i]/water[i];
+    const d=downstream[i];
+    if(d>=0){water[d]+=water[i];mass[d]+=mass[i];}
+  }
+  return result;
+}
+function updateToy(){
+  const rate=Number(document.getElementById('decay').value), c=toyConcentrations(rate);
+  document.getElementById('decay-value').textContent=rate.toFixed(2)+' /day';
+  document.getElementById('outlet-value').textContent=c[4].toFixed(3)+' mg/L';
+  c.forEach((value,i)=>document.getElementById('reach-'+i).setAttribute('fill',`hsl(168, 51%, ${58-32*value}%)`));
+}
+document.getElementById('decay').addEventListener('input',updateToy);updateToy();
+for(let i=0;i<40;i++){const dot=document.createElement('span');dot.className='gauge'+(i>=30?' hold':'');dot.setAttribute('aria-hidden','true');document.getElementById('gauges').append(dot);}
+// Snapshot copied from artifacts/sparse_decay_osse/results.json, seed 20260907.
+const savedResult={truth:[.03,.06,.12,.20,.35],fit:[.02625132701107004,.06104253266268398,.13738542875273232,.2249058169957561,.3472790000558955]};
+savedResult.truth.forEach((truth,i)=>{
+  const row=document.createElement('div');row.className='rate-row';
+  row.innerHTML=`<span>Class ${i+1}</span><div class="bars"><span class="truth-bar" style="width:${100*truth/.4}%"></span><span class="fit-bar" style="width:${100*savedResult.fit[i]/.4}%"></span><span class="default-line"></span></div><span class="rate-label">${savedResult.fit[i].toFixed(4)}</span>`;
+  document.getElementById('rate-chart').append(row);
+});
+const table=document.createElement('table');table.style.cssText='width:100%;text-align:left;font-variant-numeric:tabular-nums';
+table.innerHTML='<caption style="text-align:left;margin:12px 0">Decay rates (/day)</caption><thead><tr><th scope="col">Class</th><th scope="col">Truth</th><th scope="col">Fit</th></tr></thead><tbody>'+savedResult.truth.map((t,i)=>`<tr><th scope="row">${i+1}</th><td>${t.toFixed(4)}</td><td>${savedResult.fit[i].toFixed(4)}</td></tr>`).join('')+'</tbody>';
+document.getElementById('rate-table').append(table);
+const slides=Array.from(document.querySelectorAll('main>section'));
+let index=Math.max(0,slides.findIndex(s=>'#'+s.id===location.hash)),all=false;
+function showSlide(next,focus=false){
+  index=Math.min(slides.length-1,Math.max(0,next));
+  slides.forEach((s,i)=>{s.hidden=!all&&i!==index;});
+  document.getElementById('previous').disabled=index===0;
+  document.getElementById('next').disabled=index===slides.length-1;
+  document.getElementById('counter').textContent=(index+1)+' / '+slides.length;
+  document.getElementById('step-title').textContent=slides[index].dataset.title;
+  document.getElementById('progress').style.width=100*(index+1)/slides.length+'%';
+  if(focus){
+    history.replaceState(null,'','#'+slides[index].id);
+    slides[index].querySelector('h1,h2').focus({preventScroll:true});
+    if(all)slides[index].scrollIntoView({block:'start'});else window.scrollTo(0,0);
+  }
+}
+document.getElementById('previous').addEventListener('click',()=>showSlide(index-1,true));
+document.getElementById('next').addEventListener('click',()=>showSlide(index+1,true));
+document.getElementById('view-mode').addEventListener('click',function(){all=!all;document.body.classList.toggle('all-view',all);this.textContent=all?'Slide view':'Read all';this.setAttribute('aria-pressed',String(all));showSlide(index);if(!all)window.scrollTo(0,0);});
+document.addEventListener('keydown',e=>{
+  if(e.altKey||e.ctrlKey||e.metaKey||e.shiftKey||e.target.closest('input,textarea,select,[contenteditable="true"]'))return;
+  if(e.key==='ArrowRight'){e.preventDefault();showSlide(index+1,true);}
+  if(e.key==='ArrowLeft'){e.preventDefault();showSlide(index-1,true);}
+});
+window.addEventListener('hashchange',()=>{const n=slides.findIndex(s=>'#'+s.id===location.hash);if(n>=0)showSlide(n);});
+document.documentElement.classList.add('enhanced');showSlide(index);
+</script>
+</body>
+</html>
