@@ -81,7 +81,7 @@
     if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) return;
     const target = event.target;
     const editing = target.matches("input, textarea, select, [contenteditable='true']") ||
-      target.closest(".tab-list, .decision-grid, .preset-group");
+      target.closest(".tab-list, .decision-grid, .preset-group, .viz-panel");
     if (editing) return;
     if (["ArrowRight", "PageDown"].includes(event.key) || (event.key === " " && !event.shiftKey)) {
       event.preventDefault();
@@ -91,6 +91,10 @@
       goToPresentationStep(currentPresentationIndex - 1);
     }
   });
+
+  // Read-all / print: every slide is already in the DOM, so printing is the fallback.
+  const presenterPrint = $("#presenter-print");
+  if (presenterPrint) presenterPrint.addEventListener("click", () => window.print());
 
   presenterFullscreen.addEventListener("click", async () => {
     try {
@@ -105,8 +109,20 @@
     presenterFullscreen.classList.toggle("active", active);
     presenterFullscreen.setAttribute("aria-label", active ? "Exit fullscreen presentation" : "Enter fullscreen presentation");
   });
-  const initialPresentationIndex = presentationSteps.findIndex((step) => `#${step.id}` === window.location.hash);
+  const hashPresentationIndex = () =>
+    presentationSteps.findIndex((step) => `#${step.id}` === window.location.hash);
+  const initialPresentationIndex = hashPresentationIndex();
   updatePresenter(initialPresentationIndex >= 0 ? initialPresentationIndex : 0);
+  // The 3D panel mounts its canvas after first paint, which shifts everything
+  // below it. Re-apply a deep link once layout has settled so #slide still lands.
+  window.addEventListener("load", () => {
+    const index = hashPresentationIndex();
+    if (index >= 0) window.setTimeout(() => goToPresentationStep(index), 120);
+  });
+  window.addEventListener("hashchange", () => {
+    const index = hashPresentationIndex();
+    if (index >= 0) updatePresenter(index);
+  });
 
   // Accessible milestone tabs.
   const tabButtons = $$(".tab-button");

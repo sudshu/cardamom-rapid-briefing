@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Interactive CARDAMOM–RAPID progress briefing: differentiable JAX river routing, MATLAB parity, Muskingum inversion, and next experiments.">
+  <meta name="description" content="CARDAMOM-RAPID progress briefing: a differentiable JAX implementation of the RAPID-Chem Equation 42 snapshot, a neural decay parameterisation, and joint estimation of chemical inputs, storage anomaly and reach decay in controlled synthetic experiments.">
   <meta name="theme-color" content="#071c24">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="CARDAMOM–RAPID · Differentiable River Inversion">
-  <meta property="og:description" content="Explore the verified JAX routing model, MATLAB parity evidence, live Muskingum sensitivity, and proposed next experiments.">
+  <meta property="og:title" content="CARDAMOM-RAPID · Differentiable River Chemistry">
+  <meta property="og:description" content="Equation 42 made differentiable, a learned decay field, joint source/storage/decay estimation, and the controlled experiments that test them.">
   <meta property="og:url" content="https://sudshu.github.io/cardamom-rapid-briefing/">
   <link rel="canonical" href="https://sudshu.github.io/cardamom-rapid-briefing/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <title>CARDAMOM–RAPID · Differentiable River Inversion</title>
+  <title>CARDAMOM-RAPID · Differentiable River Chemistry</title>
   <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
@@ -27,236 +27,183 @@
           <circle cx="21" cy="21" r="3.2"/>
         </svg>
       </span>
-      <span><b>CARDAMOM–RAPID</b><small>Progress briefing</small></span>
+      <span><b>CARDAMOM&#8211;RAPID</b><small>RAPID-Chem progress briefing</small></span>
     </a>
     <nav class="desktop-nav" aria-label="Main navigation">
-      <a href="#question">Question</a>
-      <a href="#delivered">Delivered</a>
-      <a href="#lab">Live model</a>
-      <a href="#evidence">Evidence</a>
-      <a href="#decision">Decision</a>
+      <a href="#asks">Requests</a>
+      <a href="#equation">Equation 42</a>
+      <a href="#river3d">Network</a>
+      <a href="#neural">Findings</a>
+      <a href="#limits">Limits</a>
+      <a href="#decision">Decisions</a>
     </nav>
-    <a class="header-link" href="https://github.com/CARDAMOM-framework/CARDAMOM-RAPID/pull/1" target="_blank" rel="noreferrer">
-      PR #1 <span aria-hidden="true">↗</span>
+    <a class="header-link" href="rapid-chem-explained.html">
+      Plain-language explainer <span aria-hidden="true">&#8594;</span>
     </a>
   </header>
 
   <nav class="presenter-controls" aria-label="Presentation navigation">
-    <button type="button" class="presenter-arrow" id="presenter-previous" aria-label="Previous presentation section" disabled>←</button>
+    <button type="button" class="presenter-arrow" id="presenter-previous" aria-label="Previous presentation slide" disabled>&#8592;</button>
     <div class="presenter-status" aria-live="polite">
-      <span id="presenter-count">01 / 09</span>
+      <span id="presenter-count">01 / 12</span>
       <b id="presenter-title">Overview</b>
       <i><span id="presenter-progress"></span></i>
     </div>
-    <button type="button" class="presenter-arrow next" id="presenter-next" aria-label="Next presentation section">→</button>
-    <button type="button" class="presenter-fullscreen" id="presenter-fullscreen" aria-label="Enter fullscreen presentation" title="Toggle fullscreen">⛶</button>
+    <button type="button" class="presenter-arrow next" id="presenter-next" aria-label="Next presentation slide">&#8594;</button>
+    <button type="button" class="presenter-fullscreen" id="presenter-print" aria-label="Print or read the whole briefing" title="Print / read all">&#9113;</button>
+    <button type="button" class="presenter-fullscreen" id="presenter-fullscreen" aria-label="Enter fullscreen presentation" title="Toggle fullscreen">&#9142;</button>
   </nav>
 
   <main id="main">
+
+    <!-- 01 ------------------------------------------------------------- -->
     <section class="hero section-shell presentation-step" id="overview" data-present-title="Overview" aria-labelledby="hero-title">
       <div class="hero-copy reveal">
-        <div class="eyebrow"><span class="status-dot"></span> Team review · September 2026</div>
-        <h1 id="hero-title">From a linear river operator to a <em>differentiable inverse model.</em></h1>
-        <p class="hero-lede">We rebuilt the CARDAMOM–RAPID routing core in JAX, verified it against MATLAB, and showed that downstream discharge can recover both upstream runoff pulses and river travel time in a controlled experiment.</p>
+        <div class="eyebrow"><span class="status-dot"></span> Briefing for Anthony Bloom &middot; 8 September 2026</div>
+        <h1 id="hero-title">Equation 42 is now <em>differentiable.</em></h1>
+        <p class="hero-lede">The RAPID-Chem snapshot operator runs on the real 64,579-reach topology with exact gradients in every state &mdash; and we have now tested what it can and cannot identify. Controlled synthetic experiments cover the three things you asked about: a learned decay field, joint estimation of chemical inputs, storage anomaly and reach decay, and what happens when the assumed inputs are wrong.</p>
         <div class="hero-actions">
-          <a class="button primary" href="#lab">Explore the model <span aria-hidden="true">↓</span></a>
-          <a class="button secondary" href="rapid-chem-explained.html">RAPID-Chem explained <span aria-hidden="true">→</span></a>
-          <a class="button secondary" href="https://github.com/CARDAMOM-framework/CARDAMOM-RAPID/tree/rapid-jax-b1/PYTHON/rapid_jax" target="_blank" rel="noreferrer">View implementation <span aria-hidden="true">↗</span></a>
+          <a class="button primary" href="#equation">Start the briefing <span aria-hidden="true">&#8595;</span></a>
+          <a class="button secondary" href="#decision">Jump to decisions <span aria-hidden="true">&#8595;</span></a>
+          <a class="button secondary" href="rapid-chem-explained.html">Plain-language explainer <span aria-hidden="true">&#8594;</span></a>
         </div>
-        <dl class="hero-metrics" aria-label="Project highlights">
-          <div><dt>51<span>/51</span></dt><dd>tests passing</dd></div>
-          <div><dt>7<span>/7</span></dt><dd>B1 gates passed</dd></div>
-          <div><dt>1.78<span>×10⁻¹⁵</span></dt><dd>max MATLAB error</dd></div>
+        <dl class="hero-metrics" aria-label="Headline numbers">
+          <div><dt>64,579</dt><dd>reaches routed with gradients</dd></div>
+          <div><dt>18.7<span>%</span></dt><dd>median decay-rate error, best case</dd></div>
+          <div><dt>5</dt><dd>parameters in the joint snapshot</dd></div>
         </dl>
+        <p class="hero-footnote">Every result here is a synthetic observing-system simulation experiment on a real static network. No measured nitrogen or DOC has been used, and no basin boundary has been finalised.</p>
       </div>
 
-      <div class="hero-visual reveal" aria-label="Animated five-reach river network">
+      <div class="hero-visual reveal" aria-label="Where the work stands">
         <div class="visual-header">
-          <span>Five-reach control network</span>
-          <span class="live-chip"><i></i> live flow</span>
+          <span>Where the work stands</span>
+          <span class="live-chip"><i></i> 8 Sep 2026</span>
         </div>
-        <svg class="network-svg hero-network" viewBox="0 0 560 340" role="img" aria-labelledby="network-title network-desc">
-          <title id="network-title">Five-reach branching river network</title>
-          <desc id="network-desc">Reaches one and two join at reach three. Reaches three and four join at outlet reach five.</desc>
-          <defs>
-            <linearGradient id="river-gradient" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#63e6be"/>
-              <stop offset="1" stop-color="#3ea6ff"/>
-            </linearGradient>
-            <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
-              <feGaussianBlur stdDeviation="5" result="blur"/>
-              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-            <path id="hero-p1" d="M88 63 C160 63 158 137 230 137"/>
-            <path id="hero-p2" d="M88 199 C160 199 162 147 230 141"/>
-            <path id="hero-p3" d="M270 140 C345 140 332 207 406 207"/>
-            <path id="hero-p4" d="M270 282 C340 282 337 218 406 210"/>
-            <path id="hero-p5" d="M446 209 C484 209 506 194 536 180"/>
-          </defs>
-          <g class="river-paths">
-            <use href="#hero-p1"/><use href="#hero-p2"/><use href="#hero-p3"/><use href="#hero-p4"/><use href="#hero-p5"/>
-          </g>
-          <g class="flow-particles" aria-hidden="true">
-            <circle r="4"><animateMotion dur="2.4s" repeatCount="indefinite"><mpath href="#hero-p1"/></animateMotion></circle>
-            <circle r="3"><animateMotion dur="2.4s" begin="-1.1s" repeatCount="indefinite"><mpath href="#hero-p2"/></animateMotion></circle>
-            <circle r="4"><animateMotion dur="2.0s" begin="-.5s" repeatCount="indefinite"><mpath href="#hero-p3"/></animateMotion></circle>
-            <circle r="3"><animateMotion dur="2.2s" begin="-1.4s" repeatCount="indefinite"><mpath href="#hero-p4"/></animateMotion></circle>
-            <circle r="5"><animateMotion dur="1.8s" begin="-.4s" repeatCount="indefinite"><mpath href="#hero-p5"/></animateMotion></circle>
-          </g>
-          <g class="network-node" transform="translate(68 63)"><circle r="21"/><text>1</text></g>
-          <g class="network-node" transform="translate(68 199)"><circle r="21"/><text>2</text></g>
-          <g class="network-node gauge" transform="translate(250 140)"><circle r="24"/><text>3</text><path d="M13-18l10-8"/><rect x="20" y="-31" width="9" height="8" rx="2"/></g>
-          <g class="network-node" transform="translate(250 282)"><circle r="21"/><text>4</text></g>
-          <g class="network-node gauge outlet" transform="translate(426 209)"><circle r="27"/><text>5</text><path d="M15-21l11-8"/><rect x="23" y="-34" width="9" height="8" rx="2"/></g>
-          <text class="network-label" x="34" y="31">upstream forcing</text>
-          <text class="network-label" x="407" y="164">observed outlet</text>
-          <text class="network-label outlet-label" x="488" y="159">ocean</text>
-        </svg>
-        <div class="visual-caption">
-          <span><i class="legend-line"></i> routing path</span>
-          <span><i class="legend-gauge"></i> observed reach</span>
-          <span>O(time × reaches)</span>
-        </div>
+        <ol class="status-ladder">
+          <li class="done"><b>Equation 42 forward + adjoint</b><span>Sparse recurrences, no dense N&times;N matrix. 217,962 state entries differentiated.</span></li>
+          <li class="done"><b>Neural decay field</b><span>13 parameters from reach attributes; trained only on noisy concentrations.</span></li>
+          <li class="done"><b>Joint inputs / storage / decay</b><span>Reduced five-parameter snapshot, with an information split between data and prior.</span></li>
+          <li class="done"><b>Misspecified-input stress test</b><span>+20% chemical inputs in the fitter only, everything else frozen.</span></li>
+          <li class="pending"><b>Fresh-seed replication &middot; mixed gauge design</b><span>Running. Deliberately not reported here.</span></li>
+          <li class="future"><b>Real chemistry, final basin, calibrated uncertainty</b><span>Not started. Needs the decisions on the last slide.</span></li>
+        </ol>
       </div>
     </section>
 
-    <section class="statement-band" aria-label="Core result">
+    <section class="statement-band" aria-label="Core message">
       <div class="section-shell statement-inner reveal">
         <span class="statement-index">01</span>
-        <p><strong>The short version:</strong> the nonlinear idea works in a clean control. The next scientific question is whether it remains identifiable under realistic noise, sparse gauges, richer runoff states, and uncertain routing.</p>
+        <p><strong>The short version:</strong> in a reduced, controlled setting the snapshot does separate chemical inputs from decay, and observation coverage&mdash;not the inductive bias&mdash;was the binding constraint on the learned rate field. Storage amplitude stayed prior-driven, gauge placement traded storage information against decay information, and a 20% input bias degraded both the rates and the concentration fit. Nothing here demonstrates general identifiability.</p>
       </div>
     </section>
 
-    <section class="content-section section-shell presentation-step" id="question" data-present-title="Project question" aria-labelledby="question-title">
+    <!-- 02 ------------------------------------------------------------- -->
+    <section class="content-section section-shell presentation-step" id="asks" data-present-title="Your three requests" aria-labelledby="asks-title">
       <div class="section-heading reveal">
-        <div><span class="kicker">The project question</span><h2 id="question-title">What becomes possible when the river model can differentiate?</h2></div>
-        <p>The original formulation is linear when routing and decay parameters are prescribed. Estimating those parameters changes the operator itself—and makes the inverse nonlinear.</p>
+        <div><span class="kicker">What you asked for</span><h2 id="asks-title">Three requests, three controlled answers.</h2></div>
+        <p>Each card names the request, the experiment that addresses it, and the honest status. None of the three is closed.</p>
       </div>
       <div class="journey-grid reveal">
-        <article class="journey-card">
-          <span class="card-number">A</span>
-          <div class="formula">q = Ar</div>
-          <h3>Linear inversion</h3>
-          <p>Infer reach runoff <i>r</i> from downstream discharge <i>q</i> with a fixed aggregation operator.</p>
-          <span class="card-tag">Inherited foundation</span>
-        </article>
-        <div class="journey-arrow" aria-hidden="true">→</div>
         <article class="journey-card active">
-          <span class="card-number">B</span>
-          <div class="formula">y = F(r, K, X, k)</div>
-          <h3>Differentiable physics</h3>
-          <p>Route water or tracers while gradients propagate through runoff, travel time, weighting, and decay.</p>
-          <span class="card-tag">Implemented now</span>
+          <span class="card-number">1</span>
+          <div class="formula">&part;Qc / &part;(Rc, &Delta;Sc, &alpha;)</div>
+          <h3>Differentiable Equation 42</h3>
+          <p>Implement the April 2026 snapshot algebra so gradients flow through chemical inputs, storage anomaly and reach decay.</p>
+          <span class="card-tag">Implemented and verified</span>
         </article>
-        <div class="journey-arrow" aria-hidden="true">→</div>
-        <article class="journey-card future">
-          <span class="card-number">C</span>
-          <div class="formula">kᵢ = NN(xᵢ; φ)</div>
-          <h3>Learned parameters</h3>
-          <p>Let constrained neural functions learn routing or reaction parameters from reach attributes and data.</p>
-          <span class="card-tag">Future, after controls</span>
+        <div class="journey-arrow" aria-hidden="true">&#8594;</div>
+        <article class="journey-card active">
+          <span class="card-number">2</span>
+          <div class="formula">&alpha;&#7522; = NN(lat&#7522;, log K&#7522;; &phi;)</div>
+          <h3>Learned decay field</h3>
+          <p>Predict a bounded per-reach decay rate from reach attributes, trained only on noisy downstream concentrations.</p>
+          <span class="card-tag">Works when gauges are dense enough</span>
+        </article>
+        <div class="journey-arrow" aria-hidden="true">&#8594;</div>
+        <article class="journey-card active">
+          <span class="card-number">3</span>
+          <div class="formula">estimate Rc, &Delta;Sc, &alpha; together</div>
+          <h3>Joint estimation</h3>
+          <p>Estimate chemical inputs, the chemical storage anomaly and reach decay in one inversion instead of fixing two of them.</p>
+          <span class="card-tag">Only in a five-parameter reduction</span>
         </article>
       </div>
       <div class="equation-note reveal">
-        <span>Why JAX?</span>
-        <p>One executable model supplies the forward simulation, exact gradients for 4D-Var/MAP, and the log-density ingredients needed for HMC or related uncertainty methods.</p>
+        <span>Why this is hard</span>
+        <p>A larger chemical input with faster decay looks much like a smaller input with slower decay at a downstream gauge. Per reach that ambiguity is exact. Everything on the following slides is about how much structure&mdash;parameter reduction, priors, gauge design&mdash;it takes to break it, and what that costs.</p>
       </div>
     </section>
 
-    <section class="content-section tinted presentation-step" id="delivered" data-present-title="What we delivered" aria-labelledby="delivered-title">
+    <!-- 03 ------------------------------------------------------------- -->
+    <section class="content-section tinted presentation-step" id="equation" data-present-title="Equation 42" aria-labelledby="equation-title">
       <div class="section-shell">
         <div class="section-heading reveal">
-          <div><span class="kicker">What we delivered</span><h2 id="delivered-title">Two milestones, one verified foundation.</h2></div>
-          <p>Use the tabs to separate the parity milestone from the first nonlinear inversion experiment.</p>
+          <div><span class="kicker">The model</span><h2 id="equation-title">The snapshot operator, and how it is solved.</h2></div>
+          <p>This is the algebra of your five-page attachment, coded once and differentiated automatically.</p>
         </div>
-        <div class="tab-shell reveal">
-          <div class="tab-list" role="tablist" aria-label="Milestone details">
-            <button class="tab-button active" id="tab-a" role="tab" aria-selected="true" aria-controls="panel-a" data-panel="panel-a">Option A · Foundation</button>
-            <button class="tab-button" id="tab-b1" role="tab" aria-selected="false" aria-controls="panel-b1" data-panel="panel-b1">B1 · Muskingum OSSE</button>
-            <button class="tab-button" id="tab-scope" role="tab" aria-selected="false" aria-controls="panel-scope" data-panel="panel-scope">Scope boundary</button>
+        <div class="equation-layout reveal">
+          <div class="equation-card">
+            <h3>Contract</h3>
+            <pre class="equation-block"><code>M  = X N + (I &minus; X)
+&Phi;  = diag( exp( &minus;(5/3) &alpha;&#7522; k&#7522; ) )
+Qc = (I &minus; &Phi; N)&#8315;&sup1; &Phi; Rc  +  &Phi; M&#8315;&sup1; K&#8315;&sup1; &Delta;Sc</code></pre>
+            <ul class="plain-list tight">
+              <li><b>Rc</b> &mdash; local <i>chemical</i> input flux (mass/time). Not water runoff.</li>
+              <li><b>&Delta;Sc</b> &mdash; signed chemical mass anomaly relative to equilibrium. Not a time increment between two steps.</li>
+              <li><b>&alpha;</b> &mdash; nonnegative first-order loss rate; <b>k</b> &mdash; wave travel time, with residence time 5k/3 as in the draft.</li>
+              <li><b>&Phi;</b> &mdash; transmitted fractions, not removed fractions.</li>
+              <li><b>Qc</b> &mdash; chemical mass discharge. Concentration needs Qc &divide; known water flux, with matching units and dry-reach masking.</li>
+            </ul>
+            <p class="equation-caveat">The physical interpretation of the storage term&mdash;where &Phi; sits, the sign structure, and what &Delta;Sc means for a real river&mdash;is still a draft reading and is flagged for your review, not asserted here.</p>
           </div>
-          <div class="tab-panel active" id="panel-a" role="tabpanel" aria-labelledby="tab-a">
-            <div class="milestone-copy">
-              <span class="milestone-status">Verified baseline</span>
-              <h3>Freeze semantics before adding nonlinear complexity.</h3>
-              <p>A five-reach MATLAB oracle fixed network orientation, units, observation selection, and the crucial difference between retention and loss fraction.</p>
-              <ul class="check-list">
-                <li>O(n) static water and prescribed-decay tracer routing</li>
-                <li>Relabeling-invariant topology and explicit gauge gathers</li>
-                <li>Float64 parity, conservation, limiting cases, JIT, and gradients</li>
-                <li>Known decay rate recovered from synthetic gauge flux</li>
-              </ul>
+          <div class="equation-card">
+            <h3>Solved as sparse recurrences</h3>
+            <pre class="equation-block"><code>q&#7522;  = &phi;&#7522; ( Rc&#7522; + &Sigma; upstream q )
+z&#7522;  = ( &Delta;Sc&#7522;/k&#7522; &minus; x&#7522; &Sigma; upstream z ) / (1 &minus; x&#7522;)
+Qc&#7522; = q&#7522; + &phi;&#7522; z&#7522;</code></pre>
+            <p>Both matrix inverses are donor-before-receptor recurrences, so no dense N&times;N matrix is ever formed. Production evaluates them by parallel tree doubling: 771 topological levels need ten rounds, giving O(n log depth) work and the same bound on reverse-mode storage.</p>
+            <div class="metric-grid compact">
+              <article><span>Equation 42 vs independent NumPy recurrence</span><strong>1.23&times;10&#8315;&sup1;&#8309;</strong><p>max abs error, kg/s, full network</p></article>
+              <article><span>Zero-decay, zero-anomaly water limit</span><strong>6.40&times;10&#8315;&sup1;&#8308;</strong><p>max abs error, kg/s</p></article>
+              <article><span>Directional finite differences</span><strong>3.44&times;10&#8315;&sup1;&sup1;</strong><p>max abs error across three state blocks</p></article>
+              <article><span>Warm forward / gradient</span><strong>0.020 s / 0.043 s</strong><p>single workstation CPU, float64</p></article>
             </div>
-            <div class="mini-result">
-              <div class="mini-network" aria-label="Static five reach result">
-                <div class="mini-node n1"><b>1</b><small>1.0</small></div>
-                <div class="mini-node n2"><b>2</b><small>2.0</small></div>
-                <div class="mini-node n3"><b>3</b><small>3.5</small></div>
-                <div class="mini-node n4"><b>4</b><small>4.0</small></div>
-                <div class="mini-node n5"><b>5</b><small>10.5</small></div>
-                <svg viewBox="0 0 420 240" aria-hidden="true"><path d="M52 45C125 45 120 110 196 110M52 160C122 160 128 118 196 112M224 112C288 112 284 150 356 150M224 207C286 207 290 158 356 152"/></svg>
-              </div>
-              <div class="mini-caption"><span>Runoff → accumulated discharge</span><strong>0.0 mass-balance error</strong></div>
-            </div>
-          </div>
-          <div class="tab-panel" id="panel-b1" role="tabpanel" aria-labelledby="tab-b1" hidden>
-            <div class="milestone-copy">
-              <span class="milestone-status">First nonlinear control</span>
-              <h3>Recover runoff pulses and travel time together.</h3>
-              <p>The model routes 72 hourly steps through a branching network. Observations are taken at reaches 3 and 5, with part of the outlet hydrograph hidden from optimization.</p>
-              <ul class="check-list">
-                <li>Shared truth: K = 3,600 s, X = 0.2</li>
-                <li>Pulse truth: +8 at reach 1, +5 at reach 4</li>
-                <li>Three joint starting points converge to the same truth</li>
-                <li>Held-out outlet RMSE improves from 2.54 to 6.56×10⁻¹⁴</li>
-              </ul>
-            </div>
-            <div class="recovery-card">
-              <span class="recovery-label">Joint recovery</span>
-              <div class="recovery-row"><span>Pulse 1</span><div><i style="--value:100%"></i></div><b>8.000</b></div>
-              <div class="recovery-row"><span>Pulse 2</span><div><i style="--value:100%"></i></div><b>5.000</b></div>
-              <div class="recovery-row"><span>K</span><div><i style="--value:100%"></i></div><b>3600 s</b></div>
-              <p>Recovered values shown against synthetic truth. Near-perfect recovery is expected only in this deterministic, noise-free control.</p>
-            </div>
-          </div>
-          <div class="tab-panel" id="panel-scope" role="tabpanel" aria-labelledby="tab-scope" hidden>
-            <div class="milestone-copy">
-              <span class="milestone-status warning">Important distinction</span>
-              <h3>A complete routing kernel—not a complete MATLAB replacement.</h3>
-              <p>The JAX package covers the computational core needed for differentiable inversion. The broader MATLAB research environment still owns real-data and basin-scale workflows.</p>
-              <ul class="plain-list">
-                <li><b>In JAX:</b> network validation, water/tracer routing, Muskingum dynamics, observations, objectives, parameter transforms, gradients.</li>
-                <li><b>Still in MATLAB:</b> Amazon/Mackenzie/Mississippi studies, GLDAS/HYBAM/SWOT/nitrogen readers, complete Optimal Estimation scripts, plotting and preprocessing utilities.</li>
-              </ul>
-            </div>
-            <div class="scope-graphic">
-              <div class="scope-ring"><span><b>Core</b><small>ported + extended</small></span></div>
-              <div class="scope-orbit"><span>Data</span><span>Basins</span><span>OE</span><span>Utilities</span></div>
-            </div>
+            <p class="equation-caveat">Gradients being finite in all 217,962 state entries is a software statement, not an identifiability claim. Those are single-workstation CPU timings, not benchmarks.</p>
           </div>
         </div>
+        <details class="reference-details reveal">
+          <summary>Reference: network, provenance and the earlier water-routing parity</summary>
+          <div class="details-body">
+            <p>Static topology from the supplied MERIT/RAPID region-74 archive (<a href="https://zenodo.org/records/20672740" target="_blank" rel="noreferrer">Zenodo record 20672740</a>), verified against its published MD5 and SHA-256. The archive holds static tables and reach coordinates &mdash; <b>no river or catchment shapefile geometry</b>.</p>
+            <p>Region 74: 72,654 reaches, 36,404 headwaters, 109 outlets, 771 topological levels. Every experiment on this page uses the largest outlet component, <b>64,579 reaches</b> upstream of COMID 74072654, which drains 2,959,707 km&sup2; against 3,325,384 km&sup2; for all components combined. That is a <b>provisional</b> operational domain, not a validated Mississippi study boundary.</p>
+            <p>The earlier water-routing milestone is unchanged: a five-reach Muskingum kernel reproduces a frozen MATLAB R2024b oracle to a maximum absolute discharge difference of 1.78&times;10&#8315;&sup1;&#8309;, autodiff matches finite differences to 1.22&times;10&#8315;&#8313; relative directional error, and a noise-free joint recovery of two runoff pulse amplitudes and a shared travel time drove held-out outlet RMSE from 2.540 to 6.56&times;10&#8315;&sup1;&#8308;. That is a software and identifiability control, not a field expectation.</p>
+            <p>This JAX package is the routing and chemistry core only. The broader MATLAB research environment still owns the basin studies, the GLDAS/HYBAM/SWOT/nitrogen readers, the complete Optimal Estimation scripts and the preprocessing utilities. No full MATLAB parity is claimed.</p>
+          </div>
+        </details>
       </div>
     </section>
 
-    <section class="content-section section-shell presentation-step" id="lab" data-present-title="Interactive model" aria-labelledby="lab-title">
+    <!-- 04 ------------------------------------------------------------- -->
+    <section class="content-section section-shell presentation-step" id="lab" data-present-title="Live water routing" aria-labelledby="lab-title">
       <div class="section-heading reveal">
-        <div><span class="kicker">Interactive model</span><h2 id="lab-title">Change the river. Watch the signal move.</h2></div>
-        <p>This browser model implements the same five-reach Muskingum recurrence used by the JAX B1 control. It is for explanation; the tested JAX package remains the scientific implementation.</p>
+        <div><span class="kicker">Interactive &middot; water</span><h2 id="lab-title">The routing substrate, in the browser.</h2></div>
+        <p>The chemical snapshot sits on top of water routing. This panel runs the same five-reach Muskingum recurrence as the verified control, recomputed live as you move the sliders. It is an explanation aid; the tested JAX package remains the scientific implementation.</p>
       </div>
 
       <div class="lab-grid reveal">
         <aside class="control-panel" aria-label="Model controls">
-          <div class="panel-heading"><div><span>Scenario controls</span><small id="scenario-label">Synthetic truth</small></div><button class="icon-button" id="reset-model" type="button" title="Reset to truth" aria-label="Reset model controls">↺</button></div>
+          <div class="panel-heading"><div><span>Scenario controls</span><small id="scenario-label">Synthetic truth</small></div><button class="icon-button" id="reset-model" type="button" title="Reset to truth" aria-label="Reset model controls">&#8634;</button></div>
 
           <label class="range-control" for="pulse-one">
-            <span><b>Pulse A · Reach 1</b><output id="pulse-one-value">+8.0</output></span>
+            <span><b>Pulse A &middot; Reach 1</b><output id="pulse-one-value">+8.0</output></span>
             <input id="pulse-one" type="range" min="0" max="14" step="0.1" value="8">
-            <small>Hours 9–18 · observed at reaches 3 + 5</small>
+            <small>Hours 9&ndash;18 &middot; observed at reaches 3 + 5</small>
           </label>
           <label class="range-control" for="pulse-four">
-            <span><b>Pulse B · Reach 4</b><output id="pulse-four-value">+5.0</output></span>
+            <span><b>Pulse B &middot; Reach 4</b><output id="pulse-four-value">+5.0</output></span>
             <input id="pulse-four" type="range" min="0" max="10" step="0.1" value="5">
-            <small>Hours 25–38 · observed at reach 5 only</small>
+            <small>Hours 25&ndash;38 &middot; observed at reach 5 only</small>
           </label>
           <label class="range-control" for="travel-time">
             <span><b>Travel time K</b><output id="travel-time-value">3600 s</output></span>
@@ -284,7 +231,7 @@
         <div class="model-stage">
           <div class="stage-toolbar">
             <div class="playback">
-              <button type="button" class="play-button" id="play-model" aria-label="Play model animation"><span class="play-icon">▶</span></button>
+              <button type="button" class="play-button" id="play-model" aria-label="Play model animation"><span class="play-icon">&#9654;</span></button>
               <label for="time-step">Hour <output id="time-value">1</output></label>
               <input id="time-step" type="range" min="0" max="71" step="1" value="0">
             </div>
@@ -312,116 +259,432 @@
               <g class="lab-node gauge" data-reach="4" transform="translate(602 144)"><circle r="30"/><text>5</text><text class="node-value" y="48">10.50</text></g>
               <text class="network-label" x="22" y="226">lateral runoff</text><text class="network-label" x="716" y="74">outlet discharge</text>
             </svg>
-            <div class="pulse-callout" id="pulse-callout" aria-live="polite">Background flow · pulse sources: reaches 1 + 4</div>
+            <div class="pulse-callout" id="pulse-callout" aria-live="polite">Background flow &middot; pulse sources: reaches 1 + 4</div>
           </div>
 
           <div class="chart-wrap">
-            <div class="chart-heading"><div><span>Observed discharge</span><small>Reaches 3 and 5 · hourly</small></div><div class="chart-readout"><span id="rmse-label">Scenario RMSE</span><b id="scenario-rmse">0.000</b></div></div>
+            <div class="chart-heading"><div><span>Observed discharge</span><small>Reaches 3 and 5 &middot; hourly</small></div><div class="chart-readout"><span id="rmse-label">Scenario RMSE</span><b id="scenario-rmse">0.000</b></div></div>
             <svg id="hydrograph" viewBox="0 0 920 340" role="img" aria-label="Interactive hydrograph comparing selected scenario and synthetic truth"></svg>
-            <div class="chart-note"><i></i> Shaded interval: outlet hours 31–36 withheld from fitting in B1</div>
+            <div class="chart-note"><i></i> Shaded interval: outlet hours 31&ndash;36 withheld from fitting in the water-routing control</div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="content-section evidence-section presentation-step" id="evidence" data-present-title="Validation evidence" aria-labelledby="evidence-title">
-      <div class="section-shell">
-        <div class="section-heading light reveal">
-          <div><span class="kicker">Evidence, not aspiration</span><h2 id="evidence-title">Every current claim has a gate.</h2></div>
-          <p>The strongest result is not the optimizer—it is agreement across an independent MATLAB oracle, physical continuity, automatic differentiation, multiple starts, and held-out prediction.</p>
-        </div>
-        <div class="evidence-layout reveal">
-          <div class="gate-card">
-            <div class="gate-score"><span>7</span><small>/ 7 gates</small></div>
-            <ol class="gate-list">
-              <li><i>✓</i><span>MATLAB parity</span></li>
-              <li><i>✓</i><span>Autodiff vs finite difference</span></li>
-              <li><i>✓</i><span>K-only recovery &lt; 1%</span></li>
-              <li><i>✓</i><span>Runoff-only recovery &lt; 1%</span></li>
-              <li><i>✓</i><span>Joint runoff recovery from all starts</span></li>
-              <li><i>✓</i><span>Joint K recovery from all starts</span></li>
-              <li><i>✓</i><span>Held-out prediction improves</span></li>
-            </ol>
-          </div>
-          <div class="metric-grid">
-            <article><span>MATLAB ↔ JAX</span><strong>1.776×10⁻¹⁵</strong><p>maximum discharge difference</p></article>
-            <article><span>Joint estimate</span><strong>[8, 5], 3600 s</strong><p>pulse amplitudes and shared K</p></article>
-            <article><span>Held-out RMSE</span><strong>2.540 → 6.56×10⁻¹⁴</strong><p>before and after recovery</p></article>
-            <article><span>Gradient check</span><strong>1.217×10⁻⁹</strong><p>relative directional error</p></article>
-            <article><span>Execution</span><strong>CPU + 2× A100</strong><p>51 tests passing on both paths</p></article>
-            <article><span>Complexity</span><strong>O(T × N)</strong><p>no dense routing matrix</p></article>
-          </div>
-        </div>
-        <div class="evidence-warning reveal"><span>Control, not field claim</span><p>B1 is deterministic and noise-free, with two runoff amplitudes, one shared K, and fixed X. Machine-precision recovery is a software and identifiability control—not an expectation for real rivers.</p></div>
-      </div>
-    </section>
-
-    <section class="content-section section-shell presentation-step" id="code" data-present-title="Converted scope" aria-labelledby="code-title">
-      <div class="section-heading reveal">
-        <div><span class="kicker">Converted scope</span><h2 id="code-title">Small core, stronger contract.</h2></div>
-        <p>This is a comparison of corresponding routing capabilities, not the entire 22,246-line MATLAB research repository.</p>
-      </div>
-      <div class="code-comparison reveal">
-        <div class="code-bars">
-          <div class="code-row matlab"><div><span>MATLAB subset</span><b>241 lines</b></div><div class="bar-track"><i style="--width:35.2%"></i></div><small>Forward/decay helpers, parameter reader, and pulse script</small></div>
-          <div class="code-row jax"><div><span>JAX reusable kernel</span><b>685 lines</b></div><div class="bar-track"><i style="--width:100%"></i></div><small>Network, routing, Muskingum, observations, objective, API</small></div>
-          <div class="code-foot"><span><b>+818</b> test lines</span><span><b>+790</b> example/OSSE lines</span><span><b>51</b> automated tests</span></div>
-        </div>
-        <div class="why-larger">
-          <h3>Why is JAX 2.8× larger?</h3>
-          <ul>
-            <li>Validated, relabeling-invariant topology</li>
-            <li>Reusable rather than script-local Muskingum model</li>
-            <li>Safe parameter transforms and invalid-input checks</li>
-            <li>Missing-data masks and observation operators</li>
-            <li>JIT-compatible scans and explicit public API</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section class="content-section decision-section presentation-step" id="decision" data-present-title="Next decision" aria-labelledby="decision-title">
+    <!-- 05 ------------------------------------------------------------- -->
+    <section class="content-section tinted presentation-step" id="river3d" data-present-title="Network illustration" aria-labelledby="river3d-title">
       <div class="section-shell">
         <div class="section-heading reveal">
-          <div><span class="kicker">Decision for the team</span><h2 id="decision-title">What should we learn next?</h2></div>
-          <p>Select a path to frame the discussion. My recommendation is B2 because it tests whether today’s clean success survives realistic ambiguity before tracer or neural complexity is added.</p>
+          <div><span class="kicker">Interactive &middot; chemistry</span><h2 id="river3d-title">What a decay field does to a river network.</h2></div>
+          <p>Drag to rotate. Orange dots are headwater chemical inputs, where every tracer pulse originates; the pale sphere is the outlet.</p>
+        </div>
+
+        <div class="viz-shell reveal">
+          <div class="viz-stage">
+            <div id="river3d-canvas" class="viz-canvas"></div>
+            <div id="river3d-fallback" class="viz-fallback">
+              <svg viewBox="0 0 640 300" role="img" aria-labelledby="fallback-title fallback-desc">
+                <title id="fallback-title">Static plan view of a branching river network</title>
+                <desc id="fallback-desc">A dendritic network with headwater inputs on the left and one outlet on the right. Colour darkens downstream, indicating tracer removed by decay along the flow path.</desc>
+                <defs>
+                  <linearGradient id="fallback-gradient" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#ffad66"/><stop offset="0.45" stop-color="#63e6be"/>
+                    <stop offset="0.75" stop-color="#3ea6ff"/><stop offset="1" stop-color="#0a2a34"/>
+                  </linearGradient>
+                </defs>
+                <g fill="none" stroke="url(#fallback-gradient)" stroke-linecap="round">
+                  <path d="M60 40 C150 40 170 120 260 150" stroke-width="6"/>
+                  <path d="M60 110 C150 110 180 135 260 150" stroke-width="6"/>
+                  <path d="M60 190 C150 190 175 165 260 152" stroke-width="6"/>
+                  <path d="M60 262 C160 262 190 175 260 155" stroke-width="6"/>
+                  <path d="M100 76 C170 76 200 130 260 150" stroke-width="4"/>
+                  <path d="M100 226 C175 226 205 170 260 153" stroke-width="4"/>
+                  <path d="M260 151 C400 151 470 148 585 150" stroke-width="13"/>
+                </g>
+                <g fill="#ffad66">
+                  <circle cx="60" cy="40" r="7"/><circle cx="60" cy="110" r="7"/><circle cx="60" cy="190" r="7"/>
+                  <circle cx="60" cy="262" r="7"/><circle cx="100" cy="76" r="6"/><circle cx="100" cy="226" r="6"/>
+                </g>
+                <circle cx="585" cy="150" r="11" fill="#f5f3eb"/>
+                <g fill="#9fb6bd" font-size="13" font-family="Inter, system-ui, sans-serif">
+                  <text x="26" y="22">headwater chemical inputs</text>
+                  <text x="470" y="130">outlet</text>
+                  <text x="300" y="192">concentration falls downstream</text>
+                </g>
+              </svg>
+              <p class="viz-note">Static illustration, shown when WebGL is unavailable or scripting is off.</p>
+            </div>
+            <p id="river3d-status" class="viz-status">Static illustration &mdash; enable JavaScript and WebGL for the rotatable version.</p>
+          </div>
+
+          <aside class="viz-panel" aria-label="Illustration controls">
+            <div class="panel-heading"><div><span>Illustration controls</span><small>Schematic only</small></div><button class="icon-button" id="river3d-reset" type="button" title="Reset the illustration" aria-label="Reset the illustration">&#8634;</button></div>
+
+            <label class="range-control" for="river3d-rate">
+              <span><b>Decay rate multiplier</b><output id="river3d-rate-value">&times;1.00</output></span>
+              <input id="river3d-rate" type="range" min="0" max="3" step="0.05" value="1">
+              <small>Scales every reach's &alpha;. At &times;0 the tracer is conservative.</small>
+            </label>
+
+            <fieldset class="viz-fieldset">
+              <legend>Rate field</legend>
+              <label><input type="radio" name="river3d-field" value="graded" checked> West-to-east contrast</label>
+              <label><input type="radio" name="river3d-field" value="uniform"> One constant rate</label>
+              <small>The same contrast a constant-rate baseline cannot represent.</small>
+            </fieldset>
+
+            <label class="viz-select" for="river3d-view">
+              <span>Colour by</span>
+              <select id="river3d-view">
+                <option value="concentration">Tracer concentration</option>
+                <option value="rate">Decay rate &alpha;</option>
+                <option value="water">Water discharge</option>
+              </select>
+            </label>
+
+            <div class="viz-legend" aria-hidden="true">
+              <span id="river3d-scale-label">Tracer concentration</span>
+              <div class="viz-ramp"></div>
+              <div class="viz-ramp-ends"><i id="river3d-scale-low">&mdash;</i><i id="river3d-scale-high">&mdash;</i></div>
+            </div>
+
+            <button type="button" class="button secondary viz-play" id="river3d-play" aria-pressed="true">Pause flow</button>
+            <div id="river3d-readout" class="viz-readout"></div>
+          </aside>
+        </div>
+
+        <div class="evidence-warning reveal">
+          <span>Illustration, not output</span>
+          <p>This panel builds a few hundred synthetic reaches in your browser and evaluates the same steady recurrence <code>q&#7522; = &phi;&#7522;(Rc&#7522; + &Sigma; upstream q)</code> in JavaScript. <b>It is not JAX, not a saved model run, and not the 64,579-reach network.</b> No number in this panel is a scientific result; the results start on the next slide. Motion is disabled automatically under a reduced-motion preference, and a static plan view replaces it when WebGL is unavailable.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 ------------------------------------------------------------- -->
+    <section class="content-section section-shell presentation-step" id="setup" data-present-title="Controlled setup" aria-labelledby="setup-title">
+      <div class="section-heading reveal">
+        <div><span class="kicker">The controlled setup</span><h2 id="setup-title">What is real, what is invented, what is held fixed.</h2></div>
+        <p>Reading the findings correctly depends entirely on this table. Everything downstream is an OSSE: invent a truth, simulate observations, and see what the inversion recovers.</p>
+      </div>
+      <div class="setup-grid reveal">
+        <article class="setup-card real">
+          <h3>Real</h3>
+          <ul>
+            <li>Static MERIT/RAPID region-74 topology, checksum-verified</li>
+            <li>Reach connectivity, coordinates, catchment and drainage areas</li>
+            <li>Travel time K and weighting X from the supplied tables</li>
+          </ul>
+        </article>
+        <article class="setup-card synthetic">
+          <h3>Synthetic</h3>
+          <ul>
+            <li>Water forcing: uniform 1 mm/day runoff</li>
+            <li>Chemical inputs: 1 mg/L of that water</li>
+            <li>Decay-rate truth field: analytic, never used as a training label</li>
+            <li>Gauges: virtual stations chosen from metadata only</li>
+          </ul>
+        </article>
+        <article class="setup-card fixed">
+          <h3>Held fixed in the fit</h3>
+          <ul>
+            <li>Neural experiments: chemical inputs, water, K, X; storage anomaly zero</li>
+            <li>Joint snapshot: everything except the five free parameters</li>
+            <li>Optimiser, tolerances, initialisation and seeds pre-registered before each run</li>
+          </ul>
+        </article>
+        <article class="setup-card absent">
+          <h3>Absent</h3>
+          <ul>
+            <li>Measured nitrogen or DOC concentrations</li>
+            <li>A finalised Mississippi study boundary</li>
+            <li>Time integration, 4D-Var or HMC &mdash; this is snapshot algebra</li>
+            <li>Calibrated posterior uncertainty</li>
+          </ul>
+        </article>
+      </div>
+      <div class="equation-note reveal">
+        <span>The neural parameterisation</span>
+        <p>Thirteen parameters: latitude and log K feed three tanh hidden units, whose output is mapped to a bounded log decay rate. It never sees a decay-rate label. Training data are concentrations at virtual gauges perturbed with 20% CV lognormal noise; the assumed fitting sigma is <code>&radic;(log(1+0.2&sup2;)) = 0.19804</code>. Held-out and evaluation gauges are excluded from the objective, and the runners assert bitwise that corrupting them cannot move the fit.</p>
+      </div>
+    </section>
+
+    <!-- 07 ------------------------------------------------------------- -->
+    <section class="content-section evidence-section presentation-step" id="neural" data-present-title="Learned decay" aria-labelledby="neural-title">
+      <div class="section-shell">
+        <div class="section-heading light reveal">
+          <div><span class="kicker">Finding 1 &middot; learned decay</span><h2 id="neural-title">Coverage was the binding constraint&mdash;not the inductive bias.</h2></div>
+          <p>Full-network decay-rate error for every completed fit. The reference line is the standard deviation of the truth field: any model at or above it is no better than predicting the mean rate everywhere.</p>
+        </div>
+
+        <div class="chart-panel reveal">
+          <div class="bar-chart" role="img" aria-label="Decay-rate RMSE by case, per day. Neural network with 30 noisy gauges and weak prior 0.0889; stronger prior 0.0664; constant baseline 30 gauges 0.0542; constant baseline 90 gauges 0.0564; neural network with 90 noisy gauges 0.0343; neural network with 30 noise-free gauges 0.0159. The truth field standard deviation, the predict-the-mean level, is 0.0524 per day.">
+            <div class="bar-row"><span class="bar-label">NN &middot; 30 noisy gauges<small>weight precision 0.1</small></span><div class="bar-track"><i class="warn" style="--width:98.8%"></i></div><b>0.0889</b></div>
+            <div class="bar-row"><span class="bar-label">NN &middot; 30 noisy gauges<small>stronger prior, precision 1.0</small></span><div class="bar-track"><i class="warn" style="--width:73.8%"></i></div><b>0.0664</b></div>
+            <div class="bar-row"><span class="bar-label">Constant rate &middot; 30 gauges<small>fitted 0.0957/day</small></span><div class="bar-track"><i class="muted" style="--width:60.2%"></i></div><b>0.0542</b></div>
+            <div class="bar-row"><span class="bar-label">Constant rate &middot; 90 gauges<small>fitted 0.0887/day</small></span><div class="bar-track"><i class="muted" style="--width:62.7%"></i></div><b>0.0564</b></div>
+            <div class="bar-row highlight"><span class="bar-label">NN &middot; 90 noisy gauges<small>only the gauge count changed</small></span><div class="bar-track"><i class="good" style="--width:38.1%"></i></div><b>0.0343</b></div>
+            <div class="bar-row"><span class="bar-label">NN &middot; 30 noise-free gauges<small>different change: noise removed</small></span><div class="bar-track"><i class="good" style="--width:17.7%"></i></div><b>0.0159</b></div>
+            <div class="bar-axis"><span>0</span><span class="reference-mark" style="--at:58.2%">predict-the-mean level &middot; 0.0524/day</span><span>0.09/day</span></div>
+          </div>
+          <p class="chart-footnote">Full-network rate RMSE, /day, over all 64,579 reaches; rates are evaluation-only and never entered training. Truth field: 0.0303&ndash;0.2424/day, standard deviation 0.0524/day.</p>
+        </div>
+
+        <div class="finding-grid reveal">
+          <article class="finding-card">
+            <h3>Tripling gauges did the work</h3>
+            <p>Holding architecture, prior, initialisation, likelihood and optimiser fixed and changing <em>only</em> 30 &rarr; 90 training gauges cut median relative rate error from 47.2% to <b>18.7%</b> and raised correlation with the truth field from 0.37 to <b>0.825</b>. That is the first fit in the series to beat the predict-the-mean level.</p>
+          </article>
+          <article class="finding-card">
+            <h3>The mechanism is noise absorption</h3>
+            <p>Per-sample misfit, where 0.5 is what a correct model reaches: the 30-gauge fit explained its own samples <b>better than the truth does</b> (0.350 vs 0.535), then did far worse than the truth on 60 unseen stations (0.884 vs 0.600). At 90 gauges the fit sits near the truth on both blocks (0.445 / 0.570).</p>
+          </article>
+          <article class="finding-card">
+            <h3>Concentration skill is not rate recovery</h3>
+            <p>The 30-gauge fits already beat the constant baseline on concentrations at evaluation gauges while still being <em>worse</em> than it on the rate field. Concentrations integrate rates along the network, so many rate fields explain the same samples.</p>
+          </article>
+          <article class="finding-card caution">
+            <h3>What these rows do not show</h3>
+            <p>The noise-free, stronger-prior and 90-gauge rows change <b>different factors</b> &mdash; they are not one controlled ladder. Each is one seed, one initialisation, one noise realisation. The 13 weights stay non-identifiable: the L2 penalty drove two hidden units to near-duplicates, an exact null direction of any gauge Jacobian that more coverage does not remove.</p>
+          </article>
+        </div>
+
+        <details class="reference-details light-details reveal">
+          <summary>Reference: concentration errors at the evaluation gauges</summary>
+          <div class="details-body">
+            <table class="data-table">
+              <caption>Log RMSE against noiseless truth at the ten evaluation gauges, with the corresponding full-network rate errors. Lower is better.</caption>
+              <thead><tr><th scope="col">Fit</th><th scope="col">Log RMSE vs truth</th><th scope="col">Rate RMSE (/day)</th><th scope="col">Median rel. rate error</th></tr></thead>
+              <tbody>
+                <tr><td>NN &middot; 90 noisy gauges</td><td>0.0397</td><td>0.0343</td><td>18.7%</td></tr>
+                <tr><td>NN &middot; 30 noisy, precision 1.0</td><td>0.0677</td><td>0.0664</td><td>47.2%</td></tr>
+                <tr><td>NN &middot; 30 noisy, precision 0.1</td><td>0.0973</td><td>0.0889</td><td>66.0%</td></tr>
+                <tr><td>Constant &middot; 30 gauges</td><td>0.3130</td><td>0.0542</td><td>38.5%</td></tr>
+                <tr><td>Constant &middot; 90 gauges</td><td>0.3196</td><td>0.0564</td><td>40.0%</td></tr>
+              </tbody>
+            </table>
+            <p>These ten gauges are a <b>fixed, repeatedly used</b> evaluation set on the same known network whose scores have already informed discussion. They are not a pristine blind test and not independent-catchment generalisation. Their own noise draw happens to be mild &mdash; the synthetic truth itself scores 0.198 per sample there rather than about 0.5 &mdash; so every model looks flattering on them and only the between-model comparison is meaningful.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- 08 ------------------------------------------------------------- -->
+    <section class="content-section section-shell presentation-step" id="joint" data-present-title="Joint snapshot" aria-labelledby="joint-title">
+      <div class="section-heading reveal">
+        <div><span class="kicker">Finding 2 &middot; joint estimation</span><h2 id="joint-title">Inputs and decay separate. Storage stays prior-driven.</h2></div>
+        <p>Five free parameters: two chemical-input scalings, two decay rates, one storage-anomaly amplitude. The bars are squared singular values of the prior-scaled <em>data</em> Jacobian &mdash; the only quantity that separates what the observations say from what the prior says.</p>
+      </div>
+
+      <div class="joint-layout reveal">
+        <div class="chart-panel">
+          <div class="bar-chart" role="img" aria-label="Data eigenvalue per parameter direction on a log scale: chemical input west 131.4, chemical input east 110.8, decay west 13.0, decay east 10.0, storage amplitude 0.736. Values above one are observation-informed; only the storage amplitude falls below one.">
+            <div class="bar-row"><span class="bar-label">Chemical input &middot; west</span><div class="bar-track"><i class="good" style="--width:94.5%"></i></div><b>131.4</b></div>
+            <div class="bar-row"><span class="bar-label">Chemical input &middot; east</span><div class="bar-track"><i class="good" style="--width:92.2%"></i></div><b>110.8</b></div>
+            <div class="bar-row"><span class="bar-label">Decay rate &middot; west</span><div class="bar-track"><i class="good" style="--width:64.0%"></i></div><b>13.0</b></div>
+            <div class="bar-row"><span class="bar-label">Decay rate &middot; east</span><div class="bar-track"><i class="good" style="--width:60.6%"></i></div><b>10.0</b></div>
+            <div class="bar-row highlight"><span class="bar-label">Storage amplitude<small>prior outweighs the data</small></span><div class="bar-track"><i class="warn" style="--width:26.3%"></i></div><b>0.736</b></div>
+            <div class="bar-axis"><span>0.1</span><span class="reference-mark" style="--at:30.3%">prior = data &middot; 1.0</span><span>200 &middot; log scale</span></div>
+          </div>
+          <p class="chart-footnote">Squared singular values of the prior-scaled data Jacobian at the five-parameter solution. Posterior variance reduction: 97.8%, 97.2%, 92.2%, 94.9% and 42.4% respectively.</p>
+        </div>
+
+        <div class="recovery-card">
+          <span class="recovery-label">Recovery against synthetic truth</span>
+          <div class="recovery-row"><span>Input &middot; W</span><div><i style="--value:99%"></i></div><b>1.615 <small>/ 1.6</small></b></div>
+          <div class="recovery-row"><span>Input &middot; E</span><div><i style="--value:99%"></i></div><b>0.702 <small>/ 0.7</small></b></div>
+          <div class="recovery-row"><span>Decay &middot; W</span><div><i style="--value:96%"></i></div><b>0.0523 <small>/ 0.05</small></b></div>
+          <div class="recovery-row"><span>Decay &middot; E</span><div><i style="--value:99%"></i></div><b>0.1491 <small>/ 0.15</small></b></div>
+          <div class="recovery-row weak"><span>Storage b</span><div><i style="--value:42%"></i></div><b>0.252 <small>/ 0.6</small></b></div>
+          <p>Errors in prior standard deviations: +0.018, +0.006, +0.064, &minus;0.009 and <b>&minus;0.695</b>. The four well-determined parameters land within 0.07 prior sd; the storage amplitude does not.</p>
+        </div>
+      </div>
+
+      <div class="finding-grid reveal">
+        <article class="finding-card">
+          <h3>The snapshot did separate inputs from decay</h3>
+          <p>In this five-parameter reduction the exact per-reach source/rate degeneracy survives only as a <em>within-region</em> correlation &mdash; 0.720 west, 0.788 east &mdash; with cross-region correlations near zero. Nothing exceeded the 0.9 flag.</p>
+        </article>
+        <article class="finding-card caution">
+          <h3>The storage number is a prior statement</h3>
+          <p>Its data eigenvalue is below 1, so 30 gauges carry less about it than the prior does. The 58% low bias is exactly prior shrinkage: a linear-Gaussian MAP predicts 0.5033 prior sd and the optimiser returned 0.5046. Doubling the prior width alone moves it from 0.252 to <b>0.448</b>, while the other four shift by at most 0.044 prior sd.</p>
+        </article>
+        <article class="finding-card">
+          <h3>Why storage is weak here is structural</h3>
+          <p><code>M&#8315;&sup1;</code> is quasi-local with a sign-alternating, geometrically damped upstream coefficient, so a distributed anomaly reaches a gauge essentially only through that gauge's own reach &mdash; while the equilibrium term integrates the whole upstream network. Storage is 4.9% of total flux at the network median but only <b>2.3%</b> at these gauges.</p>
+        </article>
+        <article class="finding-card caution">
+          <h3>Adding storage cost prediction</h3>
+          <p>Held-out standardised log RMSE went from 0.0234 with storage fixed at the oracle value to <b>0.0840</b> with it free &mdash; while every numerical check still passed. Converging, reporting success and hitting no bound is not a recovery gate.</p>
+        </article>
+      </div>
+
+      <details class="reference-details reveal">
+        <summary>Reference: admissibility, storage basis, and how to read the modes</summary>
+        <div class="details-body">
+          <p><b>Singular vectors are mixtures of the five parameters, not named parameters.</b> Under this gauge design the smallest mode happens to load almost entirely on storage (0.999), so naming it is defensible <em>there</em>. Under the alternative design on the next slide it would be wrong: the smallest mode loads 0.960 on decay-west. Ordered singular values must not be relabelled as parameters.</p>
+          <p><b>Storage basis.</b> <code>&Delta;Sc = b &middot; pattern</code> with a north&ndash;south tanh pattern in latitude, chosen deliberately distinct from the west/east parameter regions and frozen before fitting. That choice <em>favours</em> separability; it is a modelling decision, not a claim about real anomalies.</p>
+          <p><b>Admissibility.</b> The draft's positivity claim is not repeated. At truth, 32,296 of 64,579 storage contributions are negative and nothing is clipped, yet there are zero negative total fluxes. Guaranteeing nonnegative total flux while the input multiplier may fall to 0.368 caps the tested |&Delta;Sc| at <b>7.7%</b> of a reach's equilibrium chemical mass (max 281 kg). Analytic lower bound on total flux 5.2904&times;10&#8315;&#8309; kg/s; worst of 32 box corners 5.3417&times;10&#8315;&#8309; kg/s.</p>
+          <p><b>Uncertainty.</b> <code>H = J&#7461;J + I</code> is positive definite even where the data carry nothing. Its inverse is an approximate local linearisation, not a calibrated posterior, and no HMC was run. Observations here are noise-free; the 0.19804 sigma is an assumed fitting and metric scale, not a description of the data.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- 09 ------------------------------------------------------------- -->
+    <section class="content-section tinted presentation-step" id="placement" data-present-title="Gauge placement" aria-labelledby="placement-title">
+      <div class="section-shell">
+        <div class="section-heading reveal">
+          <div><span class="kicker">Finding 3 &middot; observing design</span><h2 id="placement-title">Where the gauges sit redistributes information&mdash;it does not create it.</h2></div>
+          <p>One change only: the same 30 training gauges drawn across the full drainage-area range instead of each class's upper quartile. Same count, same truth, same held-out reaches, zero overlap with the previous training set.</p>
+        </div>
+
+        <div class="chart-panel reveal">
+          <div class="bar-chart grouped" role="img" aria-label="Marginal information at a common parameter point, upper-quartile design versus full-area-range design: chemical input west rises 45.3 to 72.7; chemical input east rises 34.6 to 56.6; decay west falls 11.7 to 1.40; decay east falls 18.6 to 6.04; storage amplitude rises 0.74 to 2.45.">
+            <div class="grouped-key"><span><i class="key-old"></i> upper-quartile gauges</span><span><i class="key-new"></i> full-area-range gauges</span></div>
+            <div class="bar-row grouped-row"><span class="bar-label">Chemical input &middot; W</span><div class="bar-track dual"><i class="old" style="--width:62.3%"></i><i class="new" style="--width:100%"></i></div><b>45.3 &rarr; 72.7</b></div>
+            <div class="bar-row grouped-row"><span class="bar-label">Chemical input &middot; E</span><div class="bar-track dual"><i class="old" style="--width:47.6%"></i><i class="new" style="--width:77.9%"></i></div><b>34.6 &rarr; 56.6</b></div>
+            <div class="bar-row grouped-row worse"><span class="bar-label">Decay rate &middot; W</span><div class="bar-track dual"><i class="old" style="--width:16.1%"></i><i class="new" style="--width:1.9%"></i></div><b>11.7 &rarr; 1.40</b></div>
+            <div class="bar-row grouped-row worse"><span class="bar-label">Decay rate &middot; E</span><div class="bar-track dual"><i class="old" style="--width:25.6%"></i><i class="new" style="--width:8.3%"></i></div><b>18.6 &rarr; 6.04</b></div>
+            <div class="bar-row grouped-row better"><span class="bar-label">Storage amplitude</span><div class="bar-track dual"><i class="old" style="--width:1.0%"></i><i class="new" style="--width:3.4%"></i></div><b>0.74 &rarr; 2.45</b></div>
+            <div class="bar-axis"><span>0</span><span>marginal information (1/var &minus; 1) at a common parameter point</span><span>73</span></div>
+          </div>
+          <p class="chart-footnote">Total data information falls from 266.0 to 207.9. Storage's largest correlation with another parameter rose from 0.073 to 0.373, so the marginal is not a decoupled one-parameter statement.</p>
+        </div>
+
+        <div class="finding-grid three-up reveal">
+          <article class="finding-card">
+            <h3>Storage improved, materially</h3>
+            <p>The amplitude went from 0.2523 to <b>0.4259</b> against a truth of 0.6, its marginal variance reduction from 42.4% to 71.4%, and its sensitivity to prior width halved: doubling the prior sd now moves it 0.115 instead of 0.195. Median gauge drainage area fell from 3,466 km&sup2; to 94 km&sup2;, raising storage's share of flux at the gauges from 2.39% to 5.50%.</p>
+          </article>
+          <article class="finding-card caution">
+            <h3>Decay information collapsed</h3>
+            <p>Decay is read from contrast built up along long flow paths, and the new design largely stopped observing them. Decay-west marginal information fell 11.7 &rarr; 1.40 and its error grew from +0.064 to <b>+0.343</b> prior sd &mdash; 0.0636/day against a truth of 0.05.</p>
+          </article>
+          <article class="finding-card caution">
+            <h3>Held-out prediction got worse</h3>
+            <p>At the ten reused, large-drainage held-out gauges, standardised log RMSE rose 0.084 &rarr; <b>0.175</b>, because the new training set no longer samples that regime. Whole-network error improved, 0.211 &rarr; 0.182. Both are reported; neither is explained away.</p>
+          </article>
+        </div>
+
+        <div class="evidence-warning reveal">
+          <span>Read this as a trade-off</span>
+          <p>This is a redistribution of a smaller total information budget, not a free improvement. It supports this sampling choice <b>for this control</b>; it does not show that storage is generally observable, and the reachwise source/rate ambiguity is untouched. A prespecified mixed design that tries to hold both is running and is deliberately not reported here.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 ------------------------------------------------------------- -->
+    <section class="content-section section-shell presentation-step" id="stress" data-present-title="Input-bias stress" aria-labelledby="stress-title">
+      <div class="section-heading reveal">
+        <div><span class="kicker">Finding 4 &middot; misspecification</span><h2 id="stress-title">Wrong chemical inputs: decay took the blame, but it did not hide.</h2></div>
+        <p>The 90-gauge case reproduced bit-for-bit, then refitted with one change: the fitter's forward model multiplies every local chemical input by 1.20 at all 64,579 reaches. Observations, water, K, X and the truth field are untouched &mdash; the analyst simply assumes the wrong load.</p>
+      </div>
+
+      <div class="chart-panel reveal">
+        <div class="bar-chart grouped" role="img" aria-label="Correct inputs versus inputs multiplied by 1.20 in the fit. Decay-rate RMSE rises from 0.0343 to 0.0628 per day; median relative rate error rises from 18.7 to 42.0 percent; evaluation concentration log RMSE against truth rises from 0.0397 to 0.1091; correlation with true rates falls from 0.825 to 0.440. Every metric worsens.">
+          <div class="grouped-key"><span><i class="key-old"></i> correct inputs</span><span><i class="key-new warn-key"></i> inputs &times;1.20 in the fit</span></div>
+          <div class="bar-row grouped-row worse"><span class="bar-label">Decay-rate RMSE<small>/day &middot; truth sd 0.0524</small></span><div class="bar-track dual"><i class="old" style="--width:54.6%"></i><i class="new bad" style="--width:100%"></i></div><b>0.0343 &rarr; 0.0628</b></div>
+          <div class="bar-row grouped-row worse"><span class="bar-label">Median relative rate error</span><div class="bar-track dual"><i class="old" style="--width:44.5%"></i><i class="new bad" style="--width:100%"></i></div><b>18.7% &rarr; 42.0%</b></div>
+          <div class="bar-row grouped-row worse"><span class="bar-label">Concentration log RMSE<small>evaluation gauges, vs truth</small></span><div class="bar-track dual"><i class="old" style="--width:36.4%"></i><i class="new bad" style="--width:100%"></i></div><b>0.0397 &rarr; 0.1091</b></div>
+          <div class="bar-row grouped-row worse"><span class="bar-label">Correlation with true rates<small>higher is better here</small></span><div class="bar-track dual"><i class="old" style="--width:82.5%"></i><i class="new bad" style="--width:44.0%"></i></div><b>0.825 &rarr; 0.440</b></div>
+        </div>
+        <p class="chart-footnote">Median signed rate bias moves from &minus;2.6% to <b>+18.2%</b> against an imposed +20% input bias, and the fitted-over-reference rate ratio has median 1.284. The compensation was not limited by the rate map's bounds: no reach came within 0.1% of either end.</p>
+      </div>
+
+      <div class="finding-grid reveal">
+        <article class="finding-card">
+          <h3>Compensation is real, and proportionate</h3>
+          <p>The learned rates absorbed the load error at roughly the size of the error itself. At 0.0628/day the biased fit's rate RMSE is worse than predicting the truth field's mean. This is genuine input/decay compensation, and it is what the experiment was built to be able to see.</p>
+        </article>
+        <article class="finding-card">
+          <h3>But the concentration fit got worse too</h3>
+          <p>So this is <b>not</b> the &ldquo;fits concentrations fine while learning wrong decay&rdquo; case. The refit removed 71.9% of the excess training misfit and 67.0% of the imposed log offset, then stopped.</p>
+        </article>
+        <article class="finding-card">
+          <h3>The trace is in the residual mean</h3>
+          <p>Mean scaled residual +0.279 sigma for the biased fit against &minus;0.024 for both the correct fit and the truth itself. The RMS moves far less (1.132 vs 1.028) and on 90 samples would be easy to dismiss as noise &mdash; but a correctly specified fit has no reason to sit a quarter of a sigma high everywhere.</p>
+        </article>
+        <article class="finding-card caution">
+          <h3>Why this is probably a favourable case</h3>
+          <p>A uniform &times;1.20 load is a <em>uniform</em> log offset, and transmission <code>exp(&minus;5/3 &alpha; k)</code> varies with heterogeneous K, so the change the rates could actually deliver had half the spread of the offset it was cancelling. The L2 penalty also resisted. <b>This run does not separate those two causes</b>, and a spatially uniform error is exactly what a spatially varying decay field should be worst at absorbing &mdash; so detection here is likely easier than it would be in general.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 11 ------------------------------------------------------------- -->
+    <section class="content-section evidence-section presentation-step" id="limits" data-present-title="What is not established" aria-labelledby="limits-title">
+      <div class="section-shell">
+        <div class="section-heading light reveal">
+          <div><span class="kicker">Limits</span><h2 id="limits-title">What none of this establishes.</h2></div>
+          <p>Stated plainly, so the findings can be used without being over-read.</p>
+        </div>
+        <div class="limits-grid reveal">
+          <article><span>01</span><h3>Not general identifiability</h3><p>Unrestricted joint source/decay inversion remains non-unique. Success in a five-parameter reduction, or with 13 weights and fixed inputs, is not evidence that the per-reach problem is solvable.</p></article>
+          <article><span>02</span><h3>Not validated chemistry</h3><p>Every truth field is analytic and generated by the same physics used to fit it. No measured nitrogen or DOC has entered any experiment. Real data is a later route, not something already done.</p></article>
+          <article><span>03</span><h3>Not a blind test</h3><p>Held-out and evaluation gauges are fixed, repeatedly used sets on the same known network. They are not independent catchments, and their scores have already informed discussion.</p></article>
+          <article><span>04</span><h3>Not a robustness claim</h3><p>Each headline number is one seed, one initialisation, one noise realisation, one gauge draw. A fresh-seed replication is running precisely because every conclusion currently rests on a single realisation.</p></article>
+          <article><span>05</span><h3>Not calibrated uncertainty</h3><p>The Gauss-Newton covariance is an approximate local linearisation, and the L2 weight penalty is a regulariser, not a prior anyone has justified physically. No HMC or full posterior was run.</p></article>
+          <article><span>06</span><h3>Not a settled domain or storage physics</h3><p>The 64,579-reach component is provisional, the archive contains no shapefiles, and the placement of &Phi;, the sign structure and the meaning of &Delta;Sc remain open questions for you.</p></article>
+        </div>
+
+        <div class="pending-band reveal">
+          <div>
+            <span class="kicker">Deliberately not reported</span>
+            <p>Two experiments had written outputs when this page was built but <b>no verified final report</b>, so nothing from them is quoted here: a fresh-seed replication of the 90-gauge coverage case, and a mixed low/middle/upper-quartile gauge design for the joint snapshot. Both are the direct follow-ups that findings 1 and 3 called for.</p>
+          </div>
+        </div>
+
+        <details class="reference-details light-details reveal">
+          <summary>Reference: verification and test suites</summary>
+          <div class="details-body">
+            <p>Each experiment reproduced its predecessor's saved arrays with exact equality before fitting, recorded SHA-256 manifests of every pre-existing file it depended on, and re-checked them afterwards. Designs were frozen to disk before any observation was generated.</p>
+            <p><b>Test counts are not additive.</b> Different sessions ran overlapping module subsets. The largest single recorded run is <b>100 passed</b> &mdash; chemistry, network, physics, parity, gradients, basin data, sparse decay, neural decay, gauge coverage and source bias. Other recorded runs include 68, 62 and 57 passed over smaller overlapping subsets. Environment: Python 3.13.13, JAX 0.11.1 on CPU with float64, NumPy 2.5.2, SciPy 1.18.1.</p>
+            <p>The curated numbers quoted on this page, with their sources and caveats, are published as <a href="assets/results-2026-09-08.json">results-2026-09-08.json</a>. Raw arrays, run logs and internal reports are not published.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- 12 ------------------------------------------------------------- -->
+    <section class="content-section decision-section presentation-step" id="decision" data-present-title="Decisions for you" aria-labelledby="decision-title">
+      <div class="section-shell">
+        <div class="section-heading reveal">
+          <div><span class="kicker">Decisions we need from you</span><h2 id="decision-title">Four choices, then the next experiment.</h2></div>
+          <p>Select a path to frame the discussion. My recommendation is <b>D1</b>: a global input-scale parameter is the sharpest available test of whether the input/decay ambiguity is real at this coverage or merely unexploited.</p>
         </div>
         <div class="decision-grid reveal" role="radiogroup" aria-label="Candidate next experiments">
-          <button class="decision-card recommended selected" type="button" role="radio" aria-checked="true" data-choice="B2" data-summary="B2 — Noisy H₂O identifiability: add priors, observation covariance, sparse gauges, unknown X, richer runoff states, and uncertainty diagnostics.">
-            <span class="recommend-chip">Recommended</span><span class="decision-code">B2</span><h3>Noisy H₂O identifiability</h3><p>Add priors, observation covariance, sparse gauges, unknown X, and a richer runoff state.</p><ul><li>Lowest scientific confounding</li><li>Direct bridge to 4D-Var / MAP</li><li>Defines honest uncertainty</li></ul><i class="select-indicator">✓</i>
+          <button class="decision-card recommended selected" type="button" role="radio" aria-checked="true" data-choice="D1" data-summary="D1 - Estimate a global chemical-input scale: 14 parameters instead of 13, starting from the biased inputs, and test whether the same 90 gauges separate a uniform load scale from the decay field.">
+            <span class="recommend-chip">Recommended</span><span class="decision-code">D1</span><h3>Estimate the input scale</h3><p>Add one global chemical-input scale to the neural fit and start it from the wrong value.</p><ul><li>Directly consumes the +0.279&sigma; residual signal</li><li>Recovering about 1/1.20 with rates restored settles it</li><li>A flat objective would settle it the other way</li></ul><i class="select-indicator">&#10003;</i>
           </button>
-          <button class="decision-card" type="button" role="radio" aria-checked="false" data-choice="B3" data-summary="B3 — Tracer geometry: begin with a conservative tracer, then one shared decay rate; compare DOC-like sparse and nitrogen-like denser observations.">
-            <span class="decision-code">B3</span><h3>Tracer + shared decay</h3><p>Begin conservatively, then estimate one positive decay rate under two sampling regimes.</p><ul><li>Directly tests source–decay confounding</li><li>Compare sparse DOC vs richer N</li><li>Builds toward RAPID-Chem</li></ul><i class="select-indicator">✓</i>
+          <button class="decision-card" type="button" role="radio" aria-checked="false" data-choice="D2" data-summary="D2 - Settle the storage physics: confirm where Phi belongs, the sign structure, and whether delta-Sc as a signed anomaly relative to equilibrium is the intended reading, before any storage state enters a real inversion.">
+            <span class="decision-code">D2</span><h3>Settle the storage physics</h3><p>Confirm the &Delta;Sc reading, the &Phi; placement and the sign structure before storage enters a real inversion.</p><ul><li>Only you can close this</li><li>Blocks the whole storage branch</li><li>The 7.7% admissibility cap depends on it</li></ul><i class="select-indicator">&#10003;</i>
           </button>
-          <button class="decision-card" type="button" role="radio" aria-checked="false" data-choice="B4" data-summary="B4 — Neural parameterization: predict constrained routing or decay parameters from reach attributes and validate by held-out basin against simpler baselines.">
-            <span class="decision-code">B4</span><h3>Neural parameterization</h3><p>Predict constrained K/X or decay from reach attributes while keeping routing explicit.</p><ul><li>Highest capability upside</li><li>Requires basin-held-out validation</li><li>Must beat simple baselines</li></ul><i class="select-indicator">✓</i>
+          <button class="decision-card" type="button" role="radio" aria-checked="false" data-choice="D3" data-summary="D3 - Choose the observing design: decide what the gauge network should be optimised for, given that storage information and decay information are in tension under a fixed budget.">
+            <span class="decision-code">D3</span><h3>Choose the observing design</h3><p>Decide what the gauge network should be optimised for, given the storage/decay tension.</p><ul><li>Genuine frontier, or all-or-nothing artifact?</li><li>Sets what a real SWOT/gauge mask should mimic</li><li>Mixed design already running</li></ul><i class="select-indicator">&#10003;</i>
+          </button>
+          <button class="decision-card" type="button" role="radio" aria-checked="false" data-choice="D4" data-summary="D4 - Fix the basin and the first real target: settle the outlet component and study boundary, then decide whether nitrogen or DOC is the first real-data application.">
+            <span class="decision-code">D4</span><h3>Fix the basin and first target</h3><p>Settle the study boundary and whether nitrogen or DOC is the first real-data application.</p><ul><li>64,579-reach component is provisional</li><li>Archive carries no shapefile geometry</li><li>Determines the observation operator</li></ul><i class="select-indicator">&#10003;</i>
           </button>
         </div>
         <div class="decision-output reveal" aria-live="polite">
-          <div><span>Selected discussion path</span><p id="decision-summary"><b>B2</b> — Noisy H₂O identifiability: add priors, observation covariance, sparse gauges, unknown X, richer runoff states, and uncertainty diagnostics.</p></div>
+          <div><span>Selected discussion path</span><p id="decision-summary"><b>D1</b> &mdash; Estimate a global chemical-input scale: 14 parameters instead of 13, starting from the biased inputs, and test whether the same 90 gauges separate a uniform load scale from the decay field.</p></div>
           <button type="button" class="button secondary copy-button" id="copy-decision">Copy summary</button>
+        </div>
+
+        <div class="question-grid reveal">
+          <article><span>Q1</span><h3>Prior structure</h3><p>The L2 weight penalty is a regulariser, not physics. What should actually constrain a decay field &mdash; a rate range, a spatial correlation, a CARDAMOM-derived prior?</p></article>
+          <article><span>Q2</span><h3>Success criterion</h3><p>Rate recovery and concentration skill disagree in these runs. Which one is the headline for RAPID-Chem?</p></article>
+          <article><span>Q3</span><h3>Input uncertainty</h3><p>The &times;1.20 test used an invented uniform bias. What is a defensible error model for chemical inputs, and is a covariance available?</p></article>
+          <article><span>Q4</span><h3>Snapshot or time</h3><p>Everything here is equilibrium algebra. Is the snapshot the intended scientific object, or a stepping stone to a time-integrated 4D-Var?</p></article>
         </div>
       </div>
     </section>
 
-    <section class="content-section section-shell discussion-section presentation-step" id="discussion" data-present-title="Discussion questions" aria-labelledby="discussion-title">
-      <div class="section-heading reveal">
-        <div><span class="kicker">Questions worth resolving today</span><h2 id="discussion-title">Use the meeting to tighten the experiment.</h2></div>
-      </div>
-      <div class="question-grid reveal">
-        <article><span>01</span><h3>State design</h3><p>Two amplitudes → temporal basis → reach classes → full field: how quickly should dimensionality grow?</p></article>
-        <article><span>02</span><h3>Observation realism</h3><p>Which gauge/SWOT masks, error model, and bias scenarios best reflect the first intended application?</p></article>
-        <article><span>03</span><h3>Prior structure</h3><p>Should runoff covariance begin diagonal, spatially correlated, or inherited from CARDAMOM ensembles?</p></article>
-        <article><span>04</span><h3>Success criteria</h3><p>Which matters most: state recovery, held-out discharge, uncertainty coverage, information gain, or all four?</p></article>
-      </div>
-    </section>
-
-    <section class="closing-section presentation-step" id="handoff" data-present-title="Handoff">
+    <section class="closing-section" id="handoff">
       <div class="section-shell closing-inner reveal">
-        <div><span class="kicker">Current handoff</span><h2>The foundation is reviewable.<br>The next claim must be harder.</h2></div>
+        <div><span class="kicker">Handoff</span><h2>The controls are reviewable.<br>The next claim needs your decisions.</h2></div>
         <div class="closing-actions">
-          <a class="button primary" href="https://github.com/CARDAMOM-framework/CARDAMOM-RAPID/pull/1" target="_blank" rel="noreferrer">Review pull request <span aria-hidden="true">↗</span></a>
-          <a class="button secondary light-button" href="https://app.notion.com/p/3d0788b60530818e9a40f3b1df0f3e83?pvs=204" target="_blank" rel="noreferrer">Open detailed record <span aria-hidden="true">↗</span></a>
+          <a class="button primary" href="rapid-chem-explained.html">Plain-language explainer <span aria-hidden="true">&#8594;</span></a>
+          <a class="button secondary light-button" href="assets/results-2026-09-08.json">Curated result snapshot <span aria-hidden="true">&#8595;</span></a>
         </div>
       </div>
     </section>
@@ -429,11 +692,16 @@
 
   <footer>
     <div class="section-shell footer-inner">
-      <div><b>CARDAMOM–RAPID</b><span>Differentiable inverse routing · Option A + B1</span></div>
-      <div class="footer-links"><a href="https://github.com/CARDAMOM-framework/CARDAMOM-RAPID" target="_blank" rel="noreferrer">Repository</a><a href="https://github.com/CARDAMOM-framework/CARDAMOM-RAPID/commit/d33f9303078fc9d5b0d3f5acb2caf3582363ec24" target="_blank" rel="noreferrer">Commit d33f930</a><a href="#top">Back to top ↑</a></div>
+      <div><b>CARDAMOM&#8211;RAPID</b><span>Differentiable RAPID-Chem &middot; synthetic controls &middot; 8 September 2026</span></div>
+      <div class="footer-links">
+        <a href="https://github.com/CARDAMOM-framework/CARDAMOM-RAPID" target="_blank" rel="noreferrer">Research repository</a>
+        <a href="https://zenodo.org/records/20672740" target="_blank" rel="noreferrer">Network dataset</a>
+        <a href="#top">Back to top &#8593;</a>
+      </div>
     </div>
   </footer>
 
   <script src="assets/app.js" defer></script>
+  <script type="module" src="assets/river3d.js"></script>
 </body>
 </html>
