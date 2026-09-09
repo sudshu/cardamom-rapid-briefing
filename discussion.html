@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A short plot-led discussion page for the differentiable RAPID-Chem synthetic experiments: what the learned decay field, the joint snapshot, gauge placement and an input-bias stress test actually showed.">
+<meta name="theme-color" content="#f5f3eb">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://sudshu.github.io/cardamom-rapid-briefing/discussion.html">
+<title>RAPID-Chem &middot; four results for discussion</title>
+<style>
+:root{
+  --ink:#09232c; --muted:#5c7078; --paper:#f5f3eb; --card:#ffffff; --line:#d8d5cb;
+  --fit:#177f4f; --base:#2b6ee0; --worse:#c25c05;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:78px}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.6;-webkit-text-size-adjust:100%}
+.wrap{max-width:1120px;margin:0 auto;padding:0 26px}
+a{color:var(--fit)}
+a:focus-visible,summary:focus-visible{outline:3px solid var(--base);outline-offset:3px}
+.skip{position:absolute;left:16px;top:-70px;background:var(--card);padding:10px 14px;border-radius:8px;z-index:20}
+.skip:focus{top:10px}
+
+header.top{position:sticky;top:0;z-index:10;background:#f5f3ebf2;backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding-top:13px;padding-bottom:13px}
+.brand{font-weight:700;letter-spacing:.01em;text-decoration:none;color:var(--ink);font-size:15px}
+.brand span{display:block;font-weight:400;color:var(--muted);font-size:12.5px}
+.brand i{font-style:normal}
+.backlink{font-size:14px;font-weight:600;text-decoration:none;border:1px solid var(--line);
+  background:var(--card);padding:9px 15px;border-radius:999px;white-space:nowrap}
+
+h1{font-size:clamp(28px,4vw,44px);line-height:1.12;letter-spacing:-.03em;margin:0 0 16px;font-weight:650}
+h2{font-size:clamp(21px,2.4vw,27px);line-height:1.22;letter-spacing:-.02em;margin:0 0 10px;font-weight:650}
+h3{font-size:17px;margin:0 0 8px;font-weight:650}
+p{margin:0 0 14px}
+.lede{font-size:20px;line-height:1.5;color:#20424c;max-width:76ch;margin-bottom:20px}
+.kicker{font-size:12px;letter-spacing:.15em;text-transform:uppercase;font-weight:700;
+  color:var(--fit);margin:0 0 10px}
+
+.intro{padding:44px 0 8px}
+.scope{border:1px solid var(--line);background:var(--card);border-radius:14px;
+  padding:16px 20px;font-size:14.5px;color:var(--muted);line-height:1.55;margin:0 0 26px}
+.scope b{color:var(--ink)}
+
+nav.jump{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 8px;padding:0 0 34px;
+  border-bottom:1px solid var(--line)}
+nav.jump a{font-size:14px;text-decoration:none;border:1px solid var(--line);background:var(--card);
+  padding:8px 14px;border-radius:999px;color:var(--ink);font-weight:550}
+nav.jump a:hover{border-color:var(--fit);color:var(--fit)}
+
+.result{padding:40px 0;border-bottom:1px solid var(--line)}
+.result-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+.num{font-size:13px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+figure{margin:22px 0 0;background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:20px 20px 8px;overflow:hidden}
+figure img{width:100%;height:auto;display:block}
+figcaption{font-size:14.5px;line-height:1.6;color:var(--muted);padding:14px 4px 12px;
+  border-top:1px solid var(--line);margin-top:14px}
+figcaption b{color:var(--ink)}
+figcaption .row{display:block;margin-bottom:7px}
+figcaption .row:last-child{margin-bottom:0}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  border-radius:5px;padding:2px 7px;margin-right:9px;vertical-align:1px}
+.tag.t{background:#e4efe9;color:var(--fit)}
+.tag.f{background:#e6eefb;color:var(--base)}
+.tag.c{background:#f8e9dc;color:var(--worse)}
+.figscroll{overflow-x:visible}
+.scrollhint{display:none}
+
+.keynums{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:12px;margin:20px 0 0}
+.keynums div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.keynums b{display:block;font-size:22px;line-height:1.15;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;margin-bottom:4px}
+.keynums small{display:block;font-size:12.5px;color:var(--muted);line-height:1.45}
+.keynums .good b{color:var(--fit)}
+.keynums .bad b{color:var(--worse)}
+
+.questions{padding:44px 0 10px}
+.qgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+.qgrid article{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+.qgrid .qn{font-size:12px;font-weight:700;letter-spacing:.13em;color:var(--fit);margin-bottom:9px}
+.qgrid p{font-size:15px;line-height:1.58;color:var(--muted);margin:0}
+.qgrid p+p{margin-top:9px}
+
+.proposal{margin:30px 0 46px;border:2px solid var(--fit);border-radius:16px;background:var(--card);
+  padding:24px 26px}
+.proposal .kicker{margin-bottom:8px}
+.proposal p{font-size:15.5px;color:#20424c;margin-bottom:10px}
+.proposal p:last-child{margin-bottom:0}
+.proposal .warn{font-size:13.5px;color:var(--worse);font-weight:600}
+
+footer{border-top:1px solid var(--line);padding:26px 0 46px;font-size:13.5px;color:var(--muted)}
+footer p{margin:0 0 9px}
+footer a{color:var(--fit)}
+
+@media(max-width:860px){
+  body{font-size:16px}
+  .wrap{padding:0 18px}
+  .lede{font-size:18px}
+  .qgrid{grid-template-columns:1fr}
+  figure{padding:12px 0 4px;border-radius:12px}
+  .figscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:0 12px}
+  .figscroll img{min-width:660px}
+  figcaption{padding-left:14px;padding-right:14px}
+  .scrollhint{display:block;font-size:12px;color:var(--muted);padding:8px 14px 0}
+  header.top .wrap{padding-top:10px;padding-bottom:10px}
+  .brand span,.brand i{display:none}
+}
+@media print{
+  header.top,nav.jump,.skip{display:none!important}
+  body{background:#fff;font-size:11.5pt}
+  .wrap{max-width:100%;padding:0}
+  .result{break-inside:avoid;padding:16px 0}
+  figure{break-inside:avoid;border-color:#bbb;padding:6px}
+  .qgrid{grid-template-columns:1fr 1fr 1fr}
+  .proposal{break-inside:avoid}
+  a{color:#000;text-decoration:none}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the results</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="index.html">RAPID-Chem<i> &middot; four results</i><span>Discussion notes, 9 September 2026</span></a>
+    <a class="backlink" href="index.html">Full briefing &amp; methods &rarr;</a>
+  </div>
+</header>
+
+<main id="main">
+<section class="intro">
+  <div class="wrap">
+    <p class="kicker">For discussion with Anthony Bloom</p>
+    <h1>Four results, four plots, and what we still need to decide.</h1>
+    <p class="lede">Equation 42 now runs as a differentiable snapshot operator on the real 64,579-reach
+      topology, and we have used it for four controlled synthetic experiments: a learned decay field,
+      a joint five-parameter inversion, a gauge-placement comparison, and a wrong-chemical-input stress
+      test. This page is the short version &mdash; each plot below is a real result with its key numbers
+      and its caveat, followed by three questions for you.</p>
+
+    <p class="scope"><b>Read everything here as an OSSE.</b> The river network, its connectivity,
+      travel time <b>K</b> and weighting <b>X</b> are real and are held known and fixed; the water forcing,
+      the chemistry, the decay-rate truth field and every observation are synthetic. <b>Rc</b> is the local
+      <i>chemical</i> input flux, not water runoff; <b>&Delta;Sc</b> is a signed chemical mass anomaly
+      relative to equilibrium, not a change between two time steps. The 64,579-reach component is a
+      provisional operational domain, not a settled study basin. No measured nitrogen or DOC has been used,
+      no full MATLAB parity is claimed, and nothing here proves general identifiability. Held-out and
+      evaluation gauges are fixed, repeatedly used sets on the same network &mdash; not blind validation.</p>
+
+    <nav class="jump" aria-label="Jump to a result">
+      <a href="#learned">1 &middot; Learned decay field</a>
+      <a href="#joint">2 &middot; Joint snapshot</a>
+      <a href="#placement">3 &middot; Gauge placement</a>
+      <a href="#bias">4 &middot; Wrong inputs</a>
+      <a href="#questions">Questions for you</a>
+      <a href="#proposal">Proposed next test</a>
+    </nav>
+  </div>
+</section>
+
+<!-- 1 -->
+<section class="result" id="learned">
+  <div class="wrap">
+    <div class="result-head"><span class="num">RESULT 1</span></div>
+    <h2>A neural decay field works &mdash; once there are enough gauges.</h2>
+    <p>Thirteen parameters map latitude and log K to a bounded per-reach decay rate. It never sees a
+      decay-rate label; it is trained only on noisy concentrations at virtual gauges.</p>
+
+    <figure>
+      <div class="figscroll"><img src="assets/discussion/fig1-learned-decay.svg" width="1460" height="550"
+           alt="Left: hexagonal-bin density of learned versus true decay rate for all 64,579 reaches, following the one-to-one line at low rates and flattening below it above about 0.15 per day, with the fitted constant rate drawn as a horizontal line at 0.0887 per day. Right: median absolute relative decay-rate error for four settings — 5.3% with no observation noise and 30 gauges, 66.0% with 20% noise and 30 gauges, 47.2% with 20% noise, 30 gauges and a stronger weight prior, and 18.7% with 20% noise and 90 gauges."></div>
+      <small class="scrollhint">Scroll the panel sideways to read it, or see the numbers written out below.</small>
+      <figcaption>
+        <span class="row"><span class="tag t">Tested</span>Can a small network recover a spatially varying
+          decay field from noisy downstream concentrations alone?</span>
+        <span class="row"><span class="tag f">Found</span>Yes, but observation coverage was the binding
+          constraint, not the network. Holding architecture, prior, initialisation, likelihood and optimiser
+          fixed and changing <b>only</b> 30&nbsp;&rarr;&nbsp;90 training gauges took median relative rate
+          error from 47.2% to <b>18.7%</b> and correlation with the truth field from 0.37 to <b>0.825</b>.
+          At 90 gauges the rate RMSE is <b>0.0343/day</b> against <b>0.0564/day</b> for the constant-rate
+          baseline &mdash; the first fit in the series to beat the spread of the true field itself
+          (0.0524/day), which is what a constant rate is worth.</span>
+        <span class="row"><span class="tag c">Caveat</span>The four bars change <b>different factors</b> and
+          are not a single controlled ladder: one removes noise, one strengthens the weight prior, one adds
+          gauges. Each is one seed, one initialisation, one noise realisation. The density panel shows where
+          it still fails &mdash; above roughly 0.15/day the learned rates flatten well below the 1:1 line.
+          The 13 weights remain non-identifiable; the L2 penalty is a regulariser, not physics.</span>
+      </figcaption>
+    </figure>
+
+    <div class="keynums">
+      <div class="good"><b>18.7%</b><small>median relative rate error, 90 gauges</small></div>
+      <div><b>0.0343 /day</b><small>rate RMSE, 90-gauge network</small></div>
+      <div><b>0.0564 /day</b><small>rate RMSE, constant-rate baseline</small></div>
+      <div><b>0.0524 /day</b><small>spread of the true rate field</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="result" id="joint">
+  <div class="wrap">
+    <div class="result-head"><span class="num">RESULT 2</span></div>
+    <h2>Inputs and decay separate. The storage term is still the prior talking.</h2>
+    <p>A deliberately reduced problem: five free parameters &mdash; two chemical-input scalings, two decay
+      rates, and one amplitude on a fixed storage-anomaly spatial pattern.</p>
+
+    <figure>
+      <div class="figscroll"><img src="assets/discussion/fig2-joint-snapshot.svg" width="1240" height="500"
+           alt="Estimated divided by true value for five parameters against a dashed line at 1.0. Chemical input west 1.615 of 1.6, chemical input east 0.702 of 0.7, decay west 0.0523 of 0.05 per day and decay east 0.1491 of 0.15 per day all sit essentially on the line, with data eigenvalues 131, 111, 13 and 10. The storage amplitude sits far left at 0.252 of 0.6 with a data eigenvalue of 0.736, moving to 0.448 when the prior standard deviation is doubled."></div>
+      <small class="scrollhint">Scroll the panel sideways to read it, or see the numbers written out below.</small>
+      <figcaption>
+        <span class="row"><span class="tag t">Tested</span>Can one snapshot separate chemical inputs,
+          a storage anomaly and decay when all three are estimated together?</span>
+        <span class="row"><span class="tag f">Found</span>Under this reduction, four of the five recover to
+          within 0.07 prior standard deviations &mdash; chemical inputs <b>1.615</b>&nbsp;/&nbsp;1.6 and
+          <b>0.702</b>&nbsp;/&nbsp;0.7, decay rates <b>0.0523</b>&nbsp;/&nbsp;0.05 and
+          <b>0.1491</b>&nbsp;/&nbsp;0.15 per day. The per-reach input/decay degeneracy survives only as a
+          <i>within-region</i> correlation (0.720 west, 0.788 east), with cross-region correlations near zero.
+          The storage amplitude does not recover: <b>0.252 against a truth of 0.6</b>. Its data eigenvalue is
+          <b>0.736</b> &mdash; below 1, meaning the 30 gauges constrain that direction less tightly than the
+          prior does &mdash; so the reported value is mostly prior. Doubling the prior width alone moves it to
+          <b>0.448</b> while the other four shift by at most 0.044 prior sd. That is a prior statement,
+          not a measurement.</span>
+        <span class="row"><span class="tag c">Caveat</span><b>b</b> is a dimensionless amplitude on one fixed
+          spatial basis &mdash; not a measured mass and not a reach-wise storage field. This is snapshot
+          algebra with noise-free observations, not a dynamic 4D-Var; the 0.198 sigma is an assumed fitting
+          scale. Success with five parameters says nothing about the reach-wise problem, and the
+          Gauss-Newton covariance is a local linearisation, not a calibrated posterior.</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="result" id="placement">
+  <div class="wrap">
+    <div class="result-head"><span class="num">RESULT 3</span></div>
+    <h2>Moving the gauges buys storage information by spending decay information.</h2>
+    <p>One change only: the same 30 training gauges drawn across the full drainage-area range instead of
+      each class's upper quartile. Same count, same truth, same held-out reaches, zero overlap with the
+      previous training set.</p>
+
+    <figure>
+      <div class="figscroll"><img src="assets/discussion/fig3-gauge-placement.svg" width="1320" height="490"
+           alt="Left: storage amplitude rises from 0.2523 with upper-quartile gauges to 0.4259 with full-area-range gauges, against a dashed truth line at 0.6. Right: standardised log RMSE at the ten reused held-out gauges rises from 0.084 to 0.175, marked worse, while whole-network error falls from 0.211 to 0.182, marked better."></div>
+      <small class="scrollhint">Scroll the panel sideways to read it, or see the numbers written out below.</small>
+      <figcaption>
+        <span class="row"><span class="tag t">Tested</span>Is the storage amplitude unobservable in this
+          operator, or merely unobserved by that gauge design?</span>
+        <span class="row"><span class="tag f">Found</span>Unobserved, partly. Moving the gauges took the
+          storage amplitude from 0.2523 to <b>0.4259</b> (truth 0.6), its marginal information at a common
+          parameter point from 0.74 to <b>2.45</b>, and its variance reduction from 42% to 71%. Median gauge
+          drainage area fell from 3,466&nbsp;km&sup2; to 94&nbsp;km&sup2;, raising storage's share of flux at
+          the gauges from 2.4% to 5.5%.</span>
+        <span class="row"><span class="tag c">Caveat</span>It is a redistribution, not a free win.
+          <b>Total data information fell from 266.0 to 207.9.</b> Decay-west marginal information collapsed
+          from 11.7 to 1.40 and its error grew to +0.343 prior sd, because decay is read from contrast built
+          along long flow paths and the new design mostly stopped observing them. Prediction at the ten
+          reused held-out gauges got <b>worse</b>, 0.084&nbsp;&rarr;&nbsp;0.175, even as whole-network error
+          improved. A mixed design that tries to hold both is not yet verified, so it is not reported here.</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="result" id="bias">
+  <div class="wrap">
+    <div class="result-head"><span class="num">RESULT 4</span></div>
+    <h2>If we assume the wrong chemical input, decay absorbs it &mdash; but not invisibly.</h2>
+    <p>The 90-gauge case reproduced bit-for-bit, then refitted with one change: the fitting forward model
+      multiplies every local chemical input Rc by 1.20 at all 64,579 reaches. Observations, water, K, X and
+      the truth field are untouched.</p>
+
+    <figure>
+      <div class="figscroll"><img src="assets/discussion/fig4-source-bias.svg" width="1320" height="490"
+           alt="Left: decay-rate RMSE rises from 0.0343 per day with the correct chemical input to 0.0628 per day when Rc is assumed 20% too high, crossing the dashed line marking the 0.0524 per day spread of the true field; median signed rate bias moves from minus 2.6% to plus 18.2%. Right: concentration log RMSE against truth at the ten reused evaluation gauges rises from 0.0397 to 0.1091."></div>
+      <small class="scrollhint">Scroll the panel sideways to read it, or see the numbers written out below.</small>
+      <figcaption>
+        <span class="row"><span class="tag t">Tested</span>Can a wrong chemical load hide inside the learned
+          decay field while the concentrations still fit?</span>
+        <span class="row"><span class="tag f">Found</span>Compensation is real and proportionate &mdash;
+          median signed rate bias moved from &minus;2.6% to <b>+18.2%</b> against an imposed +20% input bias,
+          rate RMSE nearly doubled to <b>0.0628/day</b> (worse than predicting the mean rate), and correlation
+          with the truth field roughly halved, 0.825&nbsp;&rarr;&nbsp;0.440. But the concentration fit
+          <b>also</b> got worse, 0.0397&nbsp;&rarr;&nbsp;0.1091 log RMSE, so this is <b>not</b> a case of a
+          good concentration fit masking a wrong decay field. The detectable trace is the residual mean:
+          +0.279&sigma; for the biased fit against &minus;0.024&sigma; for both the correct fit and the truth
+          itself.</span>
+        <span class="row"><span class="tag c">Caveat</span>One bias size, one sign, one seed, and a spatially
+          <i>uniform</i> multiplicative error &mdash; which a spatially varying decay field should be worst at
+          absorbing, so detection here is probably easier than it would be in general. The run does not
+          separate &ldquo;no decay field can deliver a uniform log offset&rdquo; from &ldquo;the weight penalty
+          resisted&rdquo;. Rc stays known and fixed in the fit, so this is not joint estimation of inputs and
+          decay.</span>
+      </figcaption>
+    </figure>
+
+    <div class="keynums">
+      <div class="bad"><b>0.0343 &rarr; 0.0628</b><small>decay-rate RMSE (/day)</small></div>
+      <div class="bad"><b>0.0397 &rarr; 0.1091</b><small>concentration log RMSE vs truth</small></div>
+      <div class="bad"><b>&minus;2.6% &rarr; +18.2%</b><small>median signed rate bias</small></div>
+      <div><b>+0.279&sigma;</b><small>residual mean &mdash; the detectable trace</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- questions -->
+<section class="questions" id="questions">
+  <div class="wrap">
+    <p class="kicker">Three things only you can settle</p>
+    <h2>Questions for you.</h2>
+    <div class="qgrid">
+      <article>
+        <p class="qn">Q1 &middot; STORAGE</p>
+        <h3>Is our reading of &Delta;Sc the one you intended?</h3>
+        <p>We treat it as a signed chemical mass anomaly relative to equilibrium, with &Phi; applied to the
+          storage term as written. Half the storage contributions at truth are negative and nothing is
+          clipped, yet no total flux goes negative.</p>
+        <p>Given the amplitude is currently mostly prior, what would make a physically defensible prior
+          width for it &mdash; and should storage enter a real inversion at all before that is settled?</p>
+      </article>
+      <article>
+        <p class="qn">Q2 &middot; PRIORS &amp; PARAMETERS</p>
+        <h3>What should actually constrain a decay field?</h3>
+        <p>Today it is an L2 penalty on 13 weights &mdash; a regulariser, not knowledge about rivers. A rate
+          range, a spatial correlation, or a CARDAMOM-derived prior would all behave differently.</p>
+        <p>And should chemical input Rc carry its own scale parameter and error covariance rather than being
+          assumed known, given result 4?</p>
+      </article>
+      <article>
+        <p class="qn">Q3 &middot; GAUGES &amp; FIRST REAL TARGET</p>
+        <h3>What should the observing design optimise for?</h3>
+        <p>Storage information and decay information are in tension under a fixed gauge budget. Which regime
+          should a realistic gauge or SWOT mask imitate?</p>
+        <p>And what is the first real-data target &mdash; nitrogen or DOC &mdash; over which basin boundary?
+          That choice sets the observation operator and fixes whether the 64,579-reach component stands.</p>
+      </article>
+    </div>
+
+    <div class="proposal" id="proposal">
+      <p class="kicker">Proposed next experiment</p>
+      <h3>Let the fit estimate one global chemical-input scale.</h3>
+      <p>Fourteen parameters instead of thirteen, starting from the biased +20% value, with the same 90
+        gauges and everything else unchanged. Recovering a scale near 1/1.20 with rate recovery restored
+        toward 18.7% would show the data do constrain a uniform load; a flat objective along that direction
+        with the rates absorbing the scale would show they do not. The +0.279&sigma; residual mean from
+        result 4 is exactly the signal such a parameter would consume, which makes this the sharpest cheap
+        test of whether the input/decay ambiguity is real at this coverage or merely unexploited.</p>
+      <p class="warn">This is a proposal for discussion. It has not been run, and nothing on this page
+        reports it.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Sources.</b> Every number and every plot is generated directly from the saved outputs of four
+      completed experiments &mdash; <code>neural_decay_osse</code> (with its noise-free, stronger-prior and
+      90-gauge coverage variants), <code>joint_snapshot_osse</code>,
+      <code>joint_snapshot_coverage</code> and <code>neural_decay_source_bias_osse</code> &mdash; with the
+      plotted aggregates re-derived from the saved arrays and checked against each experiment's recorded
+      values. The curated numbers, with their caveats, are published as
+      <a href="assets/results-2026-09-08.json">results-2026-09-08.json</a>.</p>
+    <p>Static river topology from the supplied MERIT/RAPID region-74 archive
+      (<a href="https://zenodo.org/records/20672740" target="_blank" rel="noreferrer">Zenodo record 20672740</a>),
+      checksum-verified; it contains static tables and reach coordinates, not shapefile geometry.
+      Two further experiments &mdash; a fresh-seed replication and a mixed gauge design &mdash; had no
+      verified report when this page was built and are deliberately not reported.</p>
+    <p><a href="index.html">Full briefing, methods and limits &rarr;</a> &nbsp;&middot;&nbsp;
+      <a href="rapid-chem-explained.html">Plain-language explainer &rarr;</a></p>
+  </div>
+</footer>
+</body>
+</html>
