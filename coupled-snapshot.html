@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A slide deck on the coupled water-chemistry eight-parameter RAPID-Chem snapshot: two water-input multipliers, two chemical-input multipliers, two decay rates and two storage amplitudes fitted together from one synthetic snapshot of discharge and concentration on the real 64,579-reach region-74 component.">
+<meta name="theme-color" content="#f5f3eb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Coupled water–chemistry snapshot · RAPID-Chem">
+<meta property="og:description" content="Eight unknowns, two measured types, one snapshot. Seven of eight recovered; the eighth is prior-dominated, and we can show by how much.">
+<meta property="og:url" content="https://sudshu.github.io/cardamom-rapid-briefing/coupled-snapshot.html">
+<link rel="canonical" href="https://sudshu.github.io/cardamom-rapid-briefing/coupled-snapshot.html">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<title>Coupled water–chemistry snapshot · RAPID-Chem briefing for Anthony Bloom</title>
+<link rel="stylesheet" href="assets/coupled-snapshot-20260922/deck.css">
+<script>
+/* Arm slide mode immediately so the deck does not flash as a long document, but
+   disarm it unless deck.js reports a successful init: a failed or broken script
+   must leave every slide readable. */
+(function () {
+  var root = document.documentElement;
+  root.className += " js";
+  window.deckFallback = function () { root.className = root.className.replace(/\bjs\b/, "").trim(); };
+  window.setTimeout(function () { if (!window.deckReady) window.deckFallback(); }, 1200);
+})();
+</script>
+</head>
+<body>
+
+<a class="skip" href="#deck">Skip to the slides</a>
+<div class="progress" aria-hidden="true"><i id="progress-bar"></i></div>
+<p id="slide-live" class="visually-hidden" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap"></p>
+
+<div class="doc-head">
+  <p class="kicker">RAPID-Chem · briefing slides</p>
+  <h1 style="margin:8px 0 10px">Coupled water–chemistry snapshot</h1>
+  <p class="lede">This page is a slide deck. With JavaScript enabled it opens one slide at a time with
+    arrows, a jump menu and deep links; without it, every slide below is a plain section you can read and
+    print in order.</p>
+</div>
+
+<nav class="jump-panel" id="jump-panel" aria-label="Slide contents">
+  <h2>Contents</h2>
+  <ol>
+    <li data-for="title"><a href="#title">Coupled snapshot: the result</a></li>
+    <li data-for="what-changed"><a href="#what-changed">What changed since the five-parameter control</a></li>
+    <li data-for="method"><a href="#method">The forward model we fit</a></li>
+    <li data-for="design"><a href="#design">How the test was set up</a></li>
+    <li data-for="why-both"><a href="#why-both">Why both measurements are needed</a></li>
+    <li data-for="recovery"><a href="#recovery">What came back: seven of eight</a></li>
+    <li data-for="heldout"><a href="#heldout">Held-out predictions</a></li>
+    <li data-for="storage"><a href="#storage">The eighth parameter</a></li>
+    <li data-for="verification"><a href="#verification">Verification, and what failed</a></li>
+    <li data-for="next"><a href="#next">Two questions, one next diagnostic</a></li>
+  </ol>
+  <p class="appendix-head">Appendix</p>
+  <ol start="11">
+    <li data-for="appendix-table"><a href="#appendix-table">All eight parameters in native units</a></li>
+    <li data-for="appendix-figure"><a href="#appendix-figure">The original run figure</a></li>
+    <li data-for="appendix-information"><a href="#appendix-information">Information and diagnostics</a></li>
+    <li data-for="appendix-provenance"><a href="#appendix-provenance">Files, checksums and checks</a></li>
+  </ol>
+</nav>
+
+<main id="deck">
+
+<!-- 01 ------------------------------------------------------------------- -->
+<section class="slide" id="title" data-title="Coupled snapshot: the result" aria-label="Slide 1: Coupled snapshot, the result">
+  <div class="slide-inner">
+    <p class="kicker">For Anthony Bloom <span class="step">· 22 September 2026 · experiment run 16 September 2026</span></p>
+    <h1>Water and chemistry, fitted together<br>from one snapshot.</h1>
+    <p class="lede">Eight unknowns — two water-input multipliers, two chemical-input multipliers, two decay
+      rates and one amplitude for each storage field — estimated simultaneously from a single synthetic
+      snapshot of <b>discharge and concentration</b> on the real 64,579-reach component above COMID 74072654.
+      <b>Seven of the eight meet the recovery tolerance written down in advance.</b> The eighth, the chemical
+      storage amplitude, is held by its prior — and we can show exactly how much.</p>
+    <div class="metrics">
+      <div><b>8</b><span>unknowns, K and X still fixed, no neural network</span></div>
+      <div><b>7 / 8</b><span>within ±0.25 prior sd, at all three starts</span></div>
+      <div><b>3 → 8</b><span>data-Jacobian rank: discharge alone, then both types together (concentration alone 7)</span></div>
+      <div><b>0.0119</b><span>mg/L held-out concentration RMSE (4.34 m³/s for discharge)</span></div>
+    </div>
+    <p class="banner"><b>Synthetic throughout.</b> Real static topology, real K and X; synthetic forcing and
+      virtual observations. No measured discharge or chemistry, no study basin finalised, and nothing here
+      validates the storage physics of Equation 42.</p>
+    <p class="small">Deck built from the saved run outputs — <a href="assets/coupled-snapshot-20260922/coupled-snapshot-20260916.json">curated numbers</a>,
+      <a href="assets/coupled-snapshot-20260922/data-checks.json">source checks</a>. Related:
+      <a href="index.html">the September briefing</a> · <a href="discussion.html">four results for discussion</a>.</p>
+  </div>
+</section>
+
+<!-- 02 ------------------------------------------------------------------- -->
+<section class="slide" id="what-changed" data-title="What changed" aria-label="Slide 2: What changed since the five-parameter control">
+  <div class="slide-inner">
+    <p class="kicker">02 · What changed</p>
+    <h2>The water is no longer assumed known.</h2>
+    <p class="lede">The earlier five-parameter control asked whether concentrations alone could separate
+      chemical inputs, one storage anomaly and decay — with discharge, K and X all known exactly. Your newer
+      framing of the problem puts water and chemistry into a single inverse state. This is the smallest
+      honest step in that direction.</p>
+    <div class="cols">
+      <div class="card">
+        <span class="tag">Before · five parameters</span>
+        <ul class="ticks neutral" style="margin-top:.4em">
+          <li>Water discharge <b>held fixed at the truth</b></li>
+          <li>Two chemical-input multipliers</li>
+          <li>Two decay rates</li>
+          <li>One chemical storage amplitude</li>
+          <li>One measured type: concentration</li>
+        </ul>
+      </div>
+      <div class="card teal">
+        <span class="tag">Now · eight parameters</span>
+        <ul class="ticks" style="margin-top:.4em">
+          <li><b>Two water-input multipliers</b>, west and east</li>
+          <li>Two chemical-input multipliers</li>
+          <li>Two decay rates, per day</li>
+          <li><b>Two storage amplitudes</b>: one water, one chemical</li>
+          <li>Two measured types: discharge <b>and</b> concentration</li>
+        </ul>
+      </div>
+    </div>
+    <p class="small">The two regions are the existing metadata longitude classes split at the component median
+      longitude (−96.306°, ties east), 32,289 and 32,290 reaches. They are coordinate classes, <b>not</b>
+      hydrologic subbasins, and they are not connected. K, X and the topology stay fixed; there is no neural
+      network anywhere in this experiment.</p>
+    <details class="notes"><summary>Why only eight</summary><div class="notes-body">
+      <p>Each storage field is one fixed spatial pattern with a single fitted amplitude, not a free map. A
+        general storage state has one degree of freedom per reach, and the per-reach source-versus-rate
+        confounding recorded in the earlier work is untouched by this reduction.</p>
+      <p>The state is held in log coordinates for the six positive quantities (four multipliers, two decay
+        rates) and in signed native units for the two storage amplitudes.</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- 03 ------------------------------------------------------------------- -->
+<section class="slide" id="method" data-title="The forward model we fit" aria-label="Slide 3: The forward model we fit">
+  <div class="slide-inner">
+    <p class="kicker">03 · Method</p>
+    <h2>Coupled water and chemistry snapshot equations.</h2>
+    <figure class="fig">
+      <img src="assets/coupled-snapshot-20260922/fig-forward-model.svg" width="1120" height="556"
+        alt="Flow diagram with two lanes. The water lane takes two regional runoff multipliers and one water storage amplitude, forms R equals a times R reference and delta S water equals b w times a fixed pattern, and produces discharge Qw equals A R plus B delta S water, with A the inverse of I minus N and B the inverse of M times the inverse of K. The chemistry lane takes two chemical input multipliers, two decay rates and one chemical storage amplitude, forms Rc, Phi equals the exponential of minus five thirds alpha K, and delta S chemical, and produces the chemical flux Qc equals the inverse of I minus Phi N, times Phi Rc, plus Phi B delta S chemical. An arrow runs from the predicted discharge box into the concentration box: the predicted Qw, not any observed or logged discharge, is the denominator of C equals 1000 Qc over Qw in milligrams per litre. Discharge is measured type 1 with assumed log sigma 0.0998 and concentration is measured type 2 with assumed log sigma 0.1980, both at the same thirty locations. Topology, travel time K and Muskingum weighting X are fixed.">
+      <figcaption><b>The chemistry operator is your April equation draft as written</b> — including where Φ sits
+        on the storage term. The water side uses the same Muskingum routing operators and the same storage
+        operator B = M⁻¹K⁻¹. Concentration divides by the <b>predicted</b> Q<sub>w</sub>.</figcaption>
+    </figure>
+    <div class="cols-3">
+      <div class="card"><span class="tag">Cost</span><p class="small">Separate weighted squared <b>log</b>
+        residuals for Q and C, plus independent Gaussian prior penalties. The three costs are always reported
+        separately.</p></div>
+      <div class="card"><span class="tag">Optimiser</span><p class="small">SciPy L-BFGS-B on the box with JAX
+        <b>value_and_grad</b>, float64, maxiter 500. No HMC, no 4D-Var, no time stepping.</p></div>
+      <div class="card"><span class="tag">Snapshot</span><p class="small">One snapshot, no calendar. The
+        nonzero storage anomalies mean it is <b>not</b> an equilibrium state. Chemical routing and decay are
+        solved; what is absent is time resolution — no time-resolved pulse or transport run, and no temporal
+        mass-balance test.</p></div>
+    </div>
+    <details class="notes"><summary>The objective, written out</summary><div class="notes-body">
+      <p class="mono">J = ½ Σ_Q ((log Q<sub>pred</sub> − log y<sub>Q</sub>)/σ<sub>Q</sub>)²
+        + ½ Σ_C ((log C<sub>pred</sub> − log y<sub>C</sub>)/σ<sub>C</sub>)²
+        + ½ Σ ((θ − prior mean)/prior sd)²</p>
+      <p>σ<sub>Q</sub> = 0.0998 and σ<sub>C</sub> = 0.1980 are assumed likelihood scales — √log(1+0.1²) and
+        √log(1+0.2²), i.e. 10% and 20% CV. They are <b>not</b> the generated noise, which is exactly zero.
+        Errors are assumed independent across gauges and between the two data types at the same gauge.
+        That independence is an <b>OSSE assumption</b>: a real error covariance depends on the measurement
+        protocol at each site.</p>
+      <p>Masked and held-out values are dropped from the closure entirely, so they can reach neither the
+        value nor the gradient; the tests check that bitwise.</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- 04 ------------------------------------------------------------------- -->
+<section class="slide" id="design" data-title="How the test was set up" aria-label="Slide 4: How the test was set up">
+  <div class="slide-inner">
+    <p class="kicker">04 · OSSE design, frozen before any fit</p>
+    <h2>Real river network, synthetic forcing and observations.</h2>
+    <div class="cols">
+      <div class="card">
+        <span class="tag">Domain and forcing</span>
+        <ul class="ticks" style="margin-top:.4em">
+          <li>Outlet component of COMID <b>74072654</b>: 64,579 reaches, one outlet, from the pinned
+            region-74 archive, MD5 verified inside the run</li>
+          <li>R<sub>ref</sub> from a uniform 1 mm/day runoff depth; R<sub>c,ref</sub> set to 1 mg/L of that
+            water — a fixed reference field, not a link between the fitted multipliers</li>
+          <li>K, X and the topology come from the same archived static data and are held fixed, as are both
+            storage-anomaly patterns; only the forcing and the observations are synthetic</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">Observations</span>
+        <ul class="ticks" style="margin-top:.4em">
+          <li><b>30 training reaches</b>, drawn by the existing metadata-only mixed-area rule (reach ID,
+            longitude class and drainage area only), 15 west and 15 east</li>
+          <li><b>10 held-out reaches</b>, reserved first — and <b>reused</b> from earlier experiments, so
+            this is a paired evaluation, not a blind test</li>
+          <li>Both data types at the <b>same</b> reaches. Real chemistry stations are far sparser</li>
+          <li><b>Zero generated noise.</b> Virtual observations equal the noise-free truth exactly</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cols-3">
+      <div class="card"><span class="tag">Prior</span><p class="small">Independent Gaussians, sd
+        (0.4, 0.4, 0.5, 0.5, 0.7, 0.7, 0.5, 0.5). <b>No prior centre equals its truth</b>: the truth sits
+        0.58–1.20 prior sd away. Box = prior mean ± 2 prior sd at every stage.</p></div>
+      <div class="card"><span class="tag">Controls</span><p class="small">Three starting points frozen in
+        advance — prior mean; 1.2 sd with the <b>opposite</b> sign to every truth offset; +1.5 sd everywhere.
+        One prespecified weaker-prior control at prior sd ×3.</p></div>
+      <div class="card"><span class="tag">Gates</span><p class="small">Recovered if |error| ≤ <b>0.25</b> base
+        prior sd, marginal to 0.5. Train fit ≤ 0.10 and held-out ≤ 0.25 noise-scaled log RMSE. Optimiser
+        convergence is <b>not</b> a recovery gate.</p></div>
+    </div>
+    <details class="notes"><summary>Storage patterns, and what they cost</summary><div class="notes-body">
+      <p>Water storage: the existing tanh((lat − median)/2.5°) latitude dipole times the conservative
+        equilibrium water storage. Chemical storage: tanh((lat − median)/2.5°)·tanh((lon − median)/5°), a
+        lat–lon quadrupole, times the conservative equilibrium chemical mass. Choosing a chemical shape
+        distinct from both the water dipole and the west/east classes <b>favours separability</b>; the
+        realised cosine similarity between the two normalised storage flux patterns is 0.148, reported rather
+        than engineered.</p>
+      <p>Both patterns are rescaled once so that four quantities stay positive over the whole tested box:
+        Q<sub>w</sub>, S<sub>w</sub>, Q<sub>c</sub> and S<sub>c</sub>. That certificate costs identifiability,
+        and the cost is quantified on the eighth slide.</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- 05 ------------------------------------------------------------------- -->
+<section class="slide" id="why-both" data-title="Why both measurements are needed" aria-label="Slide 5: Why both measurements are needed">
+  <div class="slide-inner">
+    <p class="kicker">05 · The registered prediction, confirmed</p>
+    <h2>Concentration alone cannot see an overall scale. Discharge can.</h2>
+    <figure class="fig">
+      <img src="assets/coupled-snapshot-20260922/fig-rank.svg" width="1060" height="500"
+        alt="Three columns of eight singular values of the prior-scaled data Jacobian at the synthetic truth, on a logarithmic axis. Discharge only: three nonzero values, 16.7, 14.3 and 3.26, and five exact zeros, rank 3 of 8. Concentration only: seven nonzero values from 13.5 down to 0.138, plus one at 1.5 times ten to the minus fifteen, rank 7 of 8. Both data types together: eight nonzero values from 19.4 down to 0.782, rank 8 of 8. A dashed line marks a singular value of one, where the data are as informative as the prior.">
+      <figcaption>Because Q<sub>w</sub> is linear in (R, ΔS<sub>w</sub>) and Q<sub>c</sub> is linear in
+        (R<sub>c</sub>, ΔS<sub>c</sub>), scaling <span class="mono">a→λa, c→λc, b<sub>w</sub>→λb<sub>w</sub>,
+        b<sub>c</sub>→λb<sub>c</sub></span> multiplies both by λ and leaves C = Q<sub>c</sub>/Q<sub>w</sub>
+        <b>exactly</b> unchanged. This was written down before the model was coded.</figcaption>
+    </figure>
+    <div class="cols-3">
+      <div class="card"><span class="tag">The null direction</span><p class="small">‖J<sub>C</sub>v‖/‖J<sub>C</sub>‖
+        = <b>9.6 × 10⁻¹⁷</b> along the predicted direction; the smallest right-singular vector aligns with it
+        to twelve digits.</p></div>
+      <div class="card"><span class="tag">Discharge breaks it</span><p class="small">The joint Jacobian's
+        response along the same direction is <b>11.5</b>, and its condition number is <b>24.9</b>.</p></div>
+      <div class="card amber"><span class="tag">Read it narrowly</span><p class="small">This is the
+        <b>local</b> rank at the synthetic truth for this eight-parameter reduction — not a global, nor a
+        reach-by-reach, identifiability result.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 ------------------------------------------------------------------- -->
+<section class="slide" id="recovery" data-title="What came back: seven of eight" aria-label="Slide 6: What came back, seven of eight">
+  <div class="slide-inner">
+    <p class="kicker">06 · Recovery against the prespecified tolerance</p>
+    <h2>Seven of eight, and the same answer from every start.</h2>
+    <figure class="fig">
+      <img src="assets/coupled-snapshot-20260922/fig-recovery.svg" width="1060" height="522"
+        alt="Eight horizontal rows, one per parameter, showing estimate minus truth in the fitted coordinate divided by the base prior standard deviation — the logarithm for the four input multipliers and the two decay rates, the signed amplitude itself for the two storage fields — against a shaded recovered band of plus or minus 0.25 and a marginal band to plus or minus 0.5. Water input west minus 0.010, water input east plus 0.013, chemical input west minus 0.030, chemical input east minus 0.075, decay west plus 0.021, decay east minus 0.083 and the water storage amplitude plus 0.048 all fall inside the recovered band. The chemical storage amplitude is minus 0.678, outside both bands.">
+      <figcaption>The axis is the error in the <b>fitted</b> coordinate divided by the base prior sd — log for
+        the six positive parameters, linear for the two signed amplitudes — not a native-value difference over
+        a native sd. Native truths and estimates are listed in the <a href="#appendix-table">appendix table</a>.
+        All three starts land on the same point to <b>2.1 × 10⁻⁸ prior sd</b>; every fit converged with
+        |g|<sub>∞</sub> ≤ 9.8 × 10⁻⁷ and no active bounds.</figcaption>
+    </figure>
+    <p class="small">The tolerance was chosen so that a fit which simply reverted to the prior mean would fail
+      for <b>every</b> parameter: the smallest truth offset from a prior centre is 0.579 prior sd. Seven
+      parameters clear it by a factor of three or more.</p>
+  </div>
+</section>
+
+<!-- 07 ------------------------------------------------------------------- -->
+<section class="slide" id="heldout" data-title="Held-out predictions" aria-label="Slide 7: Held-out predictions">
+  <div class="slide-inner">
+    <p class="kicker">07 · Ten locations held out of the objective</p>
+    <h2>Predictions at ten held-out measurement locations.</h2>
+    <div class="fig-pair">
+      <figure class="fig">
+        <img src="assets/coupled-snapshot-20260922/fig-holdout-discharge.svg" width="560" height="520"
+          alt="Scatter plot of predicted against true held-out discharge in cubic metres per second, on logarithmic axes with a one-to-one line. The ten fitted points lie close to the line, spanning 8.7 to 2598 cubic metres per second, with a nonzero RMSE. The prior-mean predictions, drawn as open markers, sit visibly off the line, too low at the small reaches and too high at the large ones. Held-out RMSE is 4.34 cubic metres per second.">
+        <figcaption>Truths span 8.66–2598 m³/s over drainage areas of 588–296,018 km².</figcaption>
+      </figure>
+      <figure class="fig">
+        <img src="assets/coupled-snapshot-20260922/fig-holdout-concentration.svg" width="560" height="520"
+          alt="Scatter plot of predicted against true held-out concentration in milligrams per litre, on linear axes with a one-to-one line. The ten fitted points lie close to the line, spanning 0.108 to 1.133 milligrams per litre, with a nonzero RMSE. The prior-mean predictions, drawn as open markers, are scattered away from the line by up to 0.2 milligrams per litre. Held-out RMSE is 0.0119 milligrams per litre.">
+        <figcaption>Truths span 0.108–1.133 mg/L; the prior-mean baseline is the same model with no fitting.</figcaption>
+      </figure>
+    </div>
+    <div class="cols-3">
+      <div class="card teal"><span class="tag">Held out, noise-scaled log RMSE</span><p class="small">Discharge
+        <b>0.038</b>, concentration <b>0.109</b> — both inside the prespecified 0.25.</p></div>
+      <div class="card"><span class="tag">Against no fitting</span><p class="small">The prior-mean baseline
+        gives training log RMSE <b>0.250</b> (Q) and <b>0.364</b> (C), against <b>0.0035</b> and
+        <b>0.023</b> after fitting.</p></div>
+      <div class="card amber"><span class="tag">Not a blind test</span><p class="small">These ten locations
+        were scored in earlier experiments on the same network. The topology is known and every reach is
+        routed; what is held out is the <b>observation</b>. They support a <b>paired comparison</b>, and
+        nothing stronger.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 ------------------------------------------------------------------- -->
+<section class="slide" id="storage" data-title="The eighth parameter" aria-label="Slide 8: The eighth parameter">
+  <div class="slide-inner">
+    <p class="kicker">08 · The one that did not come back</p>
+    <h2>The chemical storage amplitude is held by the prior.</h2>
+    <figure class="fig">
+      <img src="assets/coupled-snapshot-20260922/fig-chemical-storage.svg" width="1060" height="400"
+        alt="Chemical storage: sensitivity to the prior. Four rows on a shared axis of the chemical storage amplitude. The synthetic truth is 0.600, with a shaded recovered band of plus or minus 0.125. The prior centre is zero with a standard deviation of 0.5, whose plus or minus one standard deviation interval runs past the left edge of the drawn axis. Under the base prior the estimate reaches 0.2608, which is 0.678 prior standard deviations short of the truth and outside the band. Under the prespecified control with the prior standard deviation tripled, the estimate reaches 0.5162, inside the band at 0.168 base prior standard deviations.">
+      <figcaption><b>All eight parameters meet the tolerance only in that one sensitivity control.</b> The
+        headline result stays seven of eight. Widening the prior is a sensitivity test, not evidence that the
+        parameter is globally identified.</figcaption>
+    </figure>
+    <div class="cols-3">
+      <div class="card"><span class="tag">Not an optimiser failure</span><p class="small">Every fit reported
+        success, |g|<sub>∞</sub> ≤ 9.8 × 10⁻⁷, no active bounds, three starts agreeing to 2 × 10⁻⁸ prior sd.
+        A positive-definite regularised Hessian is not proof of identification.</p></div>
+      <div class="card"><span class="tag">Weaker than the prior</span><p class="small">Marginal data
+        information <b>0.66</b> against a prior of 1.0; posterior variance reduction 0.40, against ≥ 0.91 for
+        the other seven. The weakest joint mode is <b>98.5% this parameter</b>.</p></div>
+      <div class="card"><span class="tag">Predicted, not discovered</span><p class="small">Scalar
+        linear-Gaussian shrinkage predicts −0.72 prior sd at the base prior and −0.17 at ×3; observed
+        <b>−0.678</b> and <b>−0.168</b>.</p></div>
+    </div>
+    <p class="small">The cause is structural rather than numerical: requiring guaranteed positive flux and
+      positive storage over a ±2-prior-sd box caps how much storage signal can exist at all. At truth the
+      chemical storage share of total flux has median <b>3.1%</b> at the 30 training gauges, against an
+      assumed error scale of 19.8% — about one sixth of its assumed noise per gauge. Water storage, at 6.0%
+      against 9.98%, is recovered.</p>
+  </div>
+</section>
+
+<!-- 09 ------------------------------------------------------------------- -->
+<section class="slide" id="verification" data-title="Verification, and what failed" aria-label="Slide 9: Verification, and what failed">
+  <div class="slide-inner">
+    <p class="kicker">09 · What was checked, and what did not pass</p>
+    <h2>234 tests, one prespecified criterion missed.</h2>
+    <div class="cols">
+      <div class="card">
+        <span class="tag">Verified</span>
+        <ul class="ticks" style="margin-top:.4em">
+          <li><b>234 tests pass</b> — 212 pre-existing plus 22 new for this experiment</li>
+          <li>Independent <b>dense-matrix oracle</b> at three parameter vectors, all eight output fields to
+            rtol 1e-11</li>
+          <li>Finite-difference gradients in all eight directions (rtol 3e-6) and the full prior-scaled
+            Jacobian in both data blocks (rtol 2e-5)</li>
+          <li>Held-out and masked values cannot move the value or the gradient — checked <b>bitwise</b></li>
+          <li>Positivity certificate checked against all 256 box corners; admissible at truth and at every fit</li>
+        </ul>
+      </div>
+      <div class="card amber">
+        <span class="tag">Failed, or not claimed</span>
+        <ul class="ticks crosses" style="margin-top:.4em">
+          <li><b>Concentration training fit 0.116</b> against a prespecified 0.10 noise-scaled log RMSE — a
+            genuine miss, caused by the prior holding ΔS<sub>c</sub> away from truth</li>
+          <li>Fixed storage patterns were chosen to <b>favour</b> separation of the two amplitudes</li>
+          <li>No time evolution, no temporal conservation test, no real chemistry validation</li>
+          <li>No calibrated posterior: the Gauss-Newton covariance is a local linearisation, not a sample</li>
+          <li>No complete MATLAB parity check for this configuration</li>
+        </ul>
+      </div>
+    </div>
+    <p class="small">Signed storage contributions are preserved and never clipped: at truth <b>32,286</b> of
+      64,579 water storage-flux contributions and <b>43,825</b> chemical ones are negative. Positive totals
+      inside the bounded tested domain are an algebraic property of that box — they do not validate the
+      underlying storage physics.</p>
+    <details class="notes"><summary>Where the miss comes from</summary><div class="notes-body">
+      <p>Held-out errors are essentially equal to training errors for both data types (0.038 vs 0.036 for
+        discharge, 0.109 vs 0.116 for concentration), so there is no sign of overfitting. The residual is
+        coherent, not noise: the prior pulls the chemical storage amplitude to 0.26 instead of 0.60, which
+        leaves a structured concentration residual worth about 0.12 of the assumed error. Under the
+        weaker-prior control the same training figure falls to 0.026.</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- 10 ------------------------------------------------------------------- -->
+<section class="slide" id="next" data-title="Two questions, one next diagnostic" aria-label="Slide 10: Two questions and one next diagnostic">
+  <div class="slide-inner">
+    <p class="kicker">10 · Discussion</p>
+    <h2>Two things to confirm, then one diagnostic.</h2>
+    <div class="cols">
+      <div class="card">
+        <span class="tag">Question 1 · what ΔS means</span>
+        <p>We read ΔS as an anomaly relative to the <b>equilibrium storage of the current inputs</b>,
+          following your archived April equation draft — <b>not</b> S[t+1] − S[t]. Every number on this deck
+          depends on that reading.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Question 2 · the chemical storage law</span>
+        <p>For the admissibility bound we used <span class="mono">S<sub>c,eq</sub> = (5/3) K Q<sub>c,eq</sub></span>
+          as <b>our provisional analogue</b> of the water residence time. The draft gives τ = 5K/3 for water
+          and states no chemical equilibrium-storage identity. The placement of Φ on the chemical storage term
+          is yours, kept exactly as drafted.</p>
+      </div>
+    </div>
+    <div class="card teal">
+      <span class="tag">The diagnostic we would run next — not yet run</span>
+      <p>Find where the chemical storage signal actually is, then test whether observing there would help:
+        locate storage-sensitive locations, then re-run the <b>joint</b> information and recovery checks with
+        the other seven parameters still free, because a single sensitivity column says nothing about
+        marginal information once nuisance parameters move. At truth the chemical storage share of flux
+        reaches 18.0% somewhere in the network against a median of 3.1% at the 30 metadata-chosen gauges.</p>
+      <p class="small" style="margin-top:.6em"><b>Read it as an oracle feasibility diagnostic:</b> it uses the
+        truth point, so it can indicate whether the information could exist. It would not settle
+        &ldquo;gauge design versus structural limit&rdquo;, and it is not a deployable monitoring design.</p>
+    </div>
+    <details class="notes"><summary>How we would run it</summary><div class="notes-body">
+      <p>Step one is cheap: one forward-mode Jacobian column of
+        <span class="mono">|∂ log C / ∂ b<sub>c</sub>| · sd / σ<sub>C</sub></span> over all 64,579 reaches at
+        the truth point, seconds of compute, to rank locations by chemical-storage sensitivity.</p>
+      <p>Step two is the one that carries the weight, and the one a ranking alone cannot replace: for a
+        candidate set of locations, rebuild the full eight-parameter prior-scaled Jacobian, then report the
+        <b>marginal</b> data information for ΔS<sub>c</sub> with every other parameter free, together with a
+        repeat of the recovery test. A column norm can look large while the marginal information stays below
+        the prior if the new rows also load on the chemical input and decay directions.</p>
+      <p>Even a favourable result would be an upper bound obtained at the synthetic truth, on one noise-free
+        realization, under the same positivity certificate and the same single fixed storage pattern.</p>
+    </div></details>
+    <p class="small">Attribution: the chemistry operator is taken from your equation draft (Eq. 42 in the
+      archived version) and implemented differentiably in JAX; it is not simply a port of the MATLAB code.
+      Appendix: <a href="#appendix-table">native parameter values</a> ·
+      <a href="#appendix-figure">the original run figure</a> ·
+      <a href="#appendix-information">information diagnostics</a> ·
+      <a href="#appendix-provenance">files and checksums</a>.</p>
+  </div>
+</section>
+
+<!-- A1 ------------------------------------------------------------------- -->
+<section class="slide" id="appendix-table" data-title="Appendix · all eight parameters" aria-label="Slide 11: Appendix, all eight parameters in native units">
+  <div class="slide-inner">
+    <p class="kicker">Appendix A · native values</p>
+    <h2>All eight parameters, both priors.</h2>
+    <table class="data">
+      <caption>Estimates are identical across the three prespecified starts to 2.1 × 10⁻⁸ prior sd. Errors are
+        expressed in the <b>base</b> prior sd in both columns, so the two fits are directly comparable.</caption>
+      <thead>
+        <tr><th scope="col">Parameter</th><th scope="col">Truth</th><th scope="col">Estimate</th>
+          <th scope="col">Error [prior sd]</th><th scope="col">Verdict</th>
+          <th scope="col">Prior sd ×3</th><th scope="col">Error [base sd]</th></tr>
+      </thead>
+      <tbody>
+<tr><th scope="row">Water input multiplier, west</th><td>1.35</td><td>1.345</td><td class="ok">-0.010</td><td class="ok">recovered</td><td>1.35</td><td class="ok">-0.001</td></tr>
+<tr><th scope="row">Water input multiplier, east</th><td>0.75</td><td>0.754</td><td class="ok">+0.013</td><td class="ok">recovered</td><td>0.7502</td><td class="ok">+0.001</td></tr>
+<tr><th scope="row">Chemical input multiplier, west</th><td>1.6</td><td>1.576</td><td class="ok">-0.030</td><td class="ok">recovered</td><td>1.594</td><td class="ok">-0.007</td></tr>
+<tr><th scope="row">Chemical input multiplier, east</th><td>0.7</td><td>0.6741</td><td class="ok">-0.075</td><td class="ok">recovered</td><td>0.693</td><td class="ok">-0.020</td></tr>
+<tr><th scope="row">Decay rate, west</th><td>0.05 /day</td><td>0.05073 /day</td><td class="ok">+0.021</td><td class="ok">recovered</td><td>0.04997 /day</td><td class="ok">-0.001</td></tr>
+<tr><th scope="row">Decay rate, east</th><td>0.15 /day</td><td>0.1416 /day</td><td class="ok">-0.083</td><td class="ok">recovered</td><td>0.1481 /day</td><td class="ok">-0.018</td></tr>
+<tr><th scope="row">Water storage amplitude ΔS<sub>w</sub></th><td>-0.45</td><td>-0.4261</td><td class="ok">+0.048</td><td class="ok">recovered</td><td>-0.4491</td><td class="ok">+0.002</td></tr>
+<tr class="flag"><th scope="row">Chemical storage amplitude ΔS<sub>c</sub></th><td>0.6</td><td>0.2608</td><td class="no">-0.678</td><td class="no">not recovered</td><td>0.5162</td><td class="ok">-0.168</td></tr>
+      </tbody>
+    </table>
+    <p class="small">Prior centres: unit multipliers, 0.1/day decay and zero amplitudes, with sd
+      (0.4, 0.4, 0.5, 0.5, 0.7, 0.7, 0.5, 0.5). Cost split at the base fit: discharge data 0.0190,
+      concentration data 0.2016, prior 2.340, over 30 + 30 observations. Effective truth input concentration
+      c/a is 1.185 mg/L west and 0.933 mg/L east.</p>
+  </div>
+</section>
+
+<!-- A2 ------------------------------------------------------------------- -->
+<section class="slide" id="appendix-figure" data-title="Appendix · the original run figure" aria-label="Slide 12: Appendix, the original run figure">
+  <div class="slide-inner">
+    <p class="kicker">Appendix B · unedited output</p>
+    <h2>The figure the run itself wrote.</h2>
+    <figure class="fig zoomable">
+      <a href="assets/coupled-snapshot-20260922/coupled-snapshot-original.png" target="_blank" rel="noreferrer"
+         aria-label="Open the original run figure full size in a new tab">
+        <img src="assets/coupled-snapshot-20260922/coupled-snapshot-original.png" width="2325" height="720"
+          alt="Three panels written by the experiment runner, under the heading: synthetic noise-free coupled water-chemistry snapshot, eight parameters, provisional COMID 74072654 component, one realization, three starts. Left panel: for each of the eight parameters, the offset from the prior mean in prior standard deviations, showing the truth, the three starts which coincide, the prior standard deviation times three control, and approximate posterior error bars, over a shaded plus or minus one prior standard deviation band. Only the chemical storage amplitude shows a visible gap between the fitted point at 0.52 and the truth at 1.20. Middle panel: held-out discharge prediction against noise-free truth on logarithmic axes, fitted points on the one-to-one line and prior-mean points off it. Right panel: the same for held-out concentration on logarithmic axes.">
+      </a>
+      <figcaption>Copied byte-for-byte from the run directory. The replotted slides in this deck are drawn
+        from the same <span class="mono">results.json</span> and <span class="mono">gauges.csv</span>, never
+        traced from this image; the recovery panel here is plotted as an offset from the prior mean, while
+        slide 6 plots the same fit as an error against the truth. <a href="assets/coupled-snapshot-20260922/coupled-snapshot-original.png"
+        target="_blank" rel="noreferrer">Open the original PNG at full size</a> — or click the figure.</figcaption>
+    </figure>
+    <div class="cols-3">
+      <div class="card"><span class="tag">Left panel</span><p class="small">Offset from the prior mean, in
+        prior sd, for all eight parameters: truth, the three coinciding starts, the prior sd ×3 control and
+        approximate posterior error bars, over a ±1 prior sd band. Only ΔS<sub>c</sub> shows a visible gap
+        between the fit at 0.52 and the truth at 1.20.</p></div>
+      <div class="card"><span class="tag">Middle panel</span><p class="small">Held-out discharge against the
+        noise-free truth on log axes — the same ten reaches as slide 7, with the prior-mean baseline as open
+        squares.</p></div>
+      <div class="card"><span class="tag">Right panel</span><p class="small">Held-out concentration, also on
+        log axes there; slide 7 replots it on a linear axis, which separates the ten points more
+        clearly.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- A3 ------------------------------------------------------------------- -->
+<section class="slide" id="appendix-information" data-title="Appendix · information and diagnostics" aria-label="Slide 13: Appendix, information and diagnostics">
+  <div class="slide-inner">
+    <p class="kicker">Appendix C · diagnostics</p>
+    <h2>Where the information actually is.</h2>
+    <figure class="fig">
+      <img src="assets/coupled-snapshot-20260922/fig-information.svg" width="1060" height="376"
+        alt="Bar chart on a logarithmic axis of the marginal data information for each of the eight parameters, against a prior information of one. Water input west 229, water input east 145, chemical input west 64.3, chemical input east 34.1, decay west 17.9, decay east 10.7, water storage amplitude 13.5, and chemical storage amplitude 0.66 — the only bar below the prior line.">
+      <figcaption>Prior-scaled Gauss-Newton linearisation at the fit. Values above 1 mean the observations
+        constrain that parameter more tightly than the prior does.</figcaption>
+    </figure>
+    <div class="cols-3">
+      <div class="card"><span class="tag">Joint spectrum at truth</span><p class="small">Data-information
+        eigenvalues 378, 289, 82, 79, 17, 13, 12, <b>0.61</b>. The weakest mode is 98.5%
+        ΔS<sub>c</sub>.</p></div>
+      <div class="card"><span class="tag">Correlations</span><p class="small">Largest posterior correlation
+        <b>0.61</b>, chemical input east with decay east. Nothing exceeds 0.9: source-versus-rate confounding
+        is visible but not binding at this reduction.</p></div>
+      <div class="card amber"><span class="tag">Read as a linearisation</span><p class="small">The covariance
+        adds the prior identity, so it is positive definite even where the data carry nothing. It is not a
+        sampled posterior.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- A4 ------------------------------------------------------------------- -->
+<section class="slide" id="appendix-provenance" data-title="Appendix · files and checksums" aria-label="Slide 14: Appendix, files, checksums and checks">
+  <div class="slide-inner">
+    <p class="kicker">Appendix D · provenance</p>
+    <h2>What this deck was built from.</h2>
+    <table class="data file-list">
+      <caption>Source files in the tested Python package, with SHA-256 digests taken when this deck was built.
+        Times are UTC; the run itself completed on the evening of 16 September 2026 local time.
+        <span class="mono">docs/COUPLED_SNAPSHOT.md</span> and <span class="mono">docs/EQUATION42.md</span>
+        still hash to the digests the run recorded, so the method text quoted here is the text the run used.</caption>
+      <thead><tr><th scope="col">File</th><th scope="col">Modified (UTC)</th><th scope="col">SHA-256</th>
+        <th scope="col">Bytes</th></tr></thead>
+      <tbody>
+<tr><td>artifacts/coupled_snapshot_20260916/results.json</td><td>2026-09-17</td><td class="hash">b2fba8b8565b55b7…</td><td>156,226</td></tr>
+<tr><td>artifacts/coupled_snapshot_20260916/design.json</td><td>2026-09-17</td><td class="hash">6491b9563e1b22c2…</td><td>14,738</td></tr>
+<tr><td>artifacts/coupled_snapshot_20260916/gauges.csv</td><td>2026-09-17</td><td class="hash">f2a432c9da2748b0…</td><td>15,303</td></tr>
+<tr><td>artifacts/coupled_snapshot_20260916/coupled_snapshot.png</td><td>2026-09-17</td><td class="hash">ae197d4fff558e47…</td><td>171,363</td></tr>
+<tr><td>artifacts/coupled_snapshot_20260916/smoke_check.json</td><td>2026-09-17</td><td class="hash">28ae0bde4ad5ce29…</td><td>2,324</td></tr>
+<tr><td>docs/COUPLED_SNAPSHOT.md</td><td>2026-09-17</td><td class="hash">50178c5bef9a88cb…</td><td>15,369</td></tr>
+<tr><td>docs/EQUATION42.md</td><td>2026-09-08</td><td class="hash">3a6415279d63ac21…</td><td>12,109</td></tr>
+      </tbody>
+    </table>
+    <div class="cols">
+      <div class="card">
+        <span class="tag">Published alongside this deck</span>
+        <p class="small"><a href="assets/coupled-snapshot-20260922/coupled-snapshot-20260916.json">coupled-snapshot-20260916.json</a>
+          — curated numbers with their caveats, copied from the run's results.json.<br>
+          <a href="assets/coupled-snapshot-20260922/data-checks.json">data-checks.json</a> —
+          22 alignment, unit and magnitude checks, all passing.<br>
+          <a href="assets/coupled-snapshot-20260922/gauges-20260916.csv">gauges-20260916.csv</a> — the 40
+          aligned reaches behind the scatter plots, keyed by COMID.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Checks made before plotting</span>
+        <p class="small">Training and held-out COMIDs matched to the design file by identifier, never by row
+          position; region labels re-derived from longitude; the three starts confirmed to coincide at every
+          reach; held-out RMSEs and the prior-mean baseline recomputed from the CSV and matched to
+          results.json; units and magnitudes checked; no time axis exists in a snapshot.</p>
+      </div>
+    </div>
+    <p class="small">Pinned region-74 archive <span class="mono">MERIT_Basins_v1.0_pfaf_74_GLDAS_v2.0_RAPID_v2.0.zip</span>,
+      MD5 <span class="hash">c157e1b5499da51c9dbb4c06cf9a892d</span>, verified inside the run
+      (<a href="https://zenodo.org/records/20672740" target="_blank" rel="noreferrer">Zenodo record 20672740</a>).
+      Python 3.13.13, JAX 0.11.1 CPU float64, NumPy 2.5.2, SciPy 1.18.1; the whole experiment takes about 30 s
+      on one CPU. <b>The tested Python package, not this page, is the scientific source of truth.</b></p>
+  </div>
+</section>
+
+</main>
+
+<nav class="controls" aria-label="Slide navigation">
+  <button type="button" id="nav-prev" aria-label="Previous slide" title="Previous slide (←)">←</button>
+  <div class="status">
+    <b id="slide-title">Coupled snapshot: the result</b>
+    <span id="slide-count">01 / 14</span>
+  </div>
+  <button type="button" id="nav-next" aria-label="Next slide" title="Next slide (→)">→</button>
+  <button type="button" id="nav-jump" aria-label="Jump to a slide" aria-expanded="false"
+    aria-controls="jump-panel" title="Contents">☰</button>
+  <button type="button" id="nav-print" aria-label="Print all slides" title="Print all slides">
+    <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor"
+      stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 7V2.6h8V7"/><path d="M6 14H3.4V7.6h13.2V14H14"/><rect x="6" y="11.6" width="8" height="5.8"/>
+    </svg></button>
+  <button type="button" id="nav-fullscreen" aria-label="Toggle fullscreen" aria-pressed="false"
+    title="Fullscreen (F)">
+    <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor"
+      stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2.8 7.2V2.8h4.4"/><path d="M12.8 2.8h4.4v4.4"/><path d="M17.2 12.8v4.4h-4.4"/><path d="M7.2 17.2H2.8v-4.4"/>
+    </svg></button>
+</nav>
+
+<script src="assets/coupled-snapshot-20260922/deck.js" onerror="window.deckFallback &amp;&amp; window.deckFallback()"></script>
+</body>
+</html>

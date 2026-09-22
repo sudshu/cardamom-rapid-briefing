@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 400" width="1060" height="400" role="img" aria-labelledby="t d" font-family="Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+<title id="t">Chemical storage amplitude under two priors</title>
+<desc id="d">Four rows on a shared axis of the chemical storage amplitude. The synthetic truth is 0.600; a shaded band marks the recovered tolerance of plus or minus 0.125. The prior centre is 0 with a standard deviation of 0.5. The fit under the base prior reaches 0.2608, which is 0.678 prior standard deviations short of the truth and outside the band. The prespecified control with the prior standard deviation tripled reaches 0.5162, inside the band at 0.168 base prior standard deviations.</desc>
+<rect width="1060" height="400" fill="#ffffff"/>
+<rect x="651.9" y="58" width="173.9" height="276" fill="#d7ebe6"/>
+<text x="738.8" y="48.0" font-size="14.5" fill="#0f766a" text-anchor="middle" font-weight="700">recovered band  ±0.25 prior sd  (±0.125)</text>
+<line x1="252.0" y1="58" x2="252.0" y2="332" stroke="#e7e4da" stroke-width="1"/>
+<text x="252.0" y="354.0" font-size="14.5" fill="#5c7078" text-anchor="middle" font-weight="400">-0.1</text>
+<line x1="321.5" y1="58" x2="321.5" y2="332" stroke="#e7e4da" stroke-width="1"/>
+<text x="321.5" y="354.0" font-size="14.5" fill="#5c7078" text-anchor="middle" font-weight="400">0</text>
+<line x1="391.1" y1="58" x2="391.1" y2="332" stroke="#e7e4da" stroke-width="1"/>
+<text x="391.1" y="354.0" font-size="14.5" fill="#5c7078" text-anchor="middle" font-weight="400">0.1</text>
+<line x1="460.6" y1="58" x2="460.6" y2="332" stroke="#e7e4da" stroke-width="1"/>
+<text x="460.6" y="354.0" font-size="14.5" fill="#5c7078" text-anchor="middle" font-weight="400">0.2</text>
+<line x1="530.2" y1="58" x2="530.2" y2="332" stroke="#e7e4da" stroke-width="1"/>
+<text x="530.2" y="354.0" font-size="14.5" fill="#5c7078" text-anchor="middle" font-weight="400">0.3</text>
+<line x1="599.7" y1="58" x2="599.7" y2="332" stroke="#e7e4da" stroke-width="1"/>
+<text x="599.7" y="354.0" font-size="14.5" fill="#5c7078" text-anchor="middle" font-weight="400">0.4</text>
+<line x1="669.3" y1="58" x2="669.3" y2="332" stroke="#e7e4da" stroke-width="1"/>
+<text x="669.3" y="354.0" font-size="14.5" fill="#5c7078" text-anchor="middle" font-weight="400">0.5</text>
+<line x1="738.8" y1="58" x2="738.8" y2="332" stroke="#e7e4da" stroke-width="1"/>
+<text x="738.8" y="354.0" font-size="14.5" fill="#5c7078" text-anchor="middle" font-weight="400">0.6</text>
+<line x1="808.4" y1="58" x2="808.4" y2="332" stroke="#e7e4da" stroke-width="1"/>
+<text x="808.4" y="354.0" font-size="14.5" fill="#5c7078" text-anchor="middle" font-weight="400">0.7</text>
+<line x1="321.5" y1="58" x2="321.5" y2="332" stroke="#09232c" stroke-width="1.4"/>
+<line x1="234" y1="332" x2="882" y2="332" stroke="#09232c" stroke-width="1.4"/>
+<text x="558.0" y="384.0" font-size="15.5" fill="#09232c" text-anchor="middle" font-weight="600">chemical storage amplitude  (dimensionless multiplier on the fixed kg pattern)</text>
+<line x1="234" y1="105.2" x2="882" y2="105.2" stroke="#d8d5cb" stroke-width="1" opacity=".6"/>
+<path d="M738.8 94.2 l 11 11 l -11 11 l -11 -11 Z" fill="#0f766a"/>
+<line x1="738.8" y1="118.2" x2="738.8" y2="332" stroke="#0f766a" stroke-width="1.6" stroke-dasharray="5 5"/>
+<text x="218.0" y="106.2" font-size="17" fill="#09232c" text-anchor="end" font-weight="650">truth</text>
+<text x="218.0" y="125.2" font-size="12.5" fill="#5c7078" text-anchor="end" font-weight="400">the synthetic value to recover</text>
+<text x="896.0" y="111.2" font-size="18" fill="#0f766a" text-anchor="start" font-weight="700">0.600</text>
+<line x1="234" y1="167.8" x2="882" y2="167.8" stroke="#d8d5cb" stroke-width="1" opacity=".6"/>
+<circle cx="321.5" cy="167.8" r="9.5" fill="#5c7078"/>
+<text x="218.0" y="168.8" font-size="17" fill="#09232c" text-anchor="end" font-weight="650">prior centre</text>
+<text x="218.0" y="187.8" font-size="12.5" fill="#5c7078" text-anchor="end" font-weight="400">prior sd 0.5, ±1 sd off this axis</text>
+<text x="896.0" y="173.8" font-size="18" fill="#5c7078" text-anchor="start" font-weight="700">0.000</text>
+<line x1="234" y1="230.2" x2="882" y2="230.2" stroke="#d8d5cb" stroke-width="1" opacity=".6"/>
+<line x1="321.5" y1="230.2" x2="502.9" y2="230.2" stroke="#a35c07" stroke-width="3.2"/>
+<circle cx="502.9" cy="230.2" r="9.5" fill="#a35c07"/>
+<text x="218.0" y="231.2" font-size="17" fill="#09232c" text-anchor="end" font-weight="650">fit, base prior</text>
+<text x="218.0" y="250.2" font-size="12.5" fill="#5c7078" text-anchor="end" font-weight="400">−0.678 prior sd · not recovered</text>
+<text x="896.0" y="236.2" font-size="18" fill="#a35c07" text-anchor="start" font-weight="700">0.2608</text>
+<line x1="234" y1="292.8" x2="882" y2="292.8" stroke="#d8d5cb" stroke-width="1" opacity=".6"/>
+<line x1="321.5" y1="292.8" x2="680.6" y2="292.8" stroke="#0f766a" stroke-width="3.2"/>
+<circle cx="680.6" cy="292.8" r="9.5" fill="#0f766a"/>
+<text x="218.0" y="293.8" font-size="17" fill="#09232c" text-anchor="end" font-weight="650">fit, prior sd ×3</text>
+<text x="218.0" y="312.8" font-size="12.5" fill="#5c7078" text-anchor="end" font-weight="400">−0.168 base prior sd · recovered</text>
+<text x="896.0" y="298.8" font-size="18" fill="#0f766a" text-anchor="start" font-weight="700">0.5162</text>
+<text x="24.0" y="32.0" font-size="20" fill="#09232c" text-anchor="start" font-weight="650">Chemical storage: sensitivity to the prior</text>
+</svg>

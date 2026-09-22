@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 520" width="560" height="520" role="img" aria-labelledby="t d" font-family="Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+<title id="t">Held-out discharge: prediction against synthetic truth</title>
+<desc id="d">Scatter plot with a one-to-one line. Ten held-out measurement locations. Filled markers are the fitted prediction, open markers the prior mean with no fitting. Fitted values sit close to the one-to-one line, with a nonzero RMSE of 4.337 m³/s; prior-mean values sit visibly off it. Truth to fitted pairs in m³/s: 8.66→8.65, 69.2→69.2, 10.6→10.6, 81.6→81.5, 12.2→12.2, 210→212, 20.9→21, 2.6e+03→2.61e+03, 21.1→21.2, 134→134.</desc>
+<rect width="560" height="520" fill="#ffffff"/>
+<rect x="86" y="78" width="448" height="350" fill="#fcfbf7"/>
+<line x1="131.0" y1="78" x2="131.0" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="392.9" x2="534" y2="392.9" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="175.9" y1="78" x2="175.9" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="357.8" x2="534" y2="357.8" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="202.2" y1="78" x2="202.2" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="337.2" x2="534" y2="337.2" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="220.9" y1="78" x2="220.9" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="322.6" x2="534" y2="322.6" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="235.3" y1="78" x2="235.3" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="311.3" x2="534" y2="311.3" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="247.2" y1="78" x2="247.2" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="302.1" x2="534" y2="302.1" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="257.2" y1="78" x2="257.2" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="294.3" x2="534" y2="294.3" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="265.8" y1="78" x2="265.8" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="287.5" x2="534" y2="287.5" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="273.5" y1="78" x2="273.5" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="281.6" x2="534" y2="281.6" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="280.3" y1="78" x2="280.3" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="276.2" x2="534" y2="276.2" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="325.2" y1="78" x2="325.2" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="241.1" x2="534" y2="241.1" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="351.5" y1="78" x2="351.5" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="220.5" x2="534" y2="220.5" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="370.2" y1="78" x2="370.2" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="206.0" x2="534" y2="206.0" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="384.7" y1="78" x2="384.7" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="194.7" x2="534" y2="194.7" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="396.5" y1="78" x2="396.5" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="185.4" x2="534" y2="185.4" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="406.5" y1="78" x2="406.5" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="177.6" x2="534" y2="177.6" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="415.1" y1="78" x2="415.1" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="170.9" x2="534" y2="170.9" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="422.8" y1="78" x2="422.8" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="164.9" x2="534" y2="164.9" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="429.6" y1="78" x2="429.6" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="159.5" x2="534" y2="159.5" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="474.6" y1="78" x2="474.6" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="124.4" x2="534" y2="124.4" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="500.9" y1="78" x2="500.9" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="103.9" x2="534" y2="103.9" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="519.5" y1="78" x2="519.5" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="89.3" x2="534" y2="89.3" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="534.0" y1="78" x2="534.0" y2="428" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="86" y1="78.0" x2="534" y2="78.0" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="131.0" y1="78" x2="131.0" y2="428" stroke="#e7e4da" stroke-width="1.1"/>
+<line x1="86" y1="392.9" x2="534" y2="392.9" stroke="#e7e4da" stroke-width="1.1"/>
+<text x="131.0" y="452.0" font-size="15" fill="#5c7078" text-anchor="middle" font-weight="400">10</text>
+<text x="74.0" y="397.9" font-size="15" fill="#5c7078" text-anchor="end" font-weight="400">10</text>
+<line x1="280.3" y1="78" x2="280.3" y2="428" stroke="#e7e4da" stroke-width="1.1"/>
+<line x1="86" y1="276.2" x2="534" y2="276.2" stroke="#e7e4da" stroke-width="1.1"/>
+<text x="280.3" y="452.0" font-size="15" fill="#5c7078" text-anchor="middle" font-weight="400">100</text>
+<text x="74.0" y="281.2" font-size="15" fill="#5c7078" text-anchor="end" font-weight="400">100</text>
+<line x1="429.6" y1="78" x2="429.6" y2="428" stroke="#e7e4da" stroke-width="1.1"/>
+<line x1="86" y1="159.5" x2="534" y2="159.5" stroke="#e7e4da" stroke-width="1.1"/>
+<text x="429.6" y="452.0" font-size="15" fill="#5c7078" text-anchor="middle" font-weight="400">1000</text>
+<text x="74.0" y="164.5" font-size="15" fill="#5c7078" text-anchor="end" font-weight="400">1000</text>
+<line x1="86" y1="428" x2="534" y2="428" stroke="#09232c" stroke-width="1.4"/>
+<line x1="86" y1="78" x2="86" y2="428" stroke="#09232c" stroke-width="1.4"/>
+<line x1="86" y1="428" x2="534" y2="78" stroke="#09232c" stroke-width="1.5" stroke-dasharray="8 6" opacity=".55"/>
+<text x="100.0" y="102.0" font-size="14" fill="#5c7078" text-anchor="start" font-weight="600">1 : 1</text>
+<circle cx="121.6" cy="412.4" r="7.5" fill="none" stroke="#a35c07" stroke-width="2.4"/>
+<circle cx="256.5" cy="307.3" r="7.5" fill="none" stroke="#a35c07" stroke-width="2.4"/>
+<circle cx="134.8" cy="403.1" r="7.5" fill="none" stroke="#a35c07" stroke-width="2.4"/>
+<circle cx="267.1" cy="299.0" r="7.5" fill="none" stroke="#a35c07" stroke-width="2.4"/>
+<circle cx="144.0" cy="389.7" r="7.5" fill="none" stroke="#a35c07" stroke-width="2.4"/>
+<circle cx="328.5" cy="230.8" r="7.5" fill="none" stroke="#a35c07" stroke-width="2.4"/>
+<circle cx="178.7" cy="339.4" r="7.5" fill="none" stroke="#a35c07" stroke-width="2.4"/>
+<circle cx="491.5" cy="97.2" r="7.5" fill="none" stroke="#a35c07" stroke-width="2.4"/>
+<circle cx="179.4" cy="343.7" r="7.5" fill="none" stroke="#a35c07" stroke-width="2.4"/>
+<circle cx="299.1" cy="250.1" r="7.5" fill="none" stroke="#a35c07" stroke-width="2.4"/>
+<circle cx="121.6" cy="400.2" r="7" fill="#0f766a"/>
+<circle cx="256.5" cy="294.9" r="7" fill="#0f766a"/>
+<circle cx="134.8" cy="390.0" r="7" fill="#0f766a"/>
+<circle cx="267.1" cy="286.6" r="7" fill="#0f766a"/>
+<circle cx="144.0" cy="382.9" r="7" fill="#0f766a"/>
+<circle cx="328.5" cy="238.2" r="7" fill="#0f766a"/>
+<circle cx="178.7" cy="355.2" r="7" fill="#0f766a"/>
+<circle cx="491.5" cy="110.9" r="7" fill="#0f766a"/>
+<circle cx="179.4" cy="354.9" r="7" fill="#0f766a"/>
+<circle cx="299.1" cy="261.4" r="7" fill="#0f766a"/>
+<text x="310.0" y="478.0" font-size="16" fill="#09232c" text-anchor="middle" font-weight="600">synthetic truth (m³/s)</text>
+<text transform="translate(24,253.0) rotate(-90)" font-size="16" fill="#09232c" text-anchor="middle" font-weight="600">prediction (m³/s)</text>
+<text x="26.0" y="30.0" font-size="20" fill="#09232c" text-anchor="start" font-weight="650">Held-out discharge</text>
+<text x="26.0" y="54.0" font-size="14" fill="#5c7078" text-anchor="start" font-weight="400">10 locations · RMSE 4.337 m³/s · noise-scaled log RMSE 0.038</text>
+<circle cx="34" cy="497" r="7" fill="#0f766a"/>
+<text x="48.0" y="502.0" font-size="14" fill="#09232c" text-anchor="start" font-weight="400">fitted (all 3 starts)</text>
+<circle cx="210" cy="497" r="7.5" fill="none" stroke="#a35c07" stroke-width="2.4"/>
+<text x="224.0" y="502.0" font-size="14" fill="#09232c" text-anchor="start" font-weight="400">prior mean, no fitting</text>
+</svg>

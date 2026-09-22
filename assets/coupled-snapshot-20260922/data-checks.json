@@ -1,0 +1,183 @@
+{
+  "title": "Source and alignment checks for the coupled-snapshot deck",
+  "generated_utc": "2026-09-22T22:12:50Z",
+  "deck": "coupled-snapshot.html",
+  "experiment_run_date": "2026-09-16",
+  "deck_author_date": "2026-09-22",
+  "purpose": "Every figure on the deck is regenerated from these saved files. These checks confirm reach, parameter and unit alignment across files before plotting, and re-derive the headline statistics.",
+  "sources": {
+    "artifacts/coupled_snapshot_20260916/results.json": {
+      "sha256": "b2fba8b8565b55b73900f90563f3203852be2820330537d0661c3f09f4c7b34b",
+      "bytes": 156226,
+      "modified_utc": "2026-09-17T04:37:23Z"
+    },
+    "artifacts/coupled_snapshot_20260916/design.json": {
+      "sha256": "6491b9563e1b22c28d2eedcdecc7d044886595b3cd64207cce687a2c5f969fc8",
+      "bytes": 14738,
+      "modified_utc": "2026-09-17T04:37:00Z"
+    },
+    "artifacts/coupled_snapshot_20260916/gauges.csv": {
+      "sha256": "f2a432c9da2748b0379af09a921b08046e2cfe441eef88a6454342d4cfde7166",
+      "bytes": 15303,
+      "modified_utc": "2026-09-17T04:37:22Z"
+    },
+    "artifacts/coupled_snapshot_20260916/coupled_snapshot.png": {
+      "sha256": "ae197d4fff558e4749a9926e4c77203389bac7cb3a79a6dc4847b5140c3ca546",
+      "bytes": 171363,
+      "modified_utc": "2026-09-17T04:37:23Z"
+    },
+    "artifacts/coupled_snapshot_20260916/smoke_check.json": {
+      "sha256": "28ae0bde4ad5ce298a7227f7457184b3dd8b3f27c78c733b9f45234efff0e608",
+      "bytes": 2324,
+      "modified_utc": "2026-09-17T04:36:58Z"
+    },
+    "docs/COUPLED_SNAPSHOT.md": {
+      "sha256": "50178c5bef9a88cb4aadd76e74a5175e93f7da7b4e78c34ed21a44d62093583a",
+      "bytes": 15369,
+      "modified_utc": "2026-09-17T04:36:52Z"
+    },
+    "docs/EQUATION42.md": {
+      "sha256": "3a6415279d63ac21c66521631fae6129e77fb576ed9c2b34b08d49aa25dac482",
+      "bytes": 12109,
+      "modified_utc": "2026-09-08T01:42:54Z"
+    }
+  },
+  "archive_checksums_recorded_in_design": {
+    "md5": "c157e1b5499da51c9dbb4c06cf9a892d",
+    "sha256": "a63ee11198dc8495f70ea7734790ebaf6b2a405e2d58b0bd4d5982e0252c7fde"
+  },
+  "code_sha256_recorded_in_design": {
+    "src/rapid_jax/coupled_snapshot.py": "672f7ceb81ef53761393ce641a5d3f3d103174642e42e1fd733789d85be5259b",
+    "examples/coupled_snapshot_osse.py": "660c35894242815a01251f4ef978b416987427d22f171db551e5b4a1b6f4bc0f",
+    "tests/test_coupled_snapshot.py": "548c17353d0140279714a2d753b9dd5860a6fda85b47e4b4ac16debb0d54f9ec",
+    "docs/COUPLED_SNAPSHOT.md": "50178c5bef9a88cb4aadd76e74a5175e93f7da7b4e78c34ed21a44d62093583a",
+    "src/rapid_jax/chemistry.py": "8f23ede5c50b8098afc3892ca29549be7ea9762517d3d8c88f6029cd62ff4446",
+    "src/rapid_jax/routing.py": "c5ac62bfb142ca72c617503109606b980d96af580785c9e59a7a07b1809fb048",
+    "src/rapid_jax/network.py": "c2b0adf0e06a534dd84f8bbcb6a4c3c682e4c87f20b5e3703e28c0a3b25b63cb",
+    "src/rapid_jax/basin_data.py": "11e605d457db24960a7f9c1736b2f9642c95fdcc1e534a330ab1d2479c9141d1",
+    "src/rapid_jax/joint_snapshot.py": "2f60505fb9e0f60113b7278e765dd4c3183b5e8bf4843f4b9c9a92342180b06b",
+    "src/rapid_jax/sparse_decay_osse.py": "8c2f0c8e2f9934e64434d1cc2042d81d4c0cb06348ba754aa126acb7da05ca79",
+    "src/rapid_jax/storage_mixed_coverage.py": "766075ce262b7f2f46c744e9d86e034c663e311d2bf6fbaeda4ec6f5691ad96e",
+    "docs/EQUATION42.md": "3a6415279d63ac21c66521631fae6129e77fb576ed9c2b34b08d49aa25dac482",
+    "docs/JOINT_SNAPSHOT.md": "ab950c3ef1ac9cbef96397212dae0f8abd10a6ffae670003a7c88e7280ee25a5",
+    "docs/STORAGE_MIXED_COVERAGE.md": "3e128cda67f0fe88fa5ac472293a45e02bb446e3a4f1808e2476f453009ad23f"
+  },
+  "checks": [
+    {
+      "check": "design_block_matches_design_json",
+      "passed": true,
+      "detail": "results.json['design'] is byte-equal to design.json after key sorting"
+    },
+    {
+      "check": "parameter_order_consistent",
+      "passed": true,
+      "detail": "8 names in one order across recovery, joint_jacobian, discharge_only, concentration_only, posterior, weak_control; plots index by name, never by row position"
+    },
+    {
+      "check": "log_vs_native_coordinates",
+      "passed": true,
+      "detail": "exp(theta) reproduces the 6 positive natives (multipliers, 1/day decay); the 2 storage amplitudes are signed and untransformed"
+    },
+    {
+      "check": "train_comids_match_design",
+      "passed": true,
+      "detail": "30 training COMIDs identical and in the same order as design.json train_comids"
+    },
+    {
+      "check": "holdout_comids_match_design",
+      "passed": true,
+      "detail": "10 held-out COMIDs identical and in the same order as design.json holdout_comids"
+    },
+    {
+      "check": "train_holdout_disjoint",
+      "passed": true,
+      "detail": "n_train=30 (design 30), n_holdout=10 (design 10), no shared reach"
+    },
+    {
+      "check": "no_duplicate_reaches",
+      "passed": true,
+      "detail": "40 distinct COMIDs; every plotted point is keyed on its COMID, not a row number"
+    },
+    {
+      "check": "train_region_counts_match",
+      "passed": true,
+      "detail": "west/east training split [15, 15] equals design.train_region_counts; region is the longitude class, not a hydrologic basin"
+    },
+    {
+      "check": "region_label_matches_longitude",
+      "passed": true,
+      "detail": "every row's region_1based agrees with its longitude against the median split -96.3058 deg (ties east)"
+    },
+    {
+      "check": "training_observations_are_noise_free_truth",
+      "passed": true,
+      "detail": "observed == truth exactly for all 30 training rows, matching design.generated_noise = NONE"
+    },
+    {
+      "check": "holdout_rows_carry_no_observation",
+      "passed": true,
+      "detail": "all 10 held-out rows have empty observation columns; results.json hard check holdout_never_in_objective = True"
+    },
+    {
+      "check": "train_rmse_recomputed_from_csv",
+      "passed": true,
+      "detail": "train: discharge RMSE 3.051154 m3/s vs recorded 3.051154; concentration RMSE 0.02003634 mg/L vs recorded 0.02003634"
+    },
+    {
+      "check": "holdout_rmse_recomputed_from_csv",
+      "passed": true,
+      "detail": "holdout: discharge RMSE 4.336801 m3/s vs recorded 4.336801; concentration RMSE 0.01189181 mg/L vs recorded 0.01189181"
+    },
+    {
+      "check": "noise_scaled_metric_uses_assumed_sigma",
+      "passed": true,
+      "detail": "log RMSE / sigma reproduces the reported noise-scaled values with sigma_Q=0.0998, sigma_C=0.1980 (assumed likelihood, not generated noise)"
+    },
+    {
+      "check": "prior_mean_baseline_matches_prefit",
+      "passed": true,
+      "detail": "prior-mean columns give train log RMSE 0.249847 (Q) and 0.363784 (C), equal to pre_fit.prior_mean_vs_truth_at_train"
+    },
+    {
+      "check": "three_starts_coincide_at_every_gauge",
+      "passed": true,
+      "detail": "max relative spread across the three starts at any of the 40 reaches is 1.33e-08; parameter-space spread 2.12e-08 prior sd. One curve is plotted for all three"
+    },
+    {
+      "check": "units_and_magnitudes_plausible",
+      "passed": true,
+      "detail": "discharge 0.275-9527.7 m^3/s over drainage 30-639079 km^2; concentration 0.108-1.206 mg/L, consistent with the 1 mg/L reference field and units m^3/s / mg/L"
+    },
+    {
+      "check": "holdout_ranges_match_report",
+      "passed": true,
+      "detail": "held-out truths span 8.66-2598 m^3/s and 0.108-1.133 mg/L, matching the ranges quoted in the experiment report"
+    },
+    {
+      "check": "no_time_axis_in_snapshot",
+      "passed": true,
+      "detail": "67 saved arrays, none named for a time axis; every field is one steady snapshot (design.forward_model is pure algebra). Decay rates carry 1/day units only"
+    },
+    {
+      "check": "reach_arrays_have_component_length",
+      "passed": true,
+      "detail": "reach-indexed arrays have length 64579 = design.n_reaches for outlet COMID 74072654"
+    },
+    {
+      "check": "docs_still_match_run_digests",
+      "passed": true,
+      "detail": "docs/COUPLED_SNAPSHOT.md and docs/EQUATION42.md still hash to the SHA-256 recorded in design.json at run time, so the method text quoted here is the text the run used"
+    },
+    {
+      "check": "code_manifest_present_in_design",
+      "passed": true,
+      "detail": "design.json records SHA-256 for the forward model, runner, tests and docs used in the run; those digests are republished unchanged"
+    }
+  ],
+  "all_passed": true,
+  "not_checked_here": [
+    "The physics of Equation 42's storage terms; these are file-alignment and arithmetic checks only.",
+    "Any real measurement: the observations are synthetic and noise-free by construction.",
+    "Posterior calibration: the Gauss-Newton covariance is a local linearisation, not a sampled posterior."
+  ]
+}

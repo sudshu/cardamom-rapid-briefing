@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 376" width="1060" height="376" role="img" aria-labelledby="t d" font-family="Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+<title id="t">Marginal data information per parameter, prior-scaled</title>
+<desc id="d">Bar chart on a logarithmic axis of the marginal data information for each of the eight parameters, relative to a prior information of one. Water input west 229, water input east 145, chemical input west 64.3, chemical input east 34.1, decay west 17.9, decay east 10.7, water storage amplitude 13.5, chemical storage amplitude 0.66 — the only parameter below the prior line.</desc>
+<rect width="1060" height="376" fill="#ffffff"/>
+<rect x="78" y="56" width="952" height="242" fill="#fcfbf7"/>
+<line x1="78" y1="265.9" x2="1030" y2="265.9" stroke="#e7e4da" stroke-width="1.1"/>
+<text x="66.0" y="270.9" font-size="15" fill="#5c7078" text-anchor="end" font-weight="400">1</text>
+<line x1="78" y1="241.6" x2="1030" y2="241.6" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="227.4" x2="1030" y2="227.4" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="217.3" x2="1030" y2="217.3" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="209.5" x2="1030" y2="209.5" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="203.1" x2="1030" y2="203.1" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="197.7" x2="1030" y2="197.7" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="193.1" x2="1030" y2="193.1" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="188.9" x2="1030" y2="188.9" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="185.2" x2="1030" y2="185.2" stroke="#e7e4da" stroke-width="1.1"/>
+<text x="66.0" y="190.2" font-size="15" fill="#5c7078" text-anchor="end" font-weight="400">10</text>
+<line x1="78" y1="160.9" x2="1030" y2="160.9" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="146.7" x2="1030" y2="146.7" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="136.7" x2="1030" y2="136.7" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="128.8" x2="1030" y2="128.8" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="122.5" x2="1030" y2="122.5" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="117.1" x2="1030" y2="117.1" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="112.4" x2="1030" y2="112.4" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="108.3" x2="1030" y2="108.3" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="104.6" x2="1030" y2="104.6" stroke="#e7e4da" stroke-width="1.1"/>
+<text x="66.0" y="109.6" font-size="15" fill="#5c7078" text-anchor="end" font-weight="400">100</text>
+<line x1="78" y1="80.3" x2="1030" y2="80.3" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="66.1" x2="1030" y2="66.1" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="56.0" x2="1030" y2="56.0" stroke="#e7e4da" stroke-width="0.5"/>
+<line x1="78" y1="265.9" x2="1030" y2="265.9" stroke="#a35c07" stroke-width="2.2" stroke-dasharray="7 5"/>
+<text x="88.0" y="286.9" font-size="14.5" fill="#a35c07" text-anchor="start" font-weight="650">prior information = 1</text>
+<rect x="111.5" y="75.5" width="52" height="190.4" fill="#0f766a" opacity=".78"/>
+<text x="137.5" y="64.5" font-size="15" fill="#0f766a" text-anchor="middle" font-weight="700">229</text>
+<text x="137.5" y="338.0" font-size="14" fill="#09232c" text-anchor="middle" font-weight="500">water input W</text>
+<rect x="230.5" y="91.6" width="52" height="174.3" fill="#0f766a" opacity=".78"/>
+<text x="256.5" y="80.6" font-size="15" fill="#0f766a" text-anchor="middle" font-weight="700">145</text>
+<text x="256.5" y="338.0" font-size="14" fill="#09232c" text-anchor="middle" font-weight="500">water input E</text>
+<rect x="349.5" y="120.0" width="52" height="145.9" fill="#0f766a" opacity=".78"/>
+<text x="375.5" y="109.0" font-size="15" fill="#0f766a" text-anchor="middle" font-weight="700">64.3</text>
+<text x="375.5" y="338.0" font-size="14" fill="#09232c" text-anchor="middle" font-weight="500">chem input W</text>
+<rect x="468.5" y="142.3" width="52" height="123.6" fill="#0f766a" opacity=".78"/>
+<text x="494.5" y="131.3" font-size="15" fill="#0f766a" text-anchor="middle" font-weight="700">34.1</text>
+<text x="494.5" y="338.0" font-size="14" fill="#09232c" text-anchor="middle" font-weight="500">chem input E</text>
+<rect x="587.5" y="164.9" width="52" height="101.0" fill="#0f766a" opacity=".78"/>
+<text x="613.5" y="153.9" font-size="15" fill="#0f766a" text-anchor="middle" font-weight="700">17.9</text>
+<text x="613.5" y="338.0" font-size="14" fill="#09232c" text-anchor="middle" font-weight="500">decay W</text>
+<rect x="706.5" y="182.8" width="52" height="83.1" fill="#0f766a" opacity=".78"/>
+<text x="732.5" y="171.8" font-size="15" fill="#0f766a" text-anchor="middle" font-weight="700">10.7</text>
+<text x="732.5" y="338.0" font-size="14" fill="#09232c" text-anchor="middle" font-weight="500">decay E</text>
+<rect x="825.5" y="174.7" width="52" height="91.2" fill="#0f766a" opacity=".78"/>
+<text x="851.5" y="163.7" font-size="15" fill="#0f766a" text-anchor="middle" font-weight="700">13.5</text>
+<text x="851.5" y="338.0" font-size="14" fill="#09232c" text-anchor="middle" font-weight="500">ΔS water</text>
+<rect x="944.5" y="265.9" width="52" height="14.5" fill="#a35c07" opacity=".78"/>
+<text x="970.5" y="301.4" font-size="15" fill="#a35c07" text-anchor="middle" font-weight="700">0.66</text>
+<text x="970.5" y="338.0" font-size="14" fill="#09232c" text-anchor="middle" font-weight="700">ΔS chemical</text>
+<line x1="78" y1="298" x2="1030" y2="298" stroke="#09232c" stroke-width="1.4"/>
+<text transform="translate(20,177.0) rotate(-90)" font-size="15.5" fill="#09232c" text-anchor="middle" font-weight="600">marginal data information</text>
+<text x="78.0" y="30.0" font-size="18" fill="#09232c" text-anchor="start" font-weight="650">How much each parameter is told by the data rather than by the prior</text>
+</svg>

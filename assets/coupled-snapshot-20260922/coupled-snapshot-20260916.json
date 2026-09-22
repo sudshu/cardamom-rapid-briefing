@@ -1,0 +1,537 @@
+{
+ "_about": "Curated numbers quoted on coupled-snapshot.html. Every entry is copied from the saved results.json of the completed run, or recomputed from gauges.csv and checked against it (see data-checks.json). A synthetic observing-system simulation experiment on a real static river topology; no measured discharge or chemistry. Raw arrays, run logs and internal reports are not published.",
+ "_experiment_run": "2026-09-16",
+ "_page_built": "2026-09-22",
+ "_software": {
+  "python": "3.13.13",
+  "jax": "0.11.1",
+  "numpy": "2.5.2",
+  "scipy": "1.18.1",
+  "backend": "cpu",
+  "x64": true
+ },
+ "_network": {
+  "archive": "MERIT_Basins_v1.0_pfaf_74_GLDAS_v2.0_RAPID_v2.0.zip",
+  "archive_md5": "c157e1b5499da51c9dbb4c06cf9a892d",
+  "archive_sha256": "a63ee11198dc8495f70ea7734790ebaf6b2a405e2d58b0bd4d5982e0252c7fde",
+  "outlet_comid": 74072654,
+  "n_reaches": 64579,
+  "n_levels": 771,
+  "status": "PROVISIONAL outlet component of the pinned region-74 static network; NOT a validated Mississippi study boundary",
+  "data_status": "real network topology, K and X; SYNTHETIC forcing and virtual observations; no measured Mississippi discharge or chemistry"
+ },
+ "design": {
+  "n_parameters": 8,
+  "parameters": [
+   "log_water_input_west",
+   "log_water_input_east",
+   "log_chemical_input_west",
+   "log_chemical_input_east",
+   "log_decay_west_per_day",
+   "log_decay_east_per_day",
+   "water_storage_amplitude",
+   "chemical_storage_amplitude"
+  ],
+  "truth_native": [
+   1.35,
+   0.75,
+   1.6,
+   0.7,
+   0.05000000000000001,
+   0.15,
+   -0.45,
+   0.6
+  ],
+  "prior_mean_theta": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   -2.3025850929940455,
+   -2.3025850929940455,
+   0.0,
+   0.0
+  ],
+  "prior_sd_theta": [
+   0.4,
+   0.4,
+   0.5,
+   0.5,
+   0.7,
+   0.7,
+   0.5,
+   0.5
+  ],
+  "truth_offset_from_prior_mean_in_sd": [
+   0.7502614811258453,
+   -0.7192051811294522,
+   0.9400072584914713,
+   -0.7133498878774649,
+   -0.9902102579427792,
+   0.5792358687259488,
+   -0.9,
+   1.2
+  ],
+  "parameter_box_rule": "prior mean +/- 2.0 prior sd, identical in every stage",
+  "n_train": 30,
+  "n_holdout": 10,
+  "holdout_status": "REUSED evaluation set: these ten large-river reaches were already scored in three earlier five-parameter experiments. They support a paired comparison and are NOT a pristine blind test. The truth vector, the parameterisation and the discharge observations are new",
+  "observation_colocation": "both data types are observed at the SAME 30 training reaches and evaluated at the SAME 10 held-out reaches; real chemistry stations are far sparser than discharge gauges, which this design does not represent",
+  "generated_noise": "NONE; the virtual observations equal the noise-free truth exactly",
+  "assumed_sigma_log_discharge": 0.09975134511959267,
+  "assumed_sigma_log_concentration": 0.19804220043536505,
+  "assumed_error_independence": "diagonal: independent across gauges AND between the two data types at the same gauge. Independence is an OSSE assumption; a real error covariance depends on the measurement protocol at each site.",
+  "_assumed_error_independence_note": "Wording corrected for publication on 2026-09-22. The run's design.json carried the same diagonal assumption but justified it with a general claim about how concentrations are measured; that claim is protocol-dependent and is not repeated here. The assumed covariance used in the fit is unchanged.",
+  "objective": "0.5*sum_Q((log Qw_pred - log yQ)/sigma_Q)^2 + 0.5*sum_C((log C_pred - log yC)/sigma_C)^2 + 0.5*sum_free((theta - prior mean)/prior sd)^2; the three costs are reported separately",
+  "optimizer": "SciPy L-BFGS-B on the box with JAX value_and_grad, maxiter=500, gtol=1e-9, ftol=1e-15",
+  "starts": [
+   {
+    "name": "start_prior_mean",
+    "offset_in_prior_sd": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "description": "the prior mean in every coordinate"
+   },
+   {
+    "name": "start_sign_flipped",
+    "offset_in_prior_sd": [
+     -1.2,
+     1.2,
+     -1.2,
+     1.2,
+     1.2,
+     -1.2,
+     1.2,
+     -1.2
+    ],
+    "description": "1.2 prior sd with the OPPOSITE sign to the truth offset in all eight coordinates"
+   },
+   {
+    "name": "start_uniform_inflation",
+    "offset_in_prior_sd": [
+     1.5,
+     1.5,
+     1.5,
+     1.5,
+     1.5,
+     1.5,
+     1.5,
+     1.5
+    ],
+    "description": "1.5 prior sd up in every coordinate; also probes the concentration scale direction"
+   }
+  ],
+  "fixed_fields": [
+   "R_ref from 1.0 mm/day uniform runoff depth",
+   "Rc_ref at 1.0 mg/L of that water",
+   "K",
+   "X",
+   "network topology",
+   "both storage-anomaly spatial patterns and their normalisations"
+  ],
+  "weak_prior_control": "one prespecified repeat from start_prior_mean with prior sd multiplied by 3.0; same box, same data, so the admissibility certificate is unchanged",
+  "prespecified_criteria": {
+   "recovered_abs_error_in_prior_sd": 0.25,
+   "marginal_abs_error_in_prior_sd": 0.5,
+   "start_consistency_in_prior_sd": 0.05,
+   "gradient_inf_norm": 0.001,
+   "train_noise_scaled_log_rmse": 0.1,
+   "holdout_noise_scaled_log_rmse": 0.25,
+   "rationale": "the smallest truth offset from the prior mean is 0.579 prior sd, so an estimate that reverted to the prior mean is 'not recovered' for every parameter; identifiability numbers are reported, not gated"
+  },
+  "state_interpretation": "delta_S is an anomaly relative to the equilibrium storage of the CURRENT inputs (provisional reading of the archived April-2026 derivation), NOT S[t+1]-S[t]. This is a mathematical snapshot control: no time integration, no dynamic mass-conservation test and no physical validation of the storage chemistry",
+  "forward_model": "Qw = (I-N)^-1 R + M^-1 K^-1 dSw with M = XN+I-X; Qc = (I-Phi N)^-1 Phi Rc + Phi M^-1 K^-1 dSc (Equation 42 unchanged, including the placement of Phi); C = 1000 Qc/Qw",
+  "chemical_input_independence": "Rc = c[region] * Rc_ref is never multiplied by the fitted water multiplier or by any observed discharge. Rc_ref is a FIXED reference field set to 1 mg/L of the reference water, so the effective input concentration at truth is c/a (1.185 mg/L west, 0.933 mg/L east). The proportionality Rc_ref ~ R_ref is a documented choice of reference field, not an imposed link between the fitted input multipliers",
+  "water_storage_basis": "fixed signed pattern tanh((lat-median lat)/2.5 deg) times the conservative equilibrium water storage K (I-N)^-1 R_ref, rescaled once for the admissibility certificate; units m^3",
+  "chemical_storage_basis": "fixed signed pattern tanh((lat-median lat)/2.5 deg) * tanh((lon-median lon)/5.0 deg) times the conservative equilibrium chemical mass (5/3) K flux_floor, rescaled once; units kg"
+ },
+ "identifiability_at_truth": {
+  "note": "Local numerical rank of the prior-scaled data Jacobian evaluated at the synthetic truth. Not a global or reach-by-reach identifiability statement.",
+  "discharge_only_rank": 3,
+  "discharge_only_structurally_invisible": [
+   "log_chemical_input_west",
+   "log_chemical_input_east",
+   "log_decay_west_per_day",
+   "log_decay_east_per_day",
+   "chemical_storage_amplitude"
+  ],
+  "concentration_only_rank": 7,
+  "joint_rank": 8,
+  "joint_condition_number": 24.868058300639927,
+  "joint_singular_values": [
+   19.446985614948314,
+   16.999359780297457,
+   9.063574578692068,
+   8.906515745322299,
+   4.110315486392319,
+   3.6494888230539013,
+   3.4307389662027137,
+   0.782006595764169
+  ],
+  "discharge_only_singular_values": [
+   16.685268986334048,
+   14.311146107015924,
+   3.258371238750313,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "concentration_only_singular_values": [
+   13.470160102171844,
+   12.766889098088841,
+   4.156207404100763,
+   3.4746251236787513,
+   1.7324554425586582,
+   0.7763261531438763,
+   0.1376011074027548,
+   1.4749007473386178e-15
+  ],
+  "concentration_scale_direction_in_prior_sd": [
+   0.5241424183609592,
+   0.5241424183609592,
+   0.4193139346887673,
+   0.4193139346887673,
+   0.0,
+   0.0,
+   -0.1886912706099453,
+   0.2515883608132604
+  ],
+  "concentration_residual_along_scale_direction": 1.2867764005295133e-15,
+  "joint_response_along_scale_direction": 11.512010210485654,
+  "registered_analytic_prediction": "concentration is exactly invariant under a -> lambda a, c -> lambda c, b_w -> lambda b_w, b_c -> lambda b_c, so the concentration-only data Jacobian has an exact null direction (1,1,1,1,0,0,b_w,b_c) that the discharge data must break"
+ },
+ "recovery": {
+  "parameter_names": [
+   "log_water_input_west",
+   "log_water_input_east",
+   "log_chemical_input_west",
+   "log_chemical_input_east",
+   "log_decay_west_per_day",
+   "log_decay_east_per_day",
+   "water_storage_amplitude",
+   "chemical_storage_amplitude"
+  ],
+  "native_truth": [
+   1.35,
+   0.75,
+   1.6,
+   0.7,
+   0.05000000000000001,
+   0.15,
+   -0.45,
+   0.6
+  ],
+  "native_estimate": [
+   1.344519615566917,
+   0.7539643991679974,
+   1.5758174253123038,
+   0.6741038694113016,
+   0.05073257523865117,
+   0.14157409728954187,
+   -0.4260580376035053,
+   0.26081813502393153
+  ],
+  "error_in_prior_sd": [
+   -0.01016951585439363,
+   0.013179861013320915,
+   -0.030458982807745283,
+   -0.07539225417162387,
+   0.020778869265906552,
+   -0.08258865473759042,
+   0.04788392479298942,
+   -0.6783637299521369
+  ],
+  "verdict": [
+   "recovered",
+   "recovered",
+   "recovered",
+   "recovered",
+   "recovered",
+   "recovered",
+   "recovered",
+   "not_recovered"
+  ],
+  "n_recovered": 7,
+  "all_recovered": false,
+  "start_consistency_max_spread_in_prior_sd": 2.123621378746776e-08,
+  "weak_prior_control_native_estimate": [
+   1.3495749611354841,
+   0.7501836481241789,
+   1.5943603949777143,
+   0.6930467108175453,
+   0.04997454311789794,
+   0.1481084668063703,
+   -0.4490502798605023,
+   0.5162251990941029
+  ],
+  "weak_prior_control_error_in_base_prior_sd": [
+   -0.000787232942495053,
+   0.000612085478087776,
+   -0.0070619594340267655,
+   -0.019965868695824285,
+   -0.0007275247094579163,
+   -0.018129149905032893,
+   0.0018994402789954679,
+   -0.16754960181179412
+  ],
+  "weak_prior_control_n_recovered": 8
+ },
+ "information": {
+  "note": "Gauss-Newton linearisation in prior-scaled units, not a sampled posterior.",
+  "data_information_eigenvalues": [
+   376.1582542481054,
+   287.7592885337599,
+   80.80830660185849,
+   74.83705359587519,
+   17.03455298622278,
+   13.13661980126956,
+   10.274116235991073,
+   0.6172776183800164
+  ],
+  "posterior_sd_in_prior_units": [
+   0.0658751955970236,
+   0.0828172325107506,
+   0.12370890263891467,
+   0.16879964392975827,
+   0.23031546177382045,
+   0.2921361242769537,
+   0.2627125005467227,
+   0.7761001823408127
+  ],
+  "posterior_variance_reduction": [
+   0.9956604586050539,
+   0.9931413059992603,
+   0.9846961074078755,
+   0.9715066802091868,
+   0.9469547880679119,
+   0.9146564848924403,
+   0.9309821420564882,
+   0.39766850697055733
+  ],
+  "marginal_data_information": [
+   229.43909689733854,
+   144.8003520629653,
+   64.3428527402636,
+   34.095945552908866,
+   17.851842863409868,
+   10.717351912909667,
+   13.489003712900772,
+   0.6602153657456507
+  ],
+  "max_abs_off_diagonal_correlation": 0.6116546044028961,
+  "strongest_correlated_pair": [
+   "log_chemical_input_east",
+   "log_decay_east_per_day"
+  ],
+  "weakest_joint_mode": {
+   "rank_from_weakest": 1,
+   "singular_value": 0.782006595764169,
+   "data_information_eigenvalue": 0.6115343158186644,
+   "direction_in_prior_sd": [
+    -0.004297352205636662,
+    0.009683736626362828,
+    0.03976649984048164,
+    0.12227047656688352,
+    0.03577357876972733,
+    0.0958593657965774,
+    0.042002240101062266,
+    0.9854559142534451
+   ],
+   "dominant_parameters": [
+    [
+     "chemical_storage_amplitude",
+     0.9854559142534451
+    ],
+    [
+     "log_chemical_input_east",
+     0.12227047656688352
+    ],
+    [
+     "log_decay_east_per_day",
+     0.0958593657965774
+    ]
+   ]
+  },
+  "storage_share_of_flux_at_truth": {
+   "water_network_median": 0.060750733919758736,
+   "water_network_max": 0.1545268776792823,
+   "water_train_median": 0.060179027815308185,
+   "water_train_max": 0.15049725667810235,
+   "chemical_network_median": 0.03349656110346964,
+   "chemical_network_max": 0.17994765240094307,
+   "chemical_train_median": 0.03112113572898597,
+   "chemical_train_max": 0.16694411872988582
+  },
+  "n_negative_water_storage_contributions": 32286,
+  "n_negative_chemical_storage_contributions": 43825
+ },
+ "fit_quality": {
+  "train": {
+   "discharge": {
+    "unit": "m^3/s",
+    "n": 30,
+    "rmse": 3.051153978495964,
+    "mae": 0.7242446367179196,
+    "log_rmse": 0.0035465558612007807,
+    "max_abs_log_error": 0.013990163865582605,
+    "noise_scaled_log_rmse": 0.03555396528185947
+   },
+   "concentration": {
+    "unit": "mg/L",
+    "n": 30,
+    "rmse": 0.020036340440961732,
+    "mae": 0.014494090992020413,
+    "log_rmse": 0.022961002096568397,
+    "max_abs_log_error": 0.06556733067254822,
+    "noise_scaled_log_rmse": 0.1159399463654322
+   }
+  },
+  "holdout": {
+   "discharge": {
+    "unit": "m^3/s",
+    "n": 10,
+    "rmse": 4.336801413293236,
+    "mae": 1.551441646933593,
+    "log_rmse": 0.0037560283778611974,
+    "max_abs_log_error": 0.007137203652793911,
+    "noise_scaled_log_rmse": 0.037653912068634915
+   },
+   "concentration": {
+    "unit": "mg/L",
+    "n": 10,
+    "rmse": 0.011891810752270615,
+    "mae": 0.00814161250141637,
+    "log_rmse": 0.021551846689305296,
+    "max_abs_log_error": 0.045713327632175726,
+    "noise_scaled_log_rmse": 0.10882451640068079
+   }
+  },
+  "weak_prior_control_train": {
+   "discharge": {
+    "unit": "m^3/s",
+    "n": 30,
+    "rmse": 0.40141295762009305,
+    "mae": 0.08639183755739516,
+    "log_rmse": 0.00022572216121886956,
+    "max_abs_log_error": 0.0005991588539098203,
+    "noise_scaled_log_rmse": 0.002262848294910204
+   },
+   "concentration": {
+    "unit": "mg/L",
+    "n": 30,
+    "rmse": 0.004643293933799043,
+    "mae": 0.003441271662743463,
+    "log_rmse": 0.005050918659521826,
+    "max_abs_log_error": 0.013892927271975344,
+    "noise_scaled_log_rmse": 0.02550425438829787
+   }
+  },
+  "weak_prior_control_holdout": {
+   "discharge": {
+    "unit": "m^3/s",
+    "n": 10,
+    "rmse": 0.19525612929080033,
+    "mae": 0.07137052620306523,
+    "log_rmse": 0.00021651325977488378,
+    "max_abs_log_error": 0.00032039279230700046,
+    "noise_scaled_log_rmse": 0.0021705297258428377
+   },
+   "concentration": {
+    "unit": "mg/L",
+    "n": 10,
+    "rmse": 0.002755803305287603,
+    "mae": 0.0016963961271754425,
+    "log_rmse": 0.004669606922476855,
+    "max_abs_log_error": 0.010201951764485073,
+    "noise_scaled_log_rmse": 0.023578847903181488
+   }
+  },
+  "prior_mean_baseline_train_log_rmse": {
+   "discharge_log_rmse": 0.24984723207991275,
+   "concentration_log_rmse": 0.363784219273695
+  },
+  "cost_split_at_fit": {
+   "objective": 2.5607233234161866,
+   "discharge_data_cost": 0.01896126670895503,
+   "concentration_data_cost": 0.2016310674482895,
+   "prior_cost": 2.340130989258942
+  }
+ },
+ "gates": {
+  "hard_validity_checks": {
+   "all_predictions_finite_positive": true,
+   "admissible_at_truth_and_every_fit": true,
+   "box_corners_above_analytic_bounds": true,
+   "holdout_never_in_objective": true
+  },
+  "convergence": {
+   "all_optimizers_reported_scipy_success": true,
+   "small_final_gradients": true,
+   "no_active_bounds": true,
+   "starts_consistent": true
+  },
+  "identifiability_predictions": {
+   "concentration_only_rank_deficient_as_predicted": true,
+   "joint_data_full_rank": true
+  },
+  "recovery_gates": {
+   "all_eight_recovered_at_every_start": false,
+   "train_fit_within_tolerance": false,
+   "holdout_fit_within_tolerance": true
+  },
+  "failed_criterion": "train concentration noise-scaled log RMSE 0.116 against the prespecified threshold 0.1"
+ },
+ "tests": {
+  "full_suite_passed": 234,
+  "new_tests_passed": 22,
+  "regression_subset_passed": 104,
+  "note": "pytest on the tested Python package, recorded in the run's logs; the package, not this page, is the scientific source of truth."
+ },
+ "runtime_seconds_including_plots": 29.855436394922435,
+ "limits": [
+  "Synthetic forcing and virtual observations; no measured discharge or chemistry",
+  "One noise-free realization; three starts are not a coverage or robustness claim",
+  "An eight-parameter reduction; per-reach source/rate confounding is NOT resolved",
+  "Snapshot algebra only: no time integration and no temporal-conservation test",
+  "One fixed spatial mode per storage field, not a general storage state",
+  "The chemical total-storage identity Sc_eq = (5/3) K Qc_eq is our provisional reading; the draft states no chemical equilibrium-storage identity",
+  "Both data types are co-located at the same reaches; real chemistry stations are far sparser than discharge gauges",
+  "The ten held-out reaches were scored in three earlier experiments: a paired evaluation, not a pristine blind test",
+  "Gauss-Newton covariance is an approximate prior-regularised local linearisation",
+  "Positive-flux and positive-storage bounds are algebraic; they are not evidence that the storage chemistry of Equation 42 is physically correct"
+ ],
+ "not_claimed": [
+  "real chemistry or discharge data",
+  "time integration or temporal conservation",
+  "neural-network rates",
+  "a validated Mississippi study boundary",
+  "elementwise positivity of the draft's storage operator",
+  "physical validation of the storage chemistry of Equation 42",
+  "a pristine blind held-out test"
+ ],
+ "code_sha256": {
+  "src/rapid_jax/coupled_snapshot.py": "672f7ceb81ef53761393ce641a5d3f3d103174642e42e1fd733789d85be5259b",
+  "examples/coupled_snapshot_osse.py": "660c35894242815a01251f4ef978b416987427d22f171db551e5b4a1b6f4bc0f",
+  "tests/test_coupled_snapshot.py": "548c17353d0140279714a2d753b9dd5860a6fda85b47e4b4ac16debb0d54f9ec",
+  "docs/COUPLED_SNAPSHOT.md": "50178c5bef9a88cb4aadd76e74a5175e93f7da7b4e78c34ed21a44d62093583a",
+  "src/rapid_jax/chemistry.py": "8f23ede5c50b8098afc3892ca29549be7ea9762517d3d8c88f6029cd62ff4446",
+  "src/rapid_jax/routing.py": "c5ac62bfb142ca72c617503109606b980d96af580785c9e59a7a07b1809fb048",
+  "src/rapid_jax/network.py": "c2b0adf0e06a534dd84f8bbcb6a4c3c682e4c87f20b5e3703e28c0a3b25b63cb",
+  "src/rapid_jax/basin_data.py": "11e605d457db24960a7f9c1736b2f9642c95fdcc1e534a330ab1d2479c9141d1",
+  "src/rapid_jax/joint_snapshot.py": "2f60505fb9e0f60113b7278e765dd4c3183b5e8bf4843f4b9c9a92342180b06b",
+  "src/rapid_jax/sparse_decay_osse.py": "8c2f0c8e2f9934e64434d1cc2042d81d4c0cb06348ba754aa126acb7da05ca79",
+  "src/rapid_jax/storage_mixed_coverage.py": "766075ce262b7f2f46c744e9d86e034c663e311d2bf6fbaeda4ec6f5691ad96e",
+  "docs/EQUATION42.md": "3a6415279d63ac21c66521631fae6129e77fb576ed9c2b34b08d49aa25dac482",
+  "docs/JOINT_SNAPSHOT.md": "ab950c3ef1ac9cbef96397212dae0f8abd10a6ffae670003a7c88e7280ee25a5",
+  "docs/STORAGE_MIXED_COVERAGE.md": "3e128cda67f0fe88fa5ac472293a45e02bb446e3a4f1808e2476f453009ad23f"
+ }
+}

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 556" width="1120" height="556" role="img" aria-labelledby="dt dd" font-family="Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif"><title id="dt">The coupled forward model</title><desc id="dd">Two lanes running left to right. The water lane takes two regional runoff multipliers and one water storage amplitude; it forms R = a times R reference and delta S water = b w times a fixed pattern, then discharge Qw = A R + B delta S water, with A = (I minus N) inverse and B = M inverse K inverse. The chemistry lane takes two chemical input multipliers, two decay rates and one chemical storage amplitude; it forms Rc, Phi = exp of minus five thirds alpha K, and delta S chemical, then the chemical flux Qc = (I minus Phi N) inverse Phi Rc plus Phi B delta S chemical. An arrow runs from the predicted discharge box into the concentration box: the predicted Qw, not any observed or logged discharge, is the denominator of C = 1000 Qc over Qw in milligrams per litre. Discharge is measured type 1 with assumed log sigma 0.0998 and concentration is measured type 2 with assumed log sigma 0.1980, both at the same thirty locations. Topology, travel time K and weighting X are fixed.</desc><rect width="1120" height="556" fill="#ffffff"/><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#5c7078"/></marker></defs>
+<text x="22" y="28" font-size="17" fill="#09232c" text-anchor="start" font-weight="700">Eight unknowns</text>
+<text x="22" y="50" font-size="13.5" fill="#5c7078" text-anchor="start" font-weight="400">log coordinates; signed amplitudes</text>
+<text x="346" y="28" font-size="17" fill="#09232c" text-anchor="start" font-weight="700">Fixed: topology N, travel time K, weighting X</text>
+<text x="346" y="50" font-size="13.5" fill="#5c7078" text-anchor="start" font-weight="400">Equation 42 exactly as drafted, including where Φ sits</text>
+<text x="1098" y="28" font-size="17" fill="#09232c" text-anchor="end" font-weight="700">Measured types</text>
+<text x="1098" y="50" font-size="13.5" fill="#5c7078" text-anchor="end" font-weight="400">at the same 30 gauges</text>
+<rect x="22" y="76" width="288" height="166" rx="12" fill="#fbfaf6" stroke="#d8d5cb" stroke-width="1.6"/>
+<text x="40" y="102" font-size="12.5" fill="#0f766a" text-anchor="start" font-weight="800">WATER</text>
+<text x="40" y="132" font-size="19" fill="#09232c" text-anchor="start" font-weight="650" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">a<tspan font-size="13.7" dy="3.8">W</tspan><tspan dy="-3.8"></tspan> , a<tspan font-size="13.7" dy="3.8">E</tspan><tspan dy="-3.8"></tspan></text>
+<text x="40" y="154" font-size="13.5" fill="#5c7078" text-anchor="start" font-weight="400">two regional runoff multipliers</text>
+<text x="40" y="188" font-size="19" fill="#09232c" text-anchor="start" font-weight="650" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">b<tspan font-size="13.7" dy="3.8">w</tspan><tspan dy="-3.8"></tspan></text>
+<text x="40" y="210" font-size="13.5" fill="#5c7078" text-anchor="start" font-weight="400">one amplitude on a fixed ΔS</text>
+<text x="40" y="228" font-size="13.5" fill="#5c7078" text-anchor="start" font-weight="400">pattern: a latitude dipole</text>
+<rect x="346" y="76" width="336" height="166" rx="12" fill="#e2f0ec" stroke="#0f766a" stroke-width="1.6"/>
+<text x="364" y="108" font-size="17.5" fill="#09232c" text-anchor="start" font-weight="600" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">R = a[region] · R<tspan font-size="12.6" dy="3.5">ref</tspan><tspan dy="-3.5"></tspan></text>
+<text x="364" y="134" font-size="17.5" fill="#09232c" text-anchor="start" font-weight="600" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">ΔS<tspan font-size="12.6" dy="3.5">w</tspan><tspan dy="-3.5"></tspan> = b<tspan font-size="12.6" dy="3.5">w</tspan><tspan dy="-3.5"></tspan> · pattern<tspan font-size="12.6" dy="3.5">w</tspan><tspan dy="-3.5"></tspan></text>
+<line x1="364" y1="152" x2="664" y2="152" stroke="#0f766a" stroke-width="1" opacity=".5"/>
+<text x="364" y="188" font-size="23" fill="#09232c" text-anchor="start" font-weight="700" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Q<tspan font-size="16.6" dy="4.6">w</tspan><tspan dy="-4.6"></tspan> = A R + B ΔS<tspan font-size="16.6" dy="4.6">w</tspan><tspan dy="-4.6"></tspan></text>
+<text x="364" y="220" font-size="15" fill="#5c7078" text-anchor="start" font-weight="500" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">A = (I − N)⁻¹     B = M⁻¹ K⁻¹</text>
+<rect x="714" y="104" width="166" height="110" rx="12" fill="#ffffff" stroke="#0f766a" stroke-width="1.6"/>
+<text x="797" y="142" font-size="22" fill="#0f766a" text-anchor="middle" font-weight="700" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Q<tspan font-size="15.8" dy="4.4">w</tspan><tspan dy="-4.4"></tspan></text>
+<text x="797" y="170" font-size="15.5" fill="#09232c" text-anchor="middle" font-weight="600">discharge</text>
+<text x="797" y="192" font-size="14.5" fill="#5c7078" text-anchor="middle" font-weight="400">m³/s</text>
+<path d="M310 159 L342 159" stroke="#5c7078" stroke-width="2.0" fill="none" marker-end="url(#ah)"/>
+<path d="M682 159 L710 159" stroke="#0f766a" stroke-width="2.0" fill="none" marker-end="url(#ah)"/>
+<rect x="914" y="104" width="184" height="110" rx="12" fill="#ffffff" stroke="#0f766a" stroke-width="1.6"/>
+<text x="1006" y="138" font-size="15.5" fill="#0f766a" text-anchor="middle" font-weight="700">type 1</text>
+<text x="1006" y="164" font-size="15" fill="#09232c" text-anchor="middle" font-weight="600">log Q<tspan font-size="10.8" dy="3.0">w</tspan><tspan dy="-3.0"></tspan> at 30 reaches</text>
+<text x="1006" y="188" font-size="14" fill="#5c7078" text-anchor="middle" font-weight="400">assumed σ 0.0998</text>
+<path d="M880 159 L910 159" stroke="#0f766a" stroke-width="2.0" fill="none" marker-end="url(#ah)"/>
+<rect x="22" y="266" width="288" height="196" rx="12" fill="#fbfaf6" stroke="#d8d5cb" stroke-width="1.6"/>
+<text x="40" y="292" font-size="12.5" fill="#a35c07" text-anchor="start" font-weight="800">CHEMISTRY</text>
+<text x="40" y="322" font-size="19" fill="#09232c" text-anchor="start" font-weight="650" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">c<tspan font-size="13.7" dy="3.8">W</tspan><tspan dy="-3.8"></tspan> , c<tspan font-size="13.7" dy="3.8">E</tspan><tspan dy="-3.8"></tspan></text>
+<text x="40" y="342" font-size="13.5" fill="#5c7078" text-anchor="start" font-weight="400">two chemical-input multipliers</text>
+<text x="40" y="374" font-size="19" fill="#09232c" text-anchor="start" font-weight="650" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">α<tspan font-size="13.7" dy="3.8">W</tspan><tspan dy="-3.8"></tspan> , α<tspan font-size="13.7" dy="3.8">E</tspan><tspan dy="-3.8"></tspan></text>
+<text x="40" y="394" font-size="13.5" fill="#5c7078" text-anchor="start" font-weight="400">two decay rates, 1/day</text>
+<text x="40" y="426" font-size="19" fill="#09232c" text-anchor="start" font-weight="650" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">b<tspan font-size="13.7" dy="3.8">c</tspan><tspan dy="-3.8"></tspan></text>
+<text x="40" y="446" font-size="13.5" fill="#5c7078" text-anchor="start" font-weight="400">one amplitude, lat–lon quadrupole</text>
+<rect x="346" y="266" width="336" height="196" rx="12" fill="#faecd6" stroke="#a35c07" stroke-width="1.6"/>
+<text x="364" y="296" font-size="17.5" fill="#09232c" text-anchor="start" font-weight="600" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">R<tspan font-size="12.6" dy="3.5">c</tspan><tspan dy="-3.5"></tspan> = c[region] · R<tspan font-size="12.6" dy="3.5">c,ref</tspan><tspan dy="-3.5"></tspan></text>
+<text x="364" y="322" font-size="17.5" fill="#09232c" text-anchor="start" font-weight="600" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Φ = exp(−(5/3) α K)</text>
+<text x="364" y="348" font-size="17.5" fill="#09232c" text-anchor="start" font-weight="600" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">ΔS<tspan font-size="12.6" dy="3.5">c</tspan><tspan dy="-3.5"></tspan> = b<tspan font-size="12.6" dy="3.5">c</tspan><tspan dy="-3.5"></tspan> · pattern<tspan font-size="12.6" dy="3.5">c</tspan><tspan dy="-3.5"></tspan></text>
+<line x1="364" y1="366" x2="664" y2="366" stroke="#a35c07" stroke-width="1" opacity=".5"/>
+<text x="364" y="402" font-size="23" fill="#09232c" text-anchor="start" font-weight="700" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Q<tspan font-size="16.6" dy="4.6">c</tspan><tspan dy="-4.6"></tspan> = (I − ΦN)⁻¹ Φ R<tspan font-size="16.6" dy="4.6">c</tspan><tspan dy="-4.6"></tspan></text>
+<text x="432" y="436" font-size="23" fill="#09232c" text-anchor="start" font-weight="700" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">+ Φ B ΔS<tspan font-size="16.6" dy="4.6">c</tspan><tspan dy="-4.6"></tspan></text>
+<rect x="714" y="308" width="166" height="110" rx="12" fill="#ffffff" stroke="#a35c07" stroke-width="1.6"/>
+<text x="797" y="346" font-size="22" fill="#a35c07" text-anchor="middle" font-weight="700" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Q<tspan font-size="15.8" dy="4.4">c</tspan><tspan dy="-4.4"></tspan></text>
+<text x="797" y="374" font-size="15.5" fill="#09232c" text-anchor="middle" font-weight="600">chemical flux</text>
+<text x="797" y="396" font-size="14.5" fill="#5c7078" text-anchor="middle" font-weight="400">kg/s</text>
+<path d="M310 363 L342 363" stroke="#5c7078" stroke-width="2.0" fill="none" marker-end="url(#ah)"/>
+<path d="M682 363 L710 363" stroke="#a35c07" stroke-width="2.0" fill="none" marker-end="url(#ah)"/>
+<rect x="914" y="308" width="184" height="110" rx="12" fill="#ffffff" stroke="#09232c" stroke-width="1.6"/>
+<text x="1006" y="340" font-size="15.5" fill="#09232c" text-anchor="middle" font-weight="700">type 2</text>
+<text x="1006" y="366" font-size="15.5" fill="#09232c" text-anchor="middle" font-weight="600" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">C = 1000 Q<tspan font-size="11.2" dy="3.1">c</tspan><tspan dy="-3.1"></tspan> / Q<tspan font-size="11.2" dy="3.1">w</tspan><tspan dy="-3.1"></tspan></text>
+<text x="1006" y="390" font-size="14.5" fill="#09232c" text-anchor="middle" font-weight="600">log C, mg/L, same 30</text>
+<text x="1006" y="410" font-size="14" fill="#5c7078" text-anchor="middle" font-weight="400">assumed σ 0.1980</text>
+<path d="M880 363 L910 363" stroke="#a35c07" stroke-width="2.0" fill="none" marker-end="url(#ah)"/>
+<path d="M797 214 L797 246 L1006 246 L1006 304" stroke="#0f766a" stroke-width="2" fill="none" marker-end="url(#ah)"/>
+<text x="1000" y="240" font-size="13.5" fill="#0f766a" text-anchor="end" font-weight="600">predicted Q<tspan font-size="9.7" dy="2.7">w</tspan><tspan dy="-2.7"></tspan> is the denominator</text>
+<line x1="22" y1="478" x2="1098" y2="478" stroke="#d8d5cb" stroke-width="1"/>
+<text x="22" y="502" font-size="14" fill="#5c7078" text-anchor="start" font-weight="400">M = X N + I − X, with N[receptor, donor] = 1. Residence time 5K/3 inside Φ; α and K in matching time units.</text>
+<text x="22" y="524" font-size="14" fill="#5c7078" text-anchor="start" font-weight="400">R<tspan font-size="10.1" dy="2.8">c</tspan><tspan dy="-2.8"></tspan> is a mass flux; it is never multiplied by the fitted runoff or by any observed discharge.</text>
+<text x="22" y="545" font-size="14" fill="#5c7078" text-anchor="start" font-weight="400">ΔS is an anomaly about the equilibrium storage of the current inputs, not S[t+1] − S[t].</text></svg>

@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 522" width="1060" height="522" role="img" aria-labelledby="t d" font-family="Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+<title id="t">Parameter recovery in fitted coordinates, against the prespecified tolerance</title>
+<desc id="d">Eight horizontal rows, one per parameter, showing the estimate minus the truth in the fitted coordinate divided by the base prior standard deviation. The fitted coordinate is the logarithm for the four input multipliers and the two decay rates, and the signed amplitude itself for the two storage fields. Water input west -0.010, water input east +0.013, chemical input west -0.030, chemical input east -0.075, decay west +0.021, decay east -0.083, water storage amplitude +0.048 all fall inside the shaded recovered band of plus or minus 0.25. The chemical storage amplitude is -0.678, outside both the recovered and the marginal band.</desc>
+<rect width="1060" height="522" fill="#ffffff"/>
+<rect x="349.6" y="96" width="398.9" height="348" fill="#f6e3c4" opacity=".45"/>
+<rect x="449.3" y="96" width="199.4" height="348" fill="#d7ebe6"/>
+<line x1="249.8" y1="96" x2="249.8" y2="444" stroke="#e7e4da" stroke-width="1"/>
+<text x="249.8" y="470.0" font-size="14" fill="#5c7078" text-anchor="middle" font-weight="400">-0.75</text>
+<line x1="349.6" y1="96" x2="349.6" y2="444" stroke="#e7e4da" stroke-width="1"/>
+<text x="349.6" y="470.0" font-size="14" fill="#5c7078" text-anchor="middle" font-weight="400">-0.50</text>
+<line x1="449.3" y1="96" x2="449.3" y2="444" stroke="#e7e4da" stroke-width="1"/>
+<text x="449.3" y="470.0" font-size="14" fill="#5c7078" text-anchor="middle" font-weight="400">-0.25</text>
+<line x1="549.0" y1="96" x2="549.0" y2="444" stroke="#09232c" stroke-width="1.6"/>
+<text x="549.0" y="470.0" font-size="14" fill="#5c7078" text-anchor="middle" font-weight="400">0</text>
+<line x1="648.7" y1="96" x2="648.7" y2="444" stroke="#e7e4da" stroke-width="1"/>
+<text x="648.7" y="470.0" font-size="14" fill="#5c7078" text-anchor="middle" font-weight="400">+0.25</text>
+<line x1="748.4" y1="96" x2="748.4" y2="444" stroke="#e7e4da" stroke-width="1"/>
+<text x="748.4" y="470.0" font-size="14" fill="#5c7078" text-anchor="middle" font-weight="400">+0.50</text>
+<line x1="848.2" y1="96" x2="848.2" y2="444" stroke="#e7e4da" stroke-width="1"/>
+<text x="848.2" y="470.0" font-size="14" fill="#5c7078" text-anchor="middle" font-weight="400">+0.75</text>
+<text x="24.0" y="28.0" font-size="15" fill="#5c7078" text-anchor="start" font-weight="400">All three prespecified starts land on this same point, 2.1e-8 prior sd apart.</text>
+<text x="549.0" y="52.0" font-size="15.5" fill="#0f766a" text-anchor="middle" font-weight="700">recovered  |error| ≤ 0.25</text>
+<text x="828.2" y="52.0" font-size="14.5" fill="#a35c07" text-anchor="middle" font-weight="650">marginal ≤ 0.50</text>
+<text x="549.0" y="496.0" font-size="16" fill="#09232c" text-anchor="middle" font-weight="600">(estimate − truth) in the fitted coordinate, ÷ base prior sd</text>
+<text x="549.0" y="518.0" font-size="13.5" fill="#5c7078" text-anchor="middle" font-weight="400">fitted coordinates: log for the four multipliers and the two decay rates, linear for the two storage amplitudes</text>
+<text x="172.0" y="123.8" font-size="17" fill="#09232c" text-anchor="end" font-weight="500">water input W</text>
+<line x1="549.0" y1="117.8" x2="544.9" y2="117.8" stroke="#0f766a" stroke-width="3"/>
+<circle cx="544.9" cy="117.8" r="9" fill="#0f766a"/>
+<text x="526.9" y="123.8" font-size="15" fill="#0f766a" text-anchor="end" font-weight="700">-0.010</text>
+<text x="924.0" y="118.8" font-size="13.5" fill="#5c7078" text-anchor="start" font-weight="400">truth 1.35</text>
+<text x="924.0" y="134.8" font-size="13.5" fill="#09232c" text-anchor="start" font-weight="600">fit 1.345</text>
+<rect x="190" y="139.5" width="718" height="43.5" fill="#09232c" opacity=".022"/>
+<text x="172.0" y="167.2" font-size="17" fill="#09232c" text-anchor="end" font-weight="500">water input E</text>
+<line x1="549.0" y1="161.2" x2="554.3" y2="161.2" stroke="#0f766a" stroke-width="3"/>
+<circle cx="554.3" cy="161.2" r="9" fill="#0f766a"/>
+<text x="572.3" y="167.2" font-size="15" fill="#0f766a" text-anchor="start" font-weight="700">+0.013</text>
+<text x="924.0" y="162.2" font-size="13.5" fill="#5c7078" text-anchor="start" font-weight="400">truth 0.75</text>
+<text x="924.0" y="178.2" font-size="13.5" fill="#09232c" text-anchor="start" font-weight="600">fit 0.754</text>
+<text x="172.0" y="210.8" font-size="17" fill="#09232c" text-anchor="end" font-weight="500">chem input W</text>
+<line x1="549.0" y1="204.8" x2="536.9" y2="204.8" stroke="#0f766a" stroke-width="3"/>
+<circle cx="536.9" cy="204.8" r="9" fill="#0f766a"/>
+<text x="518.9" y="210.8" font-size="15" fill="#0f766a" text-anchor="end" font-weight="700">-0.030</text>
+<text x="924.0" y="205.8" font-size="13.5" fill="#5c7078" text-anchor="start" font-weight="400">truth 1.6</text>
+<text x="924.0" y="221.8" font-size="13.5" fill="#09232c" text-anchor="start" font-weight="600">fit 1.576</text>
+<rect x="190" y="226.5" width="718" height="43.5" fill="#09232c" opacity=".022"/>
+<text x="172.0" y="254.2" font-size="17" fill="#09232c" text-anchor="end" font-weight="500">chem input E</text>
+<line x1="549.0" y1="248.2" x2="518.9" y2="248.2" stroke="#0f766a" stroke-width="3"/>
+<circle cx="518.9" cy="248.2" r="9" fill="#0f766a"/>
+<text x="500.9" y="254.2" font-size="15" fill="#0f766a" text-anchor="end" font-weight="700">-0.075</text>
+<text x="924.0" y="249.2" font-size="13.5" fill="#5c7078" text-anchor="start" font-weight="400">truth 0.7</text>
+<text x="924.0" y="265.2" font-size="13.5" fill="#09232c" text-anchor="start" font-weight="600">fit 0.6741</text>
+<text x="172.0" y="297.8" font-size="17" fill="#09232c" text-anchor="end" font-weight="500">decay W</text>
+<line x1="549.0" y1="291.8" x2="557.3" y2="291.8" stroke="#0f766a" stroke-width="3"/>
+<circle cx="557.3" cy="291.8" r="9" fill="#0f766a"/>
+<text x="575.3" y="297.8" font-size="15" fill="#0f766a" text-anchor="start" font-weight="700">+0.021</text>
+<text x="924.0" y="292.8" font-size="13.5" fill="#5c7078" text-anchor="start" font-weight="400">truth 0.05 /day</text>
+<text x="924.0" y="308.8" font-size="13.5" fill="#09232c" text-anchor="start" font-weight="600">fit 0.05073 /day</text>
+<rect x="190" y="313.5" width="718" height="43.5" fill="#09232c" opacity=".022"/>
+<text x="172.0" y="341.2" font-size="17" fill="#09232c" text-anchor="end" font-weight="500">decay E</text>
+<line x1="549.0" y1="335.2" x2="516.1" y2="335.2" stroke="#0f766a" stroke-width="3"/>
+<circle cx="516.1" cy="335.2" r="9" fill="#0f766a"/>
+<text x="498.1" y="341.2" font-size="15" fill="#0f766a" text-anchor="end" font-weight="700">-0.083</text>
+<text x="924.0" y="336.2" font-size="13.5" fill="#5c7078" text-anchor="start" font-weight="400">truth 0.15 /day</text>
+<text x="924.0" y="352.2" font-size="13.5" fill="#09232c" text-anchor="start" font-weight="600">fit 0.1416 /day</text>
+<text x="172.0" y="384.8" font-size="17" fill="#09232c" text-anchor="end" font-weight="500">ΔS water</text>
+<line x1="549.0" y1="378.8" x2="568.1" y2="378.8" stroke="#0f766a" stroke-width="3"/>
+<circle cx="568.1" cy="378.8" r="9" fill="#0f766a"/>
+<text x="586.1" y="384.8" font-size="15" fill="#0f766a" text-anchor="start" font-weight="700">+0.048</text>
+<text x="924.0" y="379.8" font-size="13.5" fill="#5c7078" text-anchor="start" font-weight="400">truth -0.45</text>
+<text x="924.0" y="395.8" font-size="13.5" fill="#09232c" text-anchor="start" font-weight="600">fit -0.4261</text>
+<rect x="190" y="400.5" width="718" height="43.5" fill="#09232c" opacity=".022"/>
+<text x="172.0" y="428.2" font-size="17" fill="#09232c" text-anchor="end" font-weight="650">ΔS chemical</text>
+<line x1="549.0" y1="422.2" x2="278.4" y2="422.2" stroke="#a35c07" stroke-width="3"/>
+<circle cx="278.4" cy="422.2" r="9" fill="#a35c07"/>
+<text x="260.4" y="428.2" font-size="15" fill="#a35c07" text-anchor="end" font-weight="700">-0.678</text>
+<text x="924.0" y="423.2" font-size="13.5" fill="#5c7078" text-anchor="start" font-weight="400">truth 0.6</text>
+<text x="924.0" y="439.2" font-size="13.5" fill="#09232c" text-anchor="start" font-weight="600">fit 0.2608</text>
+<line x1="190" y1="444" x2="908" y2="444" stroke="#09232c" stroke-width="1.4"/>
+</svg>

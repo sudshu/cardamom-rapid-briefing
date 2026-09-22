@@ -23,6 +23,28 @@ print/read-all view. It covers:
 `rapid-chem-explained.html` is a shorter plain-language explanation of the first
 experiment in the series.
 
+`coupled-snapshot.html` (22 September 2026) is a fourteen-slide deck on the
+**coupled water–chemistry eight-parameter snapshot** run on 16 September 2026.
+Water is no longer assumed known: two water-input multipliers, two chemical-input
+multipliers, two decay rates and one amplitude for each storage field are fitted
+together from a single snapshot of discharge *and* concentration. Seven of the
+eight meet the recovery tolerance fixed in advance; the eighth, the chemical
+storage amplitude, is prior-dominated, and the deck quantifies by how much. The
+deck opens in slide mode with arrow keys, PageUp/PageDown, Home/End, Space, `F`
+for fullscreen, hash deep links, a jump menu and a print view that puts one slide
+on each landscape page; without JavaScript every slide is a plain section of a
+scrolling document. Its assets live in `assets/coupled-snapshot-20260922/`:
+
+- `coupled-snapshot-20260916.json` — curated numbers, copied from the run's
+  `results.json`, with the design, gates, limits and what is *not* claimed;
+- `data-checks.json` — the reach, parameter, unit and magnitude checks made
+  before plotting, including recomputing the held-out RMSEs and the prior-mean
+  baseline from the gauge table and matching them against `results.json`;
+- `gauges-20260916.csv` — the 40 aligned reaches behind the scatter plots;
+- `coupled-snapshot-original.png` — the run's own figure, copied unedited;
+- six SVG figures, all regenerated from the saved JSON and CSV rather than
+  traced from the PNG, plus `deck.css` and `deck.js` used only by that page.
+
 **Everything published here is a synthetic observing-system simulation
 experiment on a real static river topology.** No measured nitrogen or DOC has
 been used, no study basin has been finalised, and nothing here establishes
